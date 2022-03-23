@@ -52,7 +52,7 @@ export function DropMinecraftFolderPage() {
                     <video src="/assets/drop-minecraft-folder.webm" controls={false} loop={true} autoPlay={true}
                            style={{
                                width: "100%",
-                               transform: "translateY(15%)",
+                               transform: "translateY(10%)",
                            }}
                     />
                 </>
