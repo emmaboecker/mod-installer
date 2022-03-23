@@ -32,7 +32,7 @@ export type AppStateContextProps = {
 const AppStateContext = React.createContext({} as AppStateContextProps)
 
 export default function MyApp({Component, pageProps}: AppProps) {
-    const [appState, setAppState] = useState(AppState.DONE)
+    const [appState, setAppState] = useState(AppState.SELECT_MODS)
 
     const {width, height} = useWindowDimensions();
 
