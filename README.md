@@ -15,4 +15,4 @@ This Project was highly inspired by the Innit.gg Installer made by [Cubxity](htt
 - [ ] Admin Panel
 - [ ] User owned mod-lists (Thank you for the idea [Marie](https://github.com/NyCodeGHG))
 
-I'm welcome to add stuff to this list (DM me on discord or create and issue)
+I'm welcome to add stuff to this list (DM me on discord or create an issue)
