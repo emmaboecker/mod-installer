@@ -17,10 +17,8 @@ export async function createLauncherProfile(dir: FileSystemDirectoryHandle, prof
     const profileWritable = await launcherProfilesHandle.createWritable()
     const launcherProfiles = await launcherProfilesHandle.getFile()
     const text = await launcherProfiles.text()
-    const json: LauncherProfiles = text.length > 0 ? JSON.parse(text) : {}
-    console.log(json)
+    const json: LauncherProfiles = text.length > 0 ? JSON.parse(text) : {profiles: {}}
     let newMap = new Map(Object.entries(json.profiles))
-    console.log(newMap)
     const currentDate = (new Date()).toISOString()
     // @ts-ignore
     json.profiles = Object.fromEntries(cloneMap(newMap).set(profile.id, {
