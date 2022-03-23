@@ -5,6 +5,7 @@ export type ModProfile = {
     icon: string
     profileName: string
     mods: Mod[]
+    servers: Server[]
 }
 
 export type Mod = {
@@ -14,4 +15,9 @@ export type Mod = {
     required: boolean
     defaultActivated: boolean
     type: string
+}
+
+export type Server = {
+    name: string
+    address: string
 }

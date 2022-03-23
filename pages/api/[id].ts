@@ -94,6 +94,7 @@ export default function handler(
                 defaultActivated: true,
                 type: "enhancement"
             }
-        ]
+        ],
+        servers: []
     })
 }

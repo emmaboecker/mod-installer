@@ -3,17 +3,14 @@ import {ModTypeContainer} from "../../ModTypeContainer/ModTypeContainer";
 import {sortMods} from "../../../../lib/sortMods";
 import {cloneMap} from "../../../../lib/cloneMap";
 import {useModInstallStateContext} from "../../../pages/installing/InstallingModsPage";
-import {createLauncherProfile, createVersion, ModInstallState} from "../modInstallFunctions";
+import {copySettings, createLauncherProfile, createVersion, ModInstallState} from "../modInstallFunctions";
 import {ModInstallingContainer} from "./ModInstallingContainer";
 import {Mod} from "../../../../lib/type/modProfile";
 import {useDragMinecraftFolderContext} from "../../../../context/MinecraftFolderStateContextProvider";
 import {useProfileContext} from "../../../../context/ProfileContextProvider";
-import {useError} from "../../../../context/ErrorContextProvider";
 
 
 export function ModInstallingElements() {
-    const errorContext = useError()
-
     const minecraftDir = useDragMinecraftFolderContext()
 
     const profileContext = useProfileContext()
@@ -26,16 +23,18 @@ export function ModInstallingElements() {
     useEffect(() => {
         if (!startedInstallCircle) {
             if (minecraftDir.minecraftDir) {
-                createLauncherProfile(minecraftDir.minecraftDir as FileSystemDirectoryHandle, profileContext.profile!!, errorContext.setError).then(() => {
-                    createVersion(minecraftDir.minecraftDir as FileSystemDirectoryHandle, profileContext.profile!!, errorContext.setError).then(() => {
-                        for (let mod of mods) {
-                            const modState = modInstallStatesContext.modInstallStates.get(mod)
-                            if (modState === ModInstallState.PENDING) {
-                                modInstallStatesContext.setModInstallStates(cloneMap(modInstallStatesContext.modInstallStates).set(mod, ModInstallState.INSTALLING))
-                                setStartedInstallCircle(true)
-                                break
+                copySettings(minecraftDir.minecraftDir as FileSystemDirectoryHandle, profileContext.profile!!).then(() => {
+                    createLauncherProfile(minecraftDir.minecraftDir as FileSystemDirectoryHandle, profileContext.profile!!).then(() => {
+                        createVersion(minecraftDir.minecraftDir as FileSystemDirectoryHandle, profileContext.profile!!).then(() => {
+                            for (let mod of mods) {
+                                const modState = modInstallStatesContext.modInstallStates.get(mod)
+                                if (modState === ModInstallState.PENDING) {
+                                    modInstallStatesContext.setModInstallStates(cloneMap(modInstallStatesContext.modInstallStates).set(mod, ModInstallState.INSTALLING))
+                                    setStartedInstallCircle(true)
+                                    break
+                                }
                             }
-                        }
+                        })
                     })
                 })
             }

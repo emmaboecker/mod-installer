@@ -12,7 +12,7 @@ export enum ModInstallState {
     FAILED
 }
 
-export async function createLauncherProfile(dir: FileSystemDirectoryHandle, profile: ModProfile, setError: Dispatch<SetStateAction<string | undefined>>) {
+export async function createLauncherProfile(dir: FileSystemDirectoryHandle, profile: ModProfile) {
     const launcherProfilesHandle = await dir.getFileHandle("launcher_profiles.json", {create: true})
     const profileWritable = await launcherProfilesHandle.createWritable()
     const launcherProfiles = await launcherProfilesHandle.getFile()
@@ -36,7 +36,24 @@ export async function createLauncherProfile(dir: FileSystemDirectoryHandle, prof
     await profileWritable.close()
 }
 
-export async function createVersion(dir: FileSystemDirectoryHandle, profile: ModProfile, setError: Dispatch<SetStateAction<string | undefined>>) {
+export async function copySettings(dir: FileSystemDirectoryHandle, profile: ModProfile) {
+    const optionsFile = await dir.getFileHandle("options.txt", {create: true})
+    const newOptionsFile = await (await dir.getDirectoryHandle(`${profile.id}`, {create: true})).getFileHandle("options.txt", {create: true})
+    const file = await optionsFile.getFile()
+    const optionsWriteable = await newOptionsFile.createWritable()
+    await optionsWriteable.write(await file.text())
+    await optionsWriteable.close()
+    if (!profile.servers || profile.servers.length === 0) {
+        const serverDataFile = await dir.getFileHandle("servers.dat", {create: true})
+        const newServerDataFile = await (await dir.getDirectoryHandle(`${profile.id}`, {create: true})).getFileHandle("servers.dat", {create: true})
+        const serverFile = await serverDataFile.getFile()
+        const serverFileWriteable = await newServerDataFile.createWritable()
+        await serverFileWriteable.write(await serverFile.text())
+        await serverFileWriteable.close()
+    }
+}
+
+export async function createVersion(dir: FileSystemDirectoryHandle, profile: ModProfile) {
     const versionDir = await (await dir.getDirectoryHandle(`versions`, {create: true})).getDirectoryHandle(profile.id, {create: true})
     const versionFileHandle = await versionDir.getFileHandle(`${profile.id}.json`, {create: true})
     const writeable = await versionFileHandle.createWritable()
