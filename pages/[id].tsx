@@ -8,6 +8,7 @@ import {InstallingModsPage} from "../components/pages/installing/InstallingModsP
 import {useRouter} from "next/router";
 import {ProfileContextProvider} from "../context/ProfileContextProvider";
 import {LoadingPage} from "../components/pages/loading/LoadingPage";
+import {InstallationDonePage} from "../components/pages/done/InstallationDonePage";
 
 const Home: NextPage = () => {
     const appState = useAppState()
@@ -41,7 +42,7 @@ function getStateComponent(appState: AppState) {
         case AppState.INSTALLING:
             return <InstallingModsPage/>
         case AppState.DONE:
-            return <Text>Done</Text>
+            return <InstallationDonePage />
     }
 }
 
