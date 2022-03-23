@@ -8,6 +8,7 @@ import {MinecraftFolderStateContextProvider} from "../context/MinecraftFolderSta
 import {ErrorContextProvider} from "../context/ErrorContextProvider";
 import {ProfileContextProvider} from "../context/ProfileContextProvider";
 import Head from "next/head";
+import {LoadingPage} from "../components/pages/loading/LoadingPage";
 
 const themeOverride: MantineThemeOverride = {
     colorScheme: "dark",
@@ -77,7 +78,7 @@ export default function MyApp({Component, pageProps}: AppProps) {
             )
         }
     } else {
-        return <p>Loading..</p>
+        return <LoadingPage />
     }
 }
 

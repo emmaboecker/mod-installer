@@ -4,6 +4,7 @@ import {ContentFrame} from "../../ContentFrame/ContentFrame";
 import Link from "next/link";
 import {ModSelectionContainer} from "../../mods/ModSelectionContainer/ModSelectionContainer";
 import {useProfileContext} from "../../../context/ProfileContextProvider";
+import {LoadingPage} from "../loading/LoadingPage";
 
 export function SelectModsPage() {
     const theme = useMantineTheme()
@@ -54,7 +55,7 @@ export function SelectModsPage() {
             />
         )
     } else {
-        return <Text>Loading Profile..</Text>
+        return <LoadingPage />
     }
 }
 
