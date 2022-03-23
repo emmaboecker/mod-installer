@@ -5,16 +5,28 @@ import React from "react";
 import {AppState, useAppState} from "./_app";
 import {SelectModsPage} from "../components/pages/selectMods/SelectModsPage";
 import {InstallingModsPage} from "../components/pages/installing/InstallingModsPage";
+import {useRouter} from "next/router";
+import {ProfileContextProvider} from "../context/ProfileContextProvider";
+import {LoadingPage} from "../components/pages/loading/LoadingPage";
 
 const Home: NextPage = () => {
     const appState = useAppState()
 
+    const router = useRouter()
+    const {id} = router.query
+
     if (typeof FileSystemHandle !== "undefined") {
-        return (
-            <Center style={{height: "100%"}}>
-                {getStateComponent(appState.appState)}
-            </Center>
-        )
+        if (id) {
+            return (
+                <Center style={{height: "100%"}}>
+                    <ProfileContextProvider id={id as string}>
+                        {getStateComponent(appState.appState)}
+                    </ProfileContextProvider>
+                </Center>
+            )
+        } else {
+            return <LoadingPage />
+        }
     } else {
         return <Text>Browser not supported</Text>
     }

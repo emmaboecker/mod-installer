@@ -6,7 +6,6 @@ import {SizeNotSupportedPage} from "../components/pages/sizeNotSupported/SizeNot
 import {Footer} from "../components/Footer/Footer";
 import {MinecraftFolderStateContextProvider} from "../context/MinecraftFolderStateContextProvider";
 import {ErrorContextProvider} from "../context/ErrorContextProvider";
-import {ProfileContextProvider} from "../context/ProfileContextProvider";
 import Head from "next/head";
 import {LoadingPage} from "../components/pages/loading/LoadingPage";
 
@@ -53,11 +52,9 @@ export default function MyApp({Component, pageProps}: AppProps) {
                     <MantineProvider theme={themeOverride} withGlobalStyles>
                         <AppStateContext.Provider value={{appState, setAppState} as AppStateContextProps}>
                             <ErrorContextProvider>
-                                <ProfileContextProvider>
-                                    <MinecraftFolderStateContextProvider>
-                                        <Component {...pageProps} />
-                                    </MinecraftFolderStateContextProvider>
-                                </ProfileContextProvider>
+                                <MinecraftFolderStateContextProvider>
+                                    <Component {...pageProps} />
+                                </MinecraftFolderStateContextProvider>
                             </ErrorContextProvider>
                         </AppStateContext.Provider>
                         <Footer/>
@@ -78,7 +75,7 @@ export default function MyApp({Component, pageProps}: AppProps) {
             )
         }
     } else {
-        return <LoadingPage />
+        return <LoadingPage/>
     }
 }
 
