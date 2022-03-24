@@ -1,5 +1,5 @@
 import type {NextPage} from 'next'
-import {Center, Text} from "@mantine/core";
+import {Center, Stepper, Text} from "@mantine/core";
 import {DropMinecraftFolderPage} from "../components/pages/drop/DropMinecraftFolderPage";
 import React from "react";
 import {AppState, useAppState} from "./_app";
@@ -21,28 +21,43 @@ const Home: NextPage = () => {
             return (
                 <Center style={{height: "100%"}}>
                     <ProfileContextProvider id={id as string}>
-                        {getStateComponent(appState.appState)}
+                        <Stepper
+                            active={
+                                appState.appState === AppState.SELECT_MODS ? 0 :
+                                    appState.appState === AppState.DRAG_DOT_MINECRAFT ? 1 :
+                                        appState.appState === AppState.INSTALLING ? 2 : 3
+                            }
+                            style={{marginTop: "2vmin", width: "70%"}}
+                            breakpoint="sm"
+                            color="violet"
+                        >
+                            <Stepper.Step label="Select Mods" allowStepSelect={false}>
+                                <Center style={{height: "100%"}}>
+                                    <SelectModsPage/>
+                                </Center>
+                            </Stepper.Step>
+                            <Stepper.Step label="Find Minecraft" allowStepSelect={false}>
+                                <Center style={{height: "100%"}}>
+                                    <DropMinecraftFolderPage/>
+                                </Center>
+                            </Stepper.Step>
+                            <Stepper.Step label="Install" allowStepSelect={false}>
+                                <Center style={{height: "100%"}}>
+                                    <InstallingModsPage/>
+                                </Center>
+                            </Stepper.Step>
+                            <Stepper.Completed>
+                                <InstallationDonePage />
+                            </Stepper.Completed>
+                        </Stepper>
                     </ProfileContextProvider>
                 </Center>
             )
         } else {
-            return <LoadingPage />
+            return <LoadingPage/>
         }
     } else {
         return <Text>Browser not supported</Text>
-    }
-}
-
-function getStateComponent(appState: AppState) {
-    switch (appState) {
-        case AppState.SELECT_MODS:
-            return <SelectModsPage/>
-        case AppState.DRAG_DOT_MINECRAFT:
-            return <DropMinecraftFolderPage/>
-        case AppState.INSTALLING:
-            return <InstallingModsPage/>
-        case AppState.DONE:
-            return <InstallationDonePage />
     }
 }
 

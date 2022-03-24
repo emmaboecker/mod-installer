@@ -1,8 +1,7 @@
 import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
 import {Mod, ModProfile} from "../lib/type/modProfile";
 import {LoadingPage} from "../components/pages/loading/LoadingPage";
-import {Text, useMantineTheme} from "@mantine/core";
-import {ContentFrame} from "../components/ContentFrame/ContentFrame";
+import {Center, Group, Text, Title} from "@mantine/core";
 
 type Props = {
     id: string
@@ -28,8 +27,6 @@ export function ProfileContextProvider({id, children}: Props) {
     const [profileState, setProfileState] = useState(ProfileState.LOADING)
 
     const [modStates, setModStates] = useState(new Map<Mod, boolean>())
-
-    const theme = useMantineTheme()
 
     useEffect(() => {
         fetch(`/api/${id}`).then(response => {
@@ -60,26 +57,17 @@ export function ProfileContextProvider({id, children}: Props) {
         return <LoadingPage/>
     } else if (!profile && profileState === ProfileState.NOT_FOUND) {
         return (
-            <ContentFrame
-                borderColor={theme.colors.dark[6]}
-                leftColumn={
-                    <>
-                        <Text size="xl" style={{fontWeight: "bolder"}}>
-                            Profile not Found
-                        </Text>
-                        <Text>
-                            This Profile wasn&apos;t found
-                        </Text>
-                    </>
-                }
-                rightColumn={
-                    <>
-                    </>
-                }
-            />
+            <Group direction="column">
+                <Center style={{marginTop: "50px"}}>
+                    <Title>Profile not Found</Title>
+                </Center>
+                <Center>
+                    <Text size="lg">This Profile wasn&apos;t found</Text>
+                </Center>
+            </Group>
         )
     } else {
-        return <LoadingPage />
+        return <LoadingPage/>
     }
 }
 

@@ -8,13 +8,11 @@ import {MinecraftFolderStateContextProvider} from "../context/MinecraftFolderSta
 import {ErrorContextProvider} from "../context/ErrorContextProvider";
 import Head from "next/head";
 import {LoadingPage} from "../components/pages/loading/LoadingPage";
+import { NotificationsProvider } from '@mantine/notifications';
 
 const themeOverride: MantineThemeOverride = {
     colorScheme: "dark",
-    primaryColor: "green",
-    fontSizes: {
-        xl: 30,
-    }
+    primaryColor: "violet"
 }
 
 export enum AppState {
@@ -50,13 +48,15 @@ export default function MyApp({Component, pageProps}: AppProps) {
                         <title>Online Installer</title>
                     </Head>
                     <MantineProvider theme={themeOverride} withGlobalStyles>
-                        <AppStateContext.Provider value={{appState, setAppState} as AppStateContextProps}>
-                            <ErrorContextProvider>
-                                <MinecraftFolderStateContextProvider>
-                                    <Component {...pageProps} />
-                                </MinecraftFolderStateContextProvider>
-                            </ErrorContextProvider>
-                        </AppStateContext.Provider>
+                        <NotificationsProvider position="bottom-center">
+                            <AppStateContext.Provider value={{appState, setAppState} as AppStateContextProps}>
+                                <ErrorContextProvider>
+                                    <MinecraftFolderStateContextProvider>
+                                        <Component {...pageProps} />
+                                    </MinecraftFolderStateContextProvider>
+                                </ErrorContextProvider>
+                            </AppStateContext.Provider>
+                        </NotificationsProvider>
                         <Footer/>
                     </MantineProvider>
                 </>

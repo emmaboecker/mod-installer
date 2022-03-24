@@ -1,26 +1,19 @@
-import {ContentFrame} from "../../ContentFrame/ContentFrame";
-import {Text, useMantineTheme} from "@mantine/core";
+import {Center, Space, Text, Title} from "@mantine/core";
 import {useProfileContext} from "../../../context/ProfileContextProvider";
 
 export function InstallationDonePage() {
-    const theme = useMantineTheme()
-
     const profileContext = useProfileContext()
 
     return (
-        <ContentFrame
-            borderColor={theme.colors.dark[6]}
-            leftColumn={
-                <>
-                    <Text size="xl" style={{fontWeight: "bolder"}}>Installation finished!</Text>
-                    <Text>That&apos;s it!</Text>
-                    <Text>Start your Minecraft Launcher and Launch the newly created Profile <b>{profileContext.profile?.name}</b></Text>
-                </>
-            }
-            rightColumn={
-                <>
-                </>
-            }
-        />
+        <>
+            <Space h="xl" />
+            <Center style={{marginTop: "50px"}}>
+                <Title>Installation completed!</Title>
+            </Center>
+            <Space h="xl" />
+            <Center>
+                <Text size="lg">You may now close this page and launch <b>{profileContext.profile?.profileName}</b> from your Minecraft Launcher!</Text>
+            </Center>
+        </>
     )
 }

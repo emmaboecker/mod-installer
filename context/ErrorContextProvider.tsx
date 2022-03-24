@@ -1,4 +1,5 @@
-import React, {Dispatch, SetStateAction, useContext, useState} from "react";
+import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
+import {useNotifications} from "@mantine/notifications";
 
 export type ErrorContextProps = {
     error: string | undefined
@@ -13,6 +14,19 @@ type Props = {
 
 export function ErrorContextProvider({children}: Props) {
     const [error, setError] = useState(undefined as (string | undefined))
+
+    const notifications = useNotifications()
+
+    useEffect(() => {
+        if (error) {
+            setError(undefined)
+            notifications.showNotification({
+                title: "Uh Oh!",
+                message: error,
+                color: "red"
+            })
+        }
+    })
 
     return (
         <ErrorContext.Provider value={{error, setError}}>

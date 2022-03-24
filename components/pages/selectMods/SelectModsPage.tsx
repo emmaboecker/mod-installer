@@ -1,61 +1,39 @@
 import {AppState, useAppState} from "../../../pages/_app";
-import {Button, Space, Text, useMantineTheme} from "@mantine/core";
-import {ContentFrame} from "../../ContentFrame/ContentFrame";
+import {Button, Group, Space, Text, Title} from "@mantine/core";
 import Link from "next/link";
-import {ModSelectionContainer} from "../../mods/ModSelectionContainer/ModSelectionContainer";
 import {useProfileContext} from "../../../context/ProfileContextProvider";
 import {LoadingPage} from "../loading/LoadingPage";
+import {ModSelectionContainer} from "../../mods/ModSelectionContainer/ModSelectionContainer";
 
 export function SelectModsPage() {
-    const theme = useMantineTheme()
     const modProfileContext = useProfileContext()
 
     if (modProfileContext.profile) {
         return (
-            <ContentFrame
-                borderColor={theme.colors.dark[6]}
-                leftColumn={
-                    <>
-                        <Text size="xl" style={{
-                            color: "white",
-                            fontWeight: "bold"
-                        }}>
-                            {modProfileContext.profile.name}
-                        </Text>
-                        <Space h="xs"/>
-                        <Text color="gray">
+            <>
+                <Group spacing="xl" align="flex-start">
+                    <div style={{height: "100%"}}>
+                        <Title>{modProfileContext.profile.name}</Title>
+                        <Space h="md" />
+                        <Text color="gray" style={{width: "50vmin"}}>
                             This installer will create a new Minecraft Launcher Profile and install all needed mods for
-                            you
-                            and the mods you select on the right
+                            you and the mods you select on the right
                         </Text>
-                        <div style={{position: "absolute", bottom: "25px", width: "33%"}}>
+                        <div style={{width: "80%", margin: "auto", marginTop: "40vmin"}}>
                             <NextStepButton/>
                             <Space h="xs"/>
                             <ManualInstallButton/>
                         </div>
-                    </>
-                }
-                rightColumn={
+                    </div>
                     <>
-                        <Text style={{
-                            fontWeight: "bold",
-                            marginTop: "23px",
-                            marginBottom: "10px",
-                            marginLeft: "10px"
-                        }}
-                              size="lg"
-                        >
-                            Mods
-                        </Text>
-                        <ModSelectionContainer
-                            mods={modProfileContext.profile.mods}
-                        />
+                        <ModSelectionContainer mods={modProfileContext.profile.mods}/>
                     </>
-                }
-            />
+                </Group>
+
+            </>
         )
     } else {
-        return <LoadingPage />
+        return <LoadingPage/>
     }
 }
 
@@ -79,7 +57,7 @@ function NextStepButton() {
 
 function ManualInstallButton() {
     return (
-        <Link href="/manual" passHref prefetch>
+        <Link href={"/manual"} passHref prefetch>
             <Button
                 color="dark"
                 variant="subtle"
