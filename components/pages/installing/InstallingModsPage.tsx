@@ -4,6 +4,7 @@ import {ModInstallState} from "../../mods/ModInstallingContainer/modInstallFunct
 import {useProfileContext} from "../../../context/ProfileContextProvider";
 import {Mod} from "../../../lib/type/modProfile";
 import {ModInstallingElements} from "../../mods/ModInstallingContainer/ModInstallingElements";
+import {useAppState} from "../../../pages/_app";
 
 export type InstallStateContextProps = {
     modInstallStates: Map<Mod, ModInstallState>
@@ -14,6 +15,8 @@ const InstallStateContext = React.createContext({} as InstallStateContextProps)
 
 export function InstallingModsPage() {
     const profileContext = useProfileContext()
+
+    const appState = useAppState()
 
     useEffect(() => {
         const newMap = new Map<Mod, ModInstallState>()
@@ -28,7 +31,7 @@ export function InstallingModsPage() {
     if (modInstallStates.size > 0) {
         return (
             <InstallStateContext.Provider value={{modInstallStates, setModInstallStates}}>
-                <ModInstallingElements />
+                <ModInstallingElements installAutomatically={appState.useAutomaticInstaller} />
             </InstallStateContext.Provider>
         )
     } else {

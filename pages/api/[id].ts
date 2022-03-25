@@ -1,20 +1,20 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type {NextApiRequest, NextApiResponse} from 'next'
-import ErrnoException = NodeJS.ErrnoException;
 
-const fs = require('fs')
+const fs = require('fs/promises')
 
-export default function handler(
+export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
     const {id} = req.query
-
-    fs.readFile(`./installer/${id}.json`, "utf-8", (err: ErrnoException | null, data: string) => {
-        if (!err) {
-            res.status(200).json(JSON.parse(data))
-        } else {
-            res.status(404).json({text: err.message})
-        }
-    })
+    try {
+        const content = await fs.readFile(`./installer/${id}.json`, "utf-8")
+        res.status(200).setHeader("Content-Type", "application/json").end(content);
+    } catch (err: any) {
+        if(err.code==='ENOENT')
+            res.status(404).end();
+        else
+            res.status(500).json({text: err.message})
+    }
 }

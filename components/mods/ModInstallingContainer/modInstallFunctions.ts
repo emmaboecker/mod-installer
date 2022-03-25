@@ -79,22 +79,16 @@ export async function createVersion(dir: FileSystemDirectoryHandle, profile: Mod
 
 export async function installMod(dir: FileSystemDirectoryHandle, profile: ModProfile, mod: Mod, setError: Dispatch<SetStateAction<string | undefined>>): Promise<ModInstallState> {
     const modsDir = await (await dir.getDirectoryHandle(`${profile.id}`, {create: true})).getDirectoryHandle("mods", {create: true})
-    return new Promise<ModInstallState>(resolve => {
-        fetch(mod.downloadLink, {
-            mode: "cors"
-        }).then(response => {
-            if (response.status === 200) {
-                modsDir.getFileHandle(mod.path, {create: true}).then(handle => {
-                    handle.createWritable().then(writableStream => {
-                        response.body!!.pipeTo(writableStream)
-                        resolve(ModInstallState.DONE)
-                    })
-                })
-            } else {
-                setError(`There was an error requesting, got ${response.status} status-code`)
-                resolve(ModInstallState.FAILED)
-            }
-        })
-    })
 
+    const response = await fetch(mod.downloadLink, {mode: "cors"})
+
+    if (response.status === 200) {
+        const handle = await modsDir.getFileHandle(mod.path, {create: true})
+        const writableStream = await handle.createWritable()
+        await response.body!!.pipeTo(writableStream)
+        return ModInstallState.DONE
+    } else {
+        setError(`There was an error requesting, got ${response.status} status-code`)
+        return ModInstallState.FAILED
+    }
 }

@@ -2,9 +2,10 @@ import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from "
 import {Mod, ModProfile} from "../lib/type/modProfile";
 import {LoadingPage} from "../components/pages/loading/LoadingPage";
 import {Center, Group, Text, Title} from "@mantine/core";
+import {useRouter} from "next/router";
+import Custom404 from "../pages/404";
 
 type Props = {
-    id: string
     children: React.ReactNode
 }
 
@@ -22,30 +23,43 @@ enum ProfileState {
 
 const ModStatesContext = React.createContext({} as ProfileContextProps)
 
-export function ProfileContextProvider({id, children}: Props) {
+export function ProfileContextProvider({children}: Props) {
     const [profile, setProfile] = useState(undefined as (ModProfile | undefined))
     const [profileState, setProfileState] = useState(ProfileState.LOADING)
 
     const [modStates, setModStates] = useState(new Map<Mod, boolean>())
 
+    const router = useRouter()
+
+    const {id} = router.query
+
     useEffect(() => {
-        fetch(`/api/${id}`).then(response => {
-            response.json().then(element => {
-                if (response.status === 200) {
-                    setProfile(element as ModProfile)
-                    const newModStates = new Map<Mod, boolean>()
-                    for (let mod of (element as ModProfile).mods) {
-                        newModStates.set(mod, mod.defaultActivated)
+        if (id) {
+            fetch(`/api/${id}`).then(response => {
+                response.json().then(element => {
+                    if (response.status === 200) {
+                        setProfile(element as ModProfile)
+                        const newModStates = new Map<Mod, boolean>()
+                        for (let mod of (element as ModProfile).mods) {
+                            newModStates.set(mod, mod.defaultActivated)
+                        }
+                        setModStates(newModStates)
+                        setProfileState(ProfileState.FOUND)
+                    } else {
+                        setProfile(undefined)
+                        setProfileState(ProfileState.NOT_FOUND)
                     }
-                    setModStates(newModStates)
-                    setProfileState(ProfileState.FOUND)
-                } else {
-                    setProfile(undefined)
-                    setProfileState(ProfileState.NOT_FOUND)
-                }
+                })
             })
-        })
-    }, [])
+        } else {
+            setProfile(undefined)
+            if (router.isReady) {
+                setProfileState(ProfileState.NOT_FOUND)
+            } else {
+                setProfileState(ProfileState.LOADING)
+            }
+        }
+    }, [id])
 
     if (profile && profileState === ProfileState.FOUND) {
         return (
@@ -56,16 +70,20 @@ export function ProfileContextProvider({id, children}: Props) {
     } else if (!profile && profileState === ProfileState.LOADING) {
         return <LoadingPage/>
     } else if (!profile && profileState === ProfileState.NOT_FOUND) {
-        return (
-            <Group direction="column">
-                <Center style={{marginTop: "50px"}}>
-                    <Title>Profile not Found</Title>
-                </Center>
-                <Center>
-                    <Text size="lg">This Profile wasn&apos;t found</Text>
-                </Center>
-            </Group>
-        )
+        if (id) {
+            return (
+                <Group direction="column">
+                    <Center style={{marginTop: "50px"}}>
+                        <Title>Profile not Found</Title>
+                    </Center>
+                    <Center>
+                        <Text size="lg">This Profile wasn&apos;t found ({id})</Text>
+                    </Center>
+                </Group>
+            )
+        } else {
+            return <Custom404 />
+        }
     } else {
         return <LoadingPage/>
     }

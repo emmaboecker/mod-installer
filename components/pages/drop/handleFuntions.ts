@@ -6,6 +6,7 @@ export async function handleDrop(event: DragEvent, setHoveringWithFile: Dispatch
     event.preventDefault()
     event.stopImmediatePropagation()
     setHoveringWithFile(false)
+    if (event.dataTransfer == null || event.dataTransfer.files.length == 0) return;
     setShouldUnregister(true)
     const item = event.dataTransfer!!.items[0]
     if (event.dataTransfer!!.files[0].name === ".minecraft") {

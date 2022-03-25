@@ -9,9 +9,14 @@ import {Stepper, Text} from "@mantine/core";
 import {CircleCheck, CircleX} from "tabler-icons-react";
 import {AppState, useAppState} from "../../../pages/_app";
 import {useError} from "../../../context/ErrorContextProvider";
+import JSZip from "jszip";
+import {generateModZip} from "../../../lib/generateModZip";
 
+type Props = {
+    installAutomatically: boolean;
+}
 
-export function ModInstallingElements() {
+export function ModInstallingElements({installAutomatically}: Props) {
     const minecraftDir = useDragMinecraftFolderContext()
 
     const errorContext = useError()
@@ -24,6 +29,8 @@ export function ModInstallingElements() {
 
     const [activeMod, setActiveMod] = useState(0)
 
+    const [zip] = useState(new JSZip())
+
     useEffect(() => {
         mods.forEach((value, index) => {
             if (modInstallStatesContext.modInstallStates.get(value) === ModInstallState.INSTALLING) {
@@ -31,48 +38,80 @@ export function ModInstallingElements() {
             }
         })
         if (!startedInstallCircle) {
-            if (minecraftDir.minecraftDir) {
-                copySettings(minecraftDir.minecraftDir as FileSystemDirectoryHandle, profileContext.profile!!).then(() => {
-                    createLauncherProfile(minecraftDir.minecraftDir as FileSystemDirectoryHandle, profileContext.profile!!).then(() => {
-                        createVersion(minecraftDir.minecraftDir as FileSystemDirectoryHandle, profileContext.profile!!).then(() => {
-                            for (let mod of mods) {
-                                const modState = modInstallStatesContext.modInstallStates.get(mod)
-                                if (modState === ModInstallState.PENDING) {
-                                    modInstallStatesContext.setModInstallStates(cloneMap(modInstallStatesContext.modInstallStates).set(mod, ModInstallState.INSTALLING))
-                                    setStartedInstallCircle(true)
-                                    break
+            if (installAutomatically) {
+                if (minecraftDir.minecraftDir) {
+                    copySettings(minecraftDir.minecraftDir as FileSystemDirectoryHandle, profileContext.profile!!).then(() => {
+                        createLauncherProfile(minecraftDir.minecraftDir as FileSystemDirectoryHandle, profileContext.profile!!).then(() => {
+                            createVersion(minecraftDir.minecraftDir as FileSystemDirectoryHandle, profileContext.profile!!).then(() => {
+                                for (let mod of mods) {
+                                    const modState = modInstallStatesContext.modInstallStates.get(mod)
+                                    if (modState === ModInstallState.PENDING) {
+                                        modInstallStatesContext.setModInstallStates(cloneMap(modInstallStatesContext.modInstallStates).set(mod, ModInstallState.INSTALLING))
+                                        setStartedInstallCircle(true)
+                                        break
+                                    }
                                 }
-                            }
+                            })
                         })
                     })
-                })
+                }
+            } else {
+                for (let mod of mods) {
+                    const modState = modInstallStatesContext.modInstallStates.get(mod)
+                    if (modState === ModInstallState.PENDING) {
+                        modInstallStatesContext.setModInstallStates(cloneMap(modInstallStatesContext.modInstallStates).set(mod, ModInstallState.INSTALLING))
+                        setStartedInstallCircle(true)
+                        break
+                    }
+                }
             }
         } else {
             const mod = mods[activeMod]
-            installMod(minecraftDir.minecraftDir as FileSystemDirectoryHandle, profileContext.profile!!, mod, errorContext.setError).then(newState => {
-                const newMap = cloneMap(modInstallStatesContext.modInstallStates).set(mod, newState)
-                modInstallStatesContext.setModInstallStates(newMap)
-                for (let i = mods.indexOf(mod); i < mods.length; i++) {
-                    if (mods[i + 1]) {
-                        if (newMap.get(mods[i + 1]) === ModInstallState.PENDING) {
-                            setActiveMod(i + 1)
-                            modInstallStatesContext.setModInstallStates(cloneMap(newMap).set(mods[i + 1], ModInstallState.INSTALLING))
-                            break
-                        }
-                    }
-                }
-                let done = true
-                newMap.forEach((value) => {
-                    if (value !== ModInstallState.DONE && value !== ModInstallState.SKIPPED) {
-                        done = false
-                    }
+            if (installAutomatically) {
+                installMod(minecraftDir.minecraftDir as FileSystemDirectoryHandle, profileContext.profile!!, mod, errorContext.setError).then(newState => {
+                    setNewState(mod, newState)
                 })
-                if (done) {
-                    appStateContext.setAppState(AppState.DONE)
-                }
-            })
+            } else {
+                generateModZip(mod, zip).then(newState => {
+                    setNewState(mod, newState)
+                })
+            }
         }
     }, [startedInstallCircle, activeMod, minecraftDir.minecraftDir])
+
+    function setNewState(mod: Mod, newState: ModInstallState) {
+        const newMap = cloneMap(modInstallStatesContext.modInstallStates).set(mod, newState)
+        modInstallStatesContext.setModInstallStates(newMap)
+        for (let i = mods.indexOf(mod); i < mods.length; i++) {
+            if (mods[i + 1]) {
+                if (newMap.get(mods[i + 1]) === ModInstallState.PENDING) {
+                    setActiveMod(i + 1)
+                    modInstallStatesContext.setModInstallStates(cloneMap(newMap).set(mods[i + 1], ModInstallState.INSTALLING))
+                    break
+                }
+            }
+        }
+        let done = true
+        newMap.forEach((value) => {
+            if (value !== ModInstallState.DONE && value !== ModInstallState.SKIPPED) {
+                done = false
+            }
+        })
+        if (done) {
+            if (!installAutomatically) {
+                zip.generateAsync({ type: "blob" }).then(blob => {
+                    const link = document.createElement('a');
+                    const url = URL.createObjectURL(blob)
+                    link.href = url;
+                    link.download = encodeURIComponent(profileContext.profile!!.name) + ".zip";
+                    link.click();
+                    URL.revokeObjectURL(url);
+                    link.remove();
+                })
+            }
+            appStateContext.setAppState(AppState.DONE)
+        }
+    }
 
     function getElementsForMods(mods: Mod[]) {
         const modElements: React.ReactNode[] = []

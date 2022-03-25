@@ -9,7 +9,7 @@ type ModSelectionContainerProps = {
 
 export function ModSelectionContainer({mods}: ModSelectionContainerProps) {
     return (
-        <ScrollArea type="auto" style={{height: "80vmin", width: "70vmin"}}>
+        <ScrollArea type="auto" style={{height: "80vh", width: "70vmin"}}>
             <ModSelectingElements mods={mods}/>
         </ScrollArea>
     )
