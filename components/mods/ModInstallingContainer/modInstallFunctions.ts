@@ -3,6 +3,7 @@ import {LauncherProfiles} from "../../../lib/type/launcherProfiles";
 import {Mod, ModProfile} from "../../../lib/type/modProfile";
 import {cloneMap} from "../../../lib/cloneMap";
 import {getFabricLibraries} from "../../../lib/fabricLibraries";
+import {getDat} from "./serverDat";
 
 export enum ModInstallState {
     SKIPPED,
@@ -41,14 +42,16 @@ export async function copySettings(dir: FileSystemDirectoryHandle, profile: ModP
     const optionsWriteable = await newOptionsFile.createWritable()
     await optionsWriteable.write(await file.text())
     await optionsWriteable.close()
+    const newServerDataFile = await (await dir.getDirectoryHandle(`${profile.id}`, {create: true})).getFileHandle("servers.dat", {create: true})
+    const serverFileWriteable = await newServerDataFile.createWritable()
     if (!profile.servers || profile.servers.length === 0) {
         const serverDataFile = await dir.getFileHandle("servers.dat", {create: true})
-        const newServerDataFile = await (await dir.getDirectoryHandle(`${profile.id}`, {create: true})).getFileHandle("servers.dat", {create: true})
         const serverFile = await serverDataFile.getFile()
-        const serverFileWriteable = await newServerDataFile.createWritable()
-        await serverFileWriteable.write(await serverFile.text())
-        await serverFileWriteable.close()
+        await serverFileWriteable.write(await serverFile.arrayBuffer())
+    } else {
+        await serverFileWriteable.write(getDat(profile.servers))
     }
+    await serverFileWriteable.close()
 }
 
 export async function createVersion(dir: FileSystemDirectoryHandle, profile: ModProfile) {

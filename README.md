@@ -8,9 +8,9 @@ This Project was highly inspired by the Innit.gg Installer made by [Cubxity](htt
 - [x] Configure multiple profiles with different mods as admin
 - [x] Install mods in new Launcher Profile (with different gameDir)
 - [x] copy options.txt and servers.dat into new gameDir
+- [x] Make server list of created profile configurable
 - [ ] Manual install
 - [ ] Configurable libraries / Minecraft Version (Currently only 1.18.2)
-- [ ] Make servers of created profile configurable (you can set them in the json already but that will just clear existing servers)
 - [ ] MultiMC Support
 - [ ] Admin Panel
 - [ ] User owned mod-lists (Thank you for the idea [Marie](https://github.com/NyCodeGHG))
