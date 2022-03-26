@@ -47,7 +47,7 @@ export function MinecraftFolderStateContextProvider({children}: Props) {
             setMinecraftDir,
             dragOver: (event: DragEvent) => handleDragOver(event, setHoveringWithFile),
             dragLeave: (event: DragEvent) => handleDragLeave(event, setHoveringWithFile),
-            dragDrop: (event: DragEvent) => handleDrop(event, setHoveringWithFile, setShouldUnregister, errorContext.setError, appState.setAppState, setMinecraftDir)
+            dragDrop: (event: DragEvent) => handleDrop(event, setHoveringWithFile, setShouldUnregister, errorContext.setError, appState, setMinecraftDir)
         }}>
             {children}
         </DragMinecraftFolderStateContext.Provider>

@@ -3,7 +3,7 @@ import React, {Dispatch, SetStateAction} from "react";
 import {ModTypeContainer} from "../../ModTypeContainer/ModTypeContainer";
 import {SelectButton} from "./SelectButton";
 import {useProfileContext} from "../../../../context/ProfileContextProvider";
-import {sortMods} from "../../../../lib/sortMods";
+import {sortMods} from "../../../../lib/install/sortMods";
 import {Mod} from "../../../../lib/type/modProfile";
 
 type Props = {

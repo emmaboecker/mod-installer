@@ -1,18 +1,19 @@
 import React, {useEffect, useState} from "react";
 import {cloneMap} from "../../../lib/cloneMap";
 import {useModInstallStateContext} from "../../pages/installing/InstallingModsPage";
-import {installMod} from "../../../lib/install/vanillaLauncher/installMod";
 import {Mod} from "../../../lib/type/modProfile";
 import {useDragMinecraftFolderContext} from "../../../context/MinecraftFolderStateContextProvider";
 import {useProfileContext} from "../../../context/ProfileContextProvider";
 import {Stepper, Text} from "@mantine/core";
 import {CircleCheck, CircleX} from "tabler-icons-react";
-import {AppState, useAppState} from "../../../pages/_app";
+import {AppState, InstallType, useAppState} from "../../../pages/_app";
 import {useError} from "../../../context/ErrorContextProvider";
 import JSZip from "jszip";
 import {generateModZip} from "../../../lib/generateModZip";
 import {ModInstallState} from "../../../lib/install/ModInstallState";
 import {installVanillaLauncher} from "../../../lib/install/vanillaLauncher/installVanillaLauncher";
+import {installMultiMC} from "../../../lib/install/multimc/installMultiMC";
+import {installMod} from "../../../lib/install/installMod";
 
 type Props = {
     installAutomatically: boolean;
@@ -42,7 +43,14 @@ export function ModInstallingElements({installAutomatically}: Props) {
         if (!startedInstallCircle) {
             if (installAutomatically) {
                 if (minecraftDir.minecraftDir) {
-                    installVanillaLauncher(mods, minecraftDir.minecraftDir as FileSystemDirectoryHandle, profileContext, modInstallStatesContext, setStartedInstallCircle)
+                    switch (appStateContext.installType) {
+                        case InstallType.MINECRAFT_LAUNCHER:
+                            installVanillaLauncher(mods, minecraftDir.minecraftDir as FileSystemDirectoryHandle, profileContext, modInstallStatesContext, setStartedInstallCircle)
+                            break
+                        case InstallType.MULTIMC:
+                            installMultiMC(mods, minecraftDir.minecraftDir as FileSystemDirectoryHandle, profileContext, modInstallStatesContext, setStartedInstallCircle)
+                            break
+                    }
                 } else {
                     errorContext.setError("No minecraft directory selected")
                 }
@@ -59,7 +67,22 @@ export function ModInstallingElements({installAutomatically}: Props) {
         } else {
             const mod = mods[activeMod]
             if (installAutomatically) {
-                installMod(minecraftDir.minecraftDir as FileSystemDirectoryHandle, profileContext.profile!!, mod, errorContext.setError).then(newState => setNewState(mod, newState))
+                if (appStateContext.installType === InstallType.MINECRAFT_LAUNCHER) {
+                    (minecraftDir.minecraftDir as FileSystemDirectoryHandle).getDirectoryHandle(profileContext.profile!!.id, {create: true}).then(dir => {
+                        installMod(dir, profileContext.profile!!, mod, errorContext.setError)
+                            .then(newState => setNewState(mod, newState))
+                    })
+                } else if (appStateContext.installType === InstallType.MULTIMC) {
+                    (minecraftDir.minecraftDir as FileSystemDirectoryHandle).getDirectoryHandle("instances").then(dir => {
+                        dir.getDirectoryHandle(profileContext.profile!!.id, {create: true})
+                            .then(instanceDir => {
+                                instanceDir.getDirectoryHandle(".minecraft", {create: true}).then(minecraftDir => {
+                                    installMod(minecraftDir, profileContext.profile!!, mod, errorContext.setError)
+                                        .then(newState => setNewState(mod, newState))
+                                })
+                            })
+                    })
+                }
             } else {
                 generateModZip(mod, zip).then(newState => setNewState(mod, newState))
             }
@@ -86,7 +109,7 @@ export function ModInstallingElements({installAutomatically}: Props) {
         })
         if (done) {
             if (!installAutomatically) {
-                zip.generateAsync({ type: "blob" }).then(blob => {
+                zip.generateAsync({type: "blob"}).then(blob => {
                     const link = document.createElement('a');
                     const url = URL.createObjectURL(blob)
                     link.href = url;

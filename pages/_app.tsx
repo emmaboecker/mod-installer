@@ -24,11 +24,18 @@ export enum AppState {
     DONE = 3
 }
 
+export enum InstallType {
+    MINECRAFT_LAUNCHER,
+    MULTIMC
+}
+
 export type AppStateContextProps = {
     appState: AppState
     setAppState: Dispatch<SetStateAction<AppState>>
     useAutomaticInstaller: boolean
     setUseAutomaticInstaller: Dispatch<SetStateAction<boolean>>
+    installType: InstallType,
+    setInstallType: Dispatch<SetStateAction<InstallType>>
 }
 
 const AppStateContext = React.createContext({} as AppStateContextProps)
@@ -36,6 +43,7 @@ const AppStateContext = React.createContext({} as AppStateContextProps)
 export default function MyApp({Component, pageProps}: AppProps) {
     const [appState, setAppState] = useState(AppState.SELECT_MODS)
     const [useAutomaticInstaller, setUseAutomaticInstaller] = useState(typeof FileSystemHandle !== "undefined")
+    const [installType, setInstallType] = useState(InstallType.MINECRAFT_LAUNCHER)
 
     const {width, height} = useWindowDimensions();
 
@@ -51,7 +59,7 @@ export default function MyApp({Component, pageProps}: AppProps) {
                 </Head>
                 <MantineProvider theme={themeOverride} withGlobalStyles>
                     <NotificationsProvider position="bottom-center">
-                        <AppStateContext.Provider value={{appState, setAppState, useAutomaticInstaller, setUseAutomaticInstaller} as AppStateContextProps}>
+                        <AppStateContext.Provider value={{appState, setAppState, useAutomaticInstaller, setUseAutomaticInstaller, installType, setInstallType}}>
                             <ErrorContextProvider>
                                 <MinecraftFolderStateContextProvider>
                                     {

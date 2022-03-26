@@ -1,5 +1,5 @@
 import {ModProfile} from "../../type/modProfile";
-import {getDat} from "../serverDat";
+import {getDat} from "../manual/serverDat";
 
 export async function copySettings(dir: FileSystemDirectoryHandle, profile: ModProfile) {
     const optionsFile = await dir.getFileHandle("options.txt", {create: true})

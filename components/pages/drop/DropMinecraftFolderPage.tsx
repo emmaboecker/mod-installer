@@ -1,4 +1,4 @@
-import {Badge, Box, Button, Group, Popover, Text, Title, useMantineTheme, Modal, Space} from "@mantine/core";
+import {Badge, Box, Button, Group, Modal, Popover, Space, Text, Title, useMantineTheme} from "@mantine/core";
 import {useEffect, useState} from "react";
 import {AppState, useAppState} from "../../../pages/_app";
 import {useDragMinecraftFolderContext} from "../../../context/MinecraftFolderStateContextProvider";
@@ -77,6 +77,7 @@ export function DropMinecraftFolderPage() {
                     <Text color="gray">
                         <b>Make sure your Minecraft Launcher is closed</b>
                     </Text>
+                    <MultiMCSupport />
                 </Box>
                 <Button
                     onClick={() => setModalOpened(true)}
@@ -119,6 +120,37 @@ function ExplanationVideo() {
                        width: "100%"
                    }}
             />
+        </Popover>
+    );
+}
+
+function MultiMCSupport() {
+    const [opened, setOpened] = useState(false);
+
+    return (
+        <Popover
+            opened={opened}
+            onClose={() => setOpened(false)}
+            position="right"
+            placement="center"
+            withArrow
+            trapFocus={false}
+            closeOnEscape={false}
+            transition="pop-top-left"
+            width={512}
+            styles={{body: {pointerEvents: 'none'}}}
+            target={
+                <Badge color="gray" onMouseEnter={() => setOpened(true)} onMouseLeave={() => setOpened(false)}>
+                    Are you using MultiMC?
+                </Badge>
+            }
+        >
+            <Text>
+                Feel free to find your MultiMC Folder and Drag it onto this website instead, we will create a new Instance for you.
+            </Text>
+            <Text style={{fontWeight: "bold"}}>
+                Make sure your MultiMC Launcher is closed!
+            </Text>
         </Popover>
     );
 }

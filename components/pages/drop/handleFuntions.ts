@@ -1,30 +1,38 @@
 import {Dispatch, SetStateAction} from "react";
-import {AppState} from "../../../pages/_app";
+import {AppState, AppStateContextProps, InstallType} from "../../../pages/_app";
 
-export async function handleDrop(event: DragEvent, setHoveringWithFile: Dispatch<SetStateAction<boolean>>, setShouldUnregister: Dispatch<SetStateAction<boolean>>, setError: Dispatch<SetStateAction<string | undefined>>, setAppState: Dispatch<SetStateAction<AppState>>, setMiecraftDir: Dispatch<SetStateAction<FileSystemHandle | undefined>>) {
+export async function handleDrop(event: DragEvent, setHoveringWithFile: Dispatch<SetStateAction<boolean>>, setShouldUnregister: Dispatch<SetStateAction<boolean>>, setError: Dispatch<SetStateAction<string | undefined>>, appState: AppStateContextProps, setMiecraftDir: Dispatch<SetStateAction<FileSystemHandle | undefined>>) {
     event.stopPropagation()
     event.preventDefault()
     event.stopImmediatePropagation()
     setHoveringWithFile(false)
     if (event.dataTransfer == null || event.dataTransfer.files.length == 0) return;
-    setShouldUnregister(true)
-    const item = event.dataTransfer!!.items[0]
-    if (event.dataTransfer!!.files[0].name === ".minecraft") {
-        if (item.kind === "file") {
-            const handle = (await item.getAsFileSystemHandle())!!
-            if (handle.kind === "directory") {
-                if (await verifyPermission(handle, true)) {
-                    setMiecraftDir(handle!!)
-                    setAppState(AppState.INSTALLING)
-                } else {
-                    setError("Please grant Permission to access the directory")
-                }
+    console.log(event.dataTransfer.files)
+    const item = event.dataTransfer.items[0]
+    if (item.kind === "file") {
+        const handle = (await item.getAsFileSystemHandle())!!
+        if (handle.kind === "directory") {
+            if (handle.name === ".minecraft") {
+                await initializeInstalling(InstallType.MINECRAFT_LAUNCHER, handle)
+            } else if (handle.name.toLocaleLowerCase().includes("multimc")) {
+                await initializeInstalling(InstallType.MULTIMC, handle)
             } else {
-                setError("That isn't a directory")
+                setError("That doesn't look like a directory of an launcher we support")
             }
+        } else {
+            setError("That isn't a directory")
         }
-    } else {
-        setError("That doesn't look like a Minecraft Folder")
+    }
+
+    async function initializeInstalling(installType: InstallType, handle: FileSystemHandle) {
+        if (await verifyPermission(handle, true)) {
+            setShouldUnregister(true)
+            setMiecraftDir(handle!!)
+            appState.setInstallType(installType)
+            appState.setAppState(AppState.INSTALLING)
+        } else {
+            setError("Please grant Permission to access the directory")
+        }
     }
 }
 
