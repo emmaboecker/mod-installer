@@ -9,7 +9,7 @@ This Project was highly inspired by the Innit.gg Installer made by [Cubxity](htt
 - [x] Install mods in new Launcher Profile (with different gameDir)
 - [x] copy options.txt and servers.dat into new gameDir
 - [x] Make server list of created profile configurable
-- [ ] Manual install
+- [x] Manual install
 - [ ] Configurable libraries / Minecraft Version (Currently only 1.18.2)
 - [ ] MultiMC Support
 - [ ] Admin Panel
