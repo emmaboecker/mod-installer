@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {cloneMap} from "../../../lib/cloneMap";
 import {useModInstallStateContext} from "../../pages/installing/InstallingModsPage";
-import {copySettings, createLauncherProfile, createVersion, installMod, ModInstallState} from "./modInstallFunctions";
+import {installMod} from "../../../lib/install/vanillaLauncher/installMod";
 import {Mod} from "../../../lib/type/modProfile";
 import {useDragMinecraftFolderContext} from "../../../context/MinecraftFolderStateContextProvider";
 import {useProfileContext} from "../../../context/ProfileContextProvider";
@@ -11,6 +11,8 @@ import {AppState, useAppState} from "../../../pages/_app";
 import {useError} from "../../../context/ErrorContextProvider";
 import JSZip from "jszip";
 import {generateModZip} from "../../../lib/generateModZip";
+import {ModInstallState} from "../../../lib/install/ModInstallState";
+import {installVanillaLauncher} from "../../../lib/install/vanillaLauncher/installVanillaLauncher";
 
 type Props = {
     installAutomatically: boolean;
@@ -40,20 +42,9 @@ export function ModInstallingElements({installAutomatically}: Props) {
         if (!startedInstallCircle) {
             if (installAutomatically) {
                 if (minecraftDir.minecraftDir) {
-                    copySettings(minecraftDir.minecraftDir as FileSystemDirectoryHandle, profileContext.profile!!).then(() => {
-                        createLauncherProfile(minecraftDir.minecraftDir as FileSystemDirectoryHandle, profileContext.profile!!).then(() => {
-                            createVersion(minecraftDir.minecraftDir as FileSystemDirectoryHandle, profileContext.profile!!).then(() => {
-                                for (let mod of mods) {
-                                    const modState = modInstallStatesContext.modInstallStates.get(mod)
-                                    if (modState === ModInstallState.PENDING) {
-                                        modInstallStatesContext.setModInstallStates(cloneMap(modInstallStatesContext.modInstallStates).set(mod, ModInstallState.INSTALLING))
-                                        setStartedInstallCircle(true)
-                                        break
-                                    }
-                                }
-                            })
-                        })
-                    })
+                    installVanillaLauncher(mods, minecraftDir.minecraftDir as FileSystemDirectoryHandle, profileContext, modInstallStatesContext, setStartedInstallCircle)
+                } else {
+                    errorContext.setError("No minecraft directory selected")
                 }
             } else {
                 for (let mod of mods) {
@@ -68,13 +59,9 @@ export function ModInstallingElements({installAutomatically}: Props) {
         } else {
             const mod = mods[activeMod]
             if (installAutomatically) {
-                installMod(minecraftDir.minecraftDir as FileSystemDirectoryHandle, profileContext.profile!!, mod, errorContext.setError).then(newState => {
-                    setNewState(mod, newState)
-                })
+                installMod(minecraftDir.minecraftDir as FileSystemDirectoryHandle, profileContext.profile!!, mod, errorContext.setError).then(newState => setNewState(mod, newState))
             } else {
-                generateModZip(mod, zip).then(newState => {
-                    setNewState(mod, newState)
-                })
+                generateModZip(mod, zip).then(newState => setNewState(mod, newState))
             }
         }
     }, [startedInstallCircle, activeMod, minecraftDir.minecraftDir])
