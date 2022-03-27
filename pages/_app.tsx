@@ -51,43 +51,54 @@ export default function MyApp({Component, pageProps}: AppProps) {
 
     const {id} = router.query
 
-    if (width && width > 786 && height && height > 524) {
-        return (
-            <>
-                <Head>
-                    <title>Online Installer</title>
-                </Head>
-                <MantineProvider theme={themeOverride} withGlobalStyles>
-                    <NotificationsProvider position="bottom-center">
-                        <AppStateContext.Provider value={{appState, setAppState, useAutomaticInstaller, setUseAutomaticInstaller, installType, setInstallType}}>
-                            <ErrorContextProvider>
-                                <MinecraftFolderStateContextProvider>
-                                    {
-                                        router.isReady && id ?
-                                            <ProfileContextProvider><Component {...pageProps} /></ProfileContextProvider> :
-                                            router.isReady && !id ? <Component {...pageProps} /> :
-                                                <LoadingPage/>
-                                    }
-                                </MinecraftFolderStateContextProvider>
-                            </ErrorContextProvider>
-                        </AppStateContext.Provider>
-                    </NotificationsProvider>
-                    <Footer/>
-                </MantineProvider>
-            </>
-        )
+    if (width && height) {
+        if (width > 786 && height > 524) {
+            return (
+                <>
+                    <Head>
+                        <title>Online Installer</title>
+                    </Head>
+                    <MantineProvider theme={themeOverride} withGlobalStyles>
+                        <NotificationsProvider position="bottom-center">
+                            <AppStateContext.Provider value={{
+                                appState,
+                                setAppState,
+                                useAutomaticInstaller,
+                                setUseAutomaticInstaller,
+                                installType,
+                                setInstallType
+                            }}>
+                                <ErrorContextProvider>
+                                    <MinecraftFolderStateContextProvider>
+                                        {
+                                            router.isReady && id ?
+                                                <ProfileContextProvider><Component {...pageProps} /></ProfileContextProvider> :
+                                                router.isReady && !id ? <Component {...pageProps} /> :
+                                                    <LoadingPage/>
+                                        }
+                                    </MinecraftFolderStateContextProvider>
+                                </ErrorContextProvider>
+                            </AppStateContext.Provider>
+                        </NotificationsProvider>
+                        <Footer/>
+                    </MantineProvider>
+                </>
+            )
+        } else {
+            return (
+                <>
+                    <Head>
+                        <title>Size not Supported | Online Installer</title>
+                    </Head>
+                    <MantineProvider theme={themeOverride} withGlobalStyles>
+                        <SizeNotSupportedPage/>
+                        <Footer/>
+                    </MantineProvider>
+                </>
+            )
+        }
     } else {
-        return (
-            <>
-                <Head>
-                    <title>Size not Supported | Online Installer</title>
-                </Head>
-                <MantineProvider theme={themeOverride} withGlobalStyles>
-                    <SizeNotSupportedPage/>
-                    <Footer/>
-                </MantineProvider>
-            </>
-        )
+        return <LoadingPage />
     }
 }
 
