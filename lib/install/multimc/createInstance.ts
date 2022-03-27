@@ -1,5 +1,5 @@
 import {ProfileContextProps} from "../../../context/ProfileContextProvider";
-import {getDat} from "../manual/serverDat";
+import {getDat} from "../serverDat";
 
 export async function createInstanceWithFabric(multimcDir: FileSystemDirectoryHandle, profileContext: ProfileContextProps) {
     const instance = await (await multimcDir.getDirectoryHandle("instances", {create: true})).getDirectoryHandle(profileContext.profile!!.id, {create: true});

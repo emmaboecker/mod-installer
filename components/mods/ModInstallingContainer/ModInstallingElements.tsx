@@ -9,7 +9,7 @@ import {CircleCheck, CircleX} from "tabler-icons-react";
 import {AppState, InstallType, useAppState} from "../../../pages/_app";
 import {useError} from "../../../context/ErrorContextProvider";
 import JSZip from "jszip";
-import {generateModZip} from "../../../lib/generateModZip";
+import {generateModZip} from "../../../lib/install/manual/generateModZip";
 import {ModInstallState} from "../../../lib/install/ModInstallState";
 import {installVanillaLauncher} from "../../../lib/install/vanillaLauncher/installVanillaLauncher";
 import {installMultiMC} from "../../../lib/install/multimc/installMultiMC";

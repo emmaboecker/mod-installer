@@ -1,6 +1,6 @@
 import JSZip from "jszip";
-import {Mod} from "./type/modProfile";
-import {ModInstallState} from "./install/ModInstallState";
+import {Mod} from "../../type/modProfile";
+import {ModInstallState} from "../ModInstallState";
 
 export async function generateModZip(mod: Mod, zip: JSZip): Promise<ModInstallState> {
     const response = await fetch(mod.downloadLink, {mode: "cors"})
