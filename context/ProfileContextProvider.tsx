@@ -3,7 +3,6 @@ import {Mod, ModProfile} from "../lib/type/modProfile";
 import {LoadingPage} from "../components/pages/loading/LoadingPage";
 import {Center, Group, Text, Title} from "@mantine/core";
 import {useRouter} from "next/router";
-import Custom404 from "../pages/404";
 
 type Props = {
     children: React.ReactNode
@@ -70,20 +69,16 @@ export function ProfileContextProvider({children}: Props) {
     } else if (!profile && profileState === ProfileState.LOADING) {
         return <LoadingPage/>
     } else if (!profile && profileState === ProfileState.NOT_FOUND) {
-        if (id) {
-            return (
-                <Group direction="column">
-                    <Center style={{marginTop: "50px"}}>
-                        <Title>Profile not Found</Title>
-                    </Center>
-                    <Center>
-                        <Text size="lg">This Profile wasn&apos;t found ({id})</Text>
-                    </Center>
-                </Group>
-            )
-        } else {
-            return <Custom404 />
-        }
+        return (
+            <Group direction="column">
+                <Center style={{marginTop: "50px"}}>
+                    <Title>Profile not Found</Title>
+                </Center>
+                <Center>
+                    <Text size="lg">This Profile wasn&apos;t found</Text>
+                </Center>
+            </Group>
+        )
     } else {
         return <LoadingPage/>
     }
