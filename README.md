@@ -11,8 +11,8 @@ This Project was highly inspired by the Innit.gg Installer made by [Cubxity](htt
 - [x] Make server list of created profile configurable
 - [x] Manual install
 - [x] MultiMC Support
+- [x] Configurable libraries / Minecraft Version (Currently only 1.18.2)
 - [ ] Configure and show incompatible or dependencies of mods
-- [ ] Configurable libraries / Minecraft Version (Currently only 1.18.2)
 - [ ] Admin Panel
 - [ ] User owned mod-lists (Thank you for the idea [Marie](https://github.com/NyCodeGHG))
 
