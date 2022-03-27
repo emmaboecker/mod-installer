@@ -14,6 +14,7 @@ import {ModInstallState} from "../../../lib/install/ModInstallState";
 import {installVanillaLauncher} from "../../../lib/install/vanillaLauncher/installVanillaLauncher";
 import {installMultiMC} from "../../../lib/install/multimc/installMultiMC";
 import {installMod} from "../../../lib/install/installMod";
+import Head from "next/head";
 
 type Props = {
     installAutomatically: boolean;
@@ -159,6 +160,9 @@ export function ModInstallingElements({installAutomatically}: Props) {
 
     return (
         <>
+            <Head>
+                <title>Installing {mods[activeMod].name}</title>
+            </Head>
             <Stepper
                 active={activeMod}
                 color="violet" orientation="vertical"

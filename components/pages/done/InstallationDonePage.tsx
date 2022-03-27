@@ -1,6 +1,7 @@
 import {Center, Space, Text, Title} from "@mantine/core";
 import {useProfileContext} from "../../../context/ProfileContextProvider";
 import {useAppState} from "../../../pages/_app";
+import Head from "next/head";
 
 export function InstallationDonePage() {
     const profileContext = useProfileContext()
@@ -9,6 +10,9 @@ export function InstallationDonePage() {
 
     return (
         <>
+            <Head>
+                <title>Installation done</title>
+            </Head>
             <Space h="xl" />
             <Center style={{marginTop: "50px"}}>
                 <Title>Installation completed!</Title>

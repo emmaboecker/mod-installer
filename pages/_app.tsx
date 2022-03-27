@@ -87,9 +87,6 @@ export default function MyApp({Component, pageProps}: AppProps) {
         } else {
             return (
                 <>
-                    <Head>
-                        <title>Size not Supported | Online Installer</title>
-                    </Head>
                     <MantineProvider theme={themeOverride} withGlobalStyles>
                         <SizeNotSupportedPage/>
                         <Footer/>

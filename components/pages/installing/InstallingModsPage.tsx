@@ -5,6 +5,7 @@ import {Mod} from "../../../lib/type/modProfile";
 import {ModInstallingElements} from "../../mods/ModInstallingContainer/ModInstallingElements";
 import {useAppState} from "../../../pages/_app";
 import {ModInstallState} from "../../../lib/install/ModInstallState";
+import Head from "next/head";
 
 export type InstallStateContextProps = {
     modInstallStates: Map<Mod, ModInstallState>
@@ -30,9 +31,14 @@ export function InstallingModsPage() {
 
     if (modInstallStates.size > 0) {
         return (
-            <InstallStateContext.Provider value={{modInstallStates, setModInstallStates}}>
-                <ModInstallingElements installAutomatically={appState.useAutomaticInstaller} />
-            </InstallStateContext.Provider>
+            <>
+                <Head>
+                    <title>Installing mods</title>
+                </Head>
+                <InstallStateContext.Provider value={{modInstallStates, setModInstallStates}}>
+                    <ModInstallingElements installAutomatically={appState.useAutomaticInstaller}/>
+                </InstallStateContext.Provider>
+            </>
         )
     } else {
         return <Text>Loading Mods...</Text>

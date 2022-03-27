@@ -2,6 +2,7 @@ import {Badge, Box, Button, Group, Modal, Popover, Space, Text, Title, useMantin
 import {useEffect, useState} from "react";
 import {AppState, useAppState} from "../../../pages/_app";
 import {useDragMinecraftFolderContext} from "../../../context/MinecraftFolderStateContextProvider";
+import Head from "next/head";
 
 export function DropMinecraftFolderPage() {
     const theme = useMantineTheme();
@@ -29,6 +30,9 @@ export function DropMinecraftFolderPage() {
 
     return (
         <>
+            <Head>
+                <title>Let&apos;s find Minecraft!</title>
+            </Head>
             <Modal
                 opened={modalOpened}
                 onClose={() => setModalOpened(false)}

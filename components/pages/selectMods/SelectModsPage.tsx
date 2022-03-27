@@ -16,7 +16,7 @@ export function SelectModsPage() {
         return (
             <>
                 <Head>
-                    <title>Online Installer</title>
+                    <title>{modProfileContext.profile.name} | Select Mods</title>
                 </Head>
                 <Group spacing="xl" align="flex-start" noWrap>
                     <div style={{position: "relative", height: "80vmin"}}>
@@ -29,7 +29,7 @@ export function SelectModsPage() {
                         {!supported &&
                             <>
                                 <Space h="xl"/>
-                                <Text color={theme.colors.red[4]} size="lg" style={{width: "50vmin"}}>
+                                <Text color={theme.colors.red[5]} size="xl" style={{width: "50vmin"}}>
                                     Your Browser doesn&apos;t support the automated installer. Use a chromium-based
                                     browser like Google Chrome to use it.
                                 </Text>

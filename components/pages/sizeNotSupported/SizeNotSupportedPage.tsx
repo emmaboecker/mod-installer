@@ -1,8 +1,12 @@
 import {Center, Text} from "@mantine/core";
+import Head from "next/head";
 
 export function SizeNotSupportedPage() {
     return (
         <>
+            <Head>
+                <title>Browser Size not Supported</title>
+            </Head>
             <Center>
                 <Text size="xl">Window Size Unsupported</Text>
             </Center>
