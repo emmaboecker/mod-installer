@@ -1,10 +1,11 @@
 import {ProfileContextProps} from "../../../context/ProfileContextProvider";
 import {getDat} from "../serverDat";
+import {ModProfile} from "../../type/modProfile";
 
 export async function createInstanceWithFabric(multimcDir: FileSystemDirectoryHandle, profileContext: ProfileContextProps) {
     const instance = await (await multimcDir.getDirectoryHandle("instances", {create: true})).getDirectoryHandle(profileContext.profile!!.id, {create: true});
     const mmcPack = await (await instance.getFileHandle("mmc-pack.json", {create: true})).createWritable();
-    await mmcPack.write(JSON.stringify(mmcPackData()))
+    await mmcPack.write(JSON.stringify(await mmcPackData(profileContext.profile!!)))
     await mmcPack.close();
     const instanceCfg = await (await instance.getFileHandle("instance.cfg", {create: true})).createWritable();
     await instanceCfg.write(instanceCfgText(profileContext.profile!!.profileName));
@@ -17,7 +18,8 @@ export async function createInstanceWithFabric(multimcDir: FileSystemDirectoryHa
     }
 }
 
-function mmcPackData() {
+async function mmcPackData(profile: ModProfile) {
+    const response = await fetch(`https://meta.fabricmc.net/v2/versions/loader/${profile.minecraftVersion}`).then(value => value.json());
     return {
         components: [
             {
@@ -37,24 +39,24 @@ function mmcPackData() {
                         uid: "org.lwjgl3"
                     }
                 ],
-                cachedVersion: "1.18.2",
+                cachedVersion: profile.minecraftVersion,
                 important: true,
                 uid: "net.minecraft",
-                version: "1.18.2"
+                version: profile.minecraftVersion
             },
             {
                 cachedName: "Intermediary Mappings",
                 cachedRequires: [
                     {
-                        equals: "1.18.2",
+                        equals: profile.minecraftVersion,
                         uid: "net.minecraft"
                     }
                 ],
-                cachedVersion: "1.18.2",
+                cachedVersion: profile.minecraftVersion,
                 cachedVolatile: true,
                 dependencyOnly: true,
                 uid: "net.fabricmc.intermediary",
-                version: "1.18.2"
+                version: profile.minecraftVersion
             },
             {
                 cachedName: "Fabric Loader",
@@ -63,9 +65,9 @@ function mmcPackData() {
                         uid: "net.fabricmc.intermediary"
                     }
                 ],
-                cachedVersion: "0.13.3",
+                cachedVersion: response[0].loader.version,
                 uid: "net.fabricmc.fabric-loader",
-                version: "0.13.3"
+                version: response[0].loader.version
             }
         ],
         formatVersion: 1

@@ -77,7 +77,7 @@ function Explanation() {
                                                          rel="noreferrer">here</a>
             </Text>
             <Text size="xl">
-                3. Run the Installer and Install Fabric for <b>Minecraft 1.18.2</b>
+                3. Run the Installer and Install Fabric for <b>Minecraft {profileContext.profile?.minecraftVersion}</b>
             </Text>
             <Text size="xl">
                 4. Navigate to <b>{minecraftFolder}</b> in your File Explorer and create a new folder named <b>mods</b>.

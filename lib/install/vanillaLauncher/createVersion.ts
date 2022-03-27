@@ -7,7 +7,7 @@ export async function createVersion(dir: FileSystemDirectoryHandle, profile: Mod
     const writeable = await versionFileHandle.createWritable()
     await writeable.write((new window.TextEncoder()).encode(JSON.stringify({
         id: profile.id,
-        inheritsFrom: "1.18.2",
+        inheritsFrom: profile.minecraftVersion,
         type: "release",
         mainClass: "net.fabricmc.loader.impl.launch.knot.KnotClient",
         arguments: {
@@ -19,7 +19,7 @@ export async function createVersion(dir: FileSystemDirectoryHandle, profile: Mod
                 "-DFabricMcEmu= net.minecraft.client.main.Main"
             ]
         },
-        libraries: getFabricLibraries()
+        libraries: (await getFabricLibraries(profile))
     })))
     await writeable.close()
 }

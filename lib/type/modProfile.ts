@@ -3,6 +3,7 @@ export type ModProfile = {
     id: string
     name: string
     icon: string
+    minecraftVersion: string
     profileName: string
     mods: Mod[]
     servers: Server[]
