@@ -1,6 +1,6 @@
 import {cloneMap} from "../../../../lib/cloneMap";
-import {Button} from "@mantine/core";
-import React, {Dispatch, SetStateAction} from "react";
+import {Button, Tooltip} from "@mantine/core";
+import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {Mod} from "../../../../lib/type/modProfile";
 
 type Props = {
@@ -12,19 +12,56 @@ type Props = {
 }
 
 export function SelectButton({mod, active, required, modStates, setModStates}: Props) {
-    return (
+    const [incompatibleWith, setIncompatibleWith] = useState([] as Mod[])
+
+    useEffect(() => {
+        const newList = [] as Mod[]
+        modStates.forEach((value, key) => {
+            if (value && mod.incompatible?.map(it => it.toLowerCase()).includes(key.name.toLowerCase())) {
+                newList.push(key)
+            }
+        })
+        if (newList.length > 0 && active) {
+            setModStates(cloneMap(modStates).set(mod, false))
+        }
+        setIncompatibleWith(newList)
+    }, [modStates])
+
+    function getToolTip(children: React.ReactNode, show: boolean) {
+        if (show) {
+            return (
+                <Tooltip
+                    position="left"
+                    placement="center"
+                    withArrow
+                    transition="pop-top-left"
+                    width={260}
+                    wrapLines
+                    label={`This Mod is incompatible with: ${incompatibleWith.map(value => value.name).join(", ")}`}
+                >
+                    {children}
+                </Tooltip>
+            )
+        } else {
+            return children
+        }
+    }
+
+    return getToolTip((
         <Button
             variant="light"
             color={active ? "green" : "red"}
-            disabled={required}
+            disabled={required || incompatibleWith.length > 0}
             onClick={() => {
                 setModStates(cloneMap(modStates).set(mod, !active))
             }}
             radius="lg"
         >
             {
-                required ? "Required" : (active ? "Enabled" : "Disabled")
+                required ? "Required" :
+                    incompatibleWith.length > 0 ? "Incompatible" :
+                        (active ? "Enabled" : "Disabled")
             }
         </Button>
-    )
+    ), incompatibleWith.length > 0)
 }

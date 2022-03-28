@@ -22,11 +22,18 @@ export function ModSelectingElements({mods}: Props) {
         const modElements: React.ReactNode[] = []
 
         mods.forEach(value => {
-            const active = modStates.get(value)
+            let active = modStates.get(value)
             modElements.push((
-                <div style={{width: "90%", margin: "1.2vmin", display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                <div style={{
+                    width: "90%",
+                    margin: "1.2vmin",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center"
+                }}>
                     <Text color={theme.white} style={{fontWeight: "bold"}}>{value.name}</Text>
-                    <SelectButton mod={value} modStates={modStates} setModStates={setModStates} active={active!!} required={value.required} />
+                    <SelectButton mod={value} modStates={modStates} setModStates={setModStates} active={active!!}
+                                  required={value.required}/>
                 </div>
             ))
         })

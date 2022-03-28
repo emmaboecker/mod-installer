@@ -12,7 +12,8 @@ This Project was highly inspired by the Innit.gg Installer made by [Cubxity](htt
 - [x] Manual install
 - [x] MultiMC Support
 - [x] Configurable libraries / Minecraft Version (Currently only 1.18.2)
-- [ ] Configure and show incompatible or dependencies of mods
+- [x] Configure and show incompatible mods
+- [ ] Configure and show when a mod requires another mod
 - [ ] Admin Panel
 - [ ] User owned mod-lists (Thank you for the idea [Marie](https://github.com/NyCodeGHG))
 

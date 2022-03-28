@@ -12,6 +12,8 @@ export type ModProfile = {
 export type Mod = {
     name: string
     downloadLink: string
+    requires?: string[]
+    incompatible?: string[]
     path: string
     required: boolean
     defaultActivated: boolean
