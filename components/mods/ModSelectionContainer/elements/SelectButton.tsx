@@ -13,22 +13,30 @@ type Props = {
 
 export function SelectButton({mod, active, required, modStates, setModStates}: Props) {
     const [incompatibleWith, setIncompatibleWith] = useState([] as Mod[])
+    const [requiredBy, setRequiredBy] = useState([] as Mod[])
 
     useEffect(() => {
-        const newList = [] as Mod[]
+        const newIncompatibilities = [] as Mod[]
+        const newRequirements = [] as Mod[]
         modStates.forEach((value, key) => {
             if (value && mod.incompatible?.map(it => it.toLowerCase()).includes(key.name.toLowerCase())) {
-                newList.push(key)
+                newIncompatibilities.push(key)
+            } else if (value && key.requires?.map(it => it.toLowerCase()).includes(mod.name.toLowerCase())) {
+                newRequirements.push(key)
             }
         })
-        if (newList.length > 0 && active) {
+        if (newIncompatibilities.length > 0 && active) {
             setModStates(cloneMap(modStates).set(mod, false))
         }
-        setIncompatibleWith(newList)
+        if (newRequirements.length > 0 && !active) {
+            setModStates(cloneMap(modStates).set(mod, true))
+        }
+        setIncompatibleWith(newIncompatibilities)
+        setRequiredBy(newRequirements)
     }, [modStates])
 
-    function getToolTip(children: React.ReactNode, show: boolean) {
-        if (show) {
+    function getToolTip(children: React.ReactNode) {
+        if (incompatibleWith.length > 0 || requiredBy.length > 0) {
             return (
                 <Tooltip
                     position="left"
@@ -37,7 +45,10 @@ export function SelectButton({mod, active, required, modStates, setModStates}: P
                     transition="pop-top-left"
                     width={260}
                     wrapLines
-                    label={`This Mod is incompatible with: ${incompatibleWith.map(value => value.name).join(", ")}`}
+                    label={
+                        incompatibleWith.length > 0 ? `This Mod is incompatible with: ${incompatibleWith.map(value => value.name).join(", ")}` :
+                            requiredBy.length > 0 ? `This Mod is Required by: ${requiredBy.map(value => value.name).join(", ")}` : ""
+                    }
                 >
                     {children}
                 </Tooltip>
@@ -51,7 +62,7 @@ export function SelectButton({mod, active, required, modStates, setModStates}: P
         <Button
             variant="light"
             color={active ? "green" : "red"}
-            disabled={required || incompatibleWith.length > 0}
+            disabled={required || incompatibleWith.length > 0 || requiredBy.length > 0}
             onClick={() => {
                 setModStates(cloneMap(modStates).set(mod, !active))
             }}
@@ -60,8 +71,9 @@ export function SelectButton({mod, active, required, modStates, setModStates}: P
             {
                 required ? "Required" :
                     incompatibleWith.length > 0 ? "Incompatible" :
-                        (active ? "Enabled" : "Disabled")
+                        requiredBy.length > 0 ? "Required" :
+                            (active ? "Enabled" : "Disabled")
             }
         </Button>
-    ), incompatibleWith.length > 0)
+    ))
 }
