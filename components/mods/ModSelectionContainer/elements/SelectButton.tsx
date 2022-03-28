@@ -19,10 +19,25 @@ export function SelectButton({mod, active, required, modStates, setModStates}: P
         const newIncompatibilities = [] as Mod[]
         const newRequirements = [] as Mod[]
         modStates.forEach((value, key) => {
-            if (value && mod.incompatible?.map(it => it.toLowerCase()).includes(key.name.toLowerCase())) {
-                newIncompatibilities.push(key)
-            } else if (value && key.requires?.map(it => it.toLowerCase()).includes(mod.name.toLowerCase())) {
-                newRequirements.push(key)
+            // Starlight incom Lithium
+            // this step: lithium
+            // go through all mods, check if lithium is on their list
+            // yes, add that mod to incomp mods
+            if (value) {
+                modStates.forEach((enabled, current) => {
+                    if (!newIncompatibilities.includes(current)) {
+                        if (enabled && current.incompatible?.map(it => it.toLowerCase()).includes(mod.name.toLowerCase())) {
+                            newIncompatibilities.push(current)
+                        }
+                    }
+                })
+            }
+            if (!newIncompatibilities.includes(key)) {
+                if (value && mod.incompatible?.map(it => it.toLowerCase()).includes(key.name.toLowerCase())) {
+                    newIncompatibilities.push(key)
+                } else if (value && key.requires?.map(it => it.toLowerCase()).includes(mod.name.toLowerCase())) {
+                    newRequirements.push(key)
+                }
             }
         })
         if (newIncompatibilities.length > 0 && active) {
