@@ -19,10 +19,6 @@ export function SelectButton({mod, active, required, modStates, setModStates}: P
         const newIncompatibilities = [] as Mod[]
         const newRequirements = [] as Mod[]
         modStates.forEach((value, key) => {
-            // Starlight incom Lithium
-            // this step: lithium
-            // go through all mods, check if lithium is on their list
-            // yes, add that mod to incomp mods
             if (value) {
                 modStates.forEach((enabled, current) => {
                     if (!newIncompatibilities.includes(current)) {
@@ -48,7 +44,7 @@ export function SelectButton({mod, active, required, modStates, setModStates}: P
         }
         setIncompatibleWith(newIncompatibilities)
         setRequiredBy(newRequirements)
-    }, [modStates])
+    }, [active, mod, modStates, setModStates])
 
     function getToolTip(children: React.ReactNode) {
         if (incompatibleWith.length > 0 || requiredBy.length > 0) {
