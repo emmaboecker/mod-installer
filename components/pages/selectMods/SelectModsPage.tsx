@@ -4,6 +4,7 @@ import {useProfileContext} from "../../../context/ProfileContextProvider";
 import {LoadingPage} from "../loading/LoadingPage";
 import {ModSelectionContainer} from "../../mods/ModSelectionContainer/ModSelectionContainer";
 import Head from "next/head";
+import {AuthorComponent} from "../../user/AuthorComponent";
 
 export function SelectModsPage() {
     const modProfileContext = useProfileContext()
@@ -21,6 +22,8 @@ export function SelectModsPage() {
                 <Group spacing="xl" align="flex-start" noWrap>
                     <div style={{position: "relative", height: "80vmin"}}>
                         <Title>{modProfileContext.profile.name}</Title>
+                        <Space h="md"/>
+                        <AuthorComponent userId={modProfileContext.profile.creator}/>
                         <Space h="md"/>
                         <Text color="gray" style={{width: "50vmin"}}>
                             This installer will create a new Minecraft Launcher Profile and install all needed mods for

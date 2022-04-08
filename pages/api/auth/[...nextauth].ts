@@ -33,7 +33,7 @@ export default NextAuth({
             const collection = client.db().collection("users")
 
             collection.updateOne(
-                {_id: user.id},
+                {_id: new ObjectId(user.id)},
                 {
                     $set: {
                         role: Role.DEFAUL
