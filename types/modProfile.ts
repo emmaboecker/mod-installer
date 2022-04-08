@@ -1,5 +1,6 @@
 export type ModProfile = {
-    key: string
+    _id: string
+    creator: string
     id: string
     name: string
     icon: string
@@ -7,6 +8,8 @@ export type ModProfile = {
     profileName: string
     mods: Mod[]
     servers: Server[]
+    // Used for changing key in the database
+    oldkey?: string
 }
 
 export type Mod = {

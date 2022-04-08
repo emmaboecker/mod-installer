@@ -1,4 +1,4 @@
-import {Mod} from "../type/modProfile";
+import {Mod} from "../../types/modProfile";
 
 export function sortMods(mods: Mod[]) {
     const modsSorted = new Map<string, Mod[]>()

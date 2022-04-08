@@ -1,5 +1,5 @@
-import {ModProfile} from "../../type/modProfile";
-import {LauncherProfiles} from "../../type/launcherProfiles";
+import {ModProfile} from "../../../types/modProfile";
+import {LauncherProfiles} from "../../../types/launcherProfiles";
 import {cloneMap} from "../../cloneMap";
 
 export async function createLauncherProfile(dir: FileSystemDirectoryHandle, profile: ModProfile) {

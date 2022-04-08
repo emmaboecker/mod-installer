@@ -11,6 +11,8 @@ import {LoadingPage} from "../components/pages/loading/LoadingPage";
 import {NotificationsProvider} from '@mantine/notifications';
 import {ProfileContextProvider} from "../context/ProfileContextProvider";
 import {useRouter} from "next/router";
+import {SessionProvider} from "next-auth/react"
+
 
 const themeOverride: MantineThemeOverride = {
     colorScheme: "dark",
@@ -40,7 +42,7 @@ export type AppStateContextProps = {
 
 const AppStateContext = React.createContext({} as AppStateContextProps)
 
-export default function MyApp({Component, pageProps}: AppProps) {
+export default function MyApp({Component, pageProps: {session, ...pageProps}}: AppProps) {
     const [appState, setAppState] = useState(AppState.SELECT_MODS)
     const [useAutomaticInstaller, setUseAutomaticInstaller] = useState(typeof FileSystemHandle !== "undefined")
     const [installType, setInstallType] = useState(InstallType.MINECRAFT_LAUNCHER)
@@ -49,7 +51,7 @@ export default function MyApp({Component, pageProps}: AppProps) {
 
     const router = useRouter()
 
-    const {id} = router.query
+    const { key } = router.query
 
     if (width && height) {
         if (width > 786 && height > 524) {
@@ -58,30 +60,32 @@ export default function MyApp({Component, pageProps}: AppProps) {
                     <Head>
                         <title>Online Installer</title>
                     </Head>
-                    <MantineProvider theme={themeOverride} withGlobalStyles>
-                        <NotificationsProvider position="bottom-center">
-                            <AppStateContext.Provider value={{
-                                appState,
-                                setAppState,
-                                useAutomaticInstaller,
-                                setUseAutomaticInstaller,
-                                installType,
-                                setInstallType
-                            }}>
-                                <ErrorContextProvider>
-                                    <MinecraftFolderStateContextProvider>
-                                        {
-                                            router.isReady && id ?
-                                                <ProfileContextProvider><Component {...pageProps} /></ProfileContextProvider> :
-                                                router.isReady && !id ? <Component {...pageProps} /> :
-                                                    <LoadingPage/>
-                                        }
-                                    </MinecraftFolderStateContextProvider>
-                                </ErrorContextProvider>
-                            </AppStateContext.Provider>
-                        </NotificationsProvider>
-                        <Footer/>
-                    </MantineProvider>
+                    <SessionProvider session={session}>
+                        <MantineProvider theme={themeOverride} withGlobalStyles>
+                            <NotificationsProvider position="bottom-center">
+                                <AppStateContext.Provider value={{
+                                    appState,
+                                    setAppState,
+                                    useAutomaticInstaller,
+                                    setUseAutomaticInstaller,
+                                    installType,
+                                    setInstallType
+                                }}>
+                                    <ErrorContextProvider>
+                                        <MinecraftFolderStateContextProvider>
+                                            {
+                                                router.isReady && key ?
+                                                    <ProfileContextProvider><Component {...pageProps} /></ProfileContextProvider> :
+                                                    router.isReady && !key ? <Component {...pageProps} /> :
+                                                        <LoadingPage/>
+                                            }
+                                        </MinecraftFolderStateContextProvider>
+                                    </ErrorContextProvider>
+                                </AppStateContext.Provider>
+                            </NotificationsProvider>
+                            <Footer/>
+                        </MantineProvider>
+                    </SessionProvider>
                 </>
             )
         } else {
@@ -94,9 +98,8 @@ export default function MyApp({Component, pageProps}: AppProps) {
                 </>
             )
         }
-    } else {
-        return <LoadingPage />
     }
+    return <LoadingPage/>
 }
 
 export function useWindowDimensions() {

@@ -1,5 +1,5 @@
 import JSZip from "jszip";
-import {Mod} from "../../type/modProfile";
+import {Mod} from "../../../types/modProfile";
 import {ModInstallState} from "../ModInstallState";
 
 export async function generateModZip(mod: Mod, zip: JSZip): Promise<ModInstallState> {

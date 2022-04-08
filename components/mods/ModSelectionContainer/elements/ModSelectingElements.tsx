@@ -4,7 +4,7 @@ import {ModTypeContainer} from "../../ModTypeContainer/ModTypeContainer";
 import {SelectButton} from "./SelectButton";
 import {useProfileContext} from "../../../../context/ProfileContextProvider";
 import {sortMods} from "../../../../lib/install/sortMods";
-import {Mod} from "../../../../lib/type/modProfile";
+import {Mod} from "../../../../types/modProfile";
 
 type Props = {
     mods: Mod[]

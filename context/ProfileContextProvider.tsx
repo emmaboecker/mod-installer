@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
-import {Mod, ModProfile} from "../lib/type/modProfile";
+import {Mod, ModProfile} from "../types/modProfile";
 import {LoadingPage} from "../components/pages/loading/LoadingPage";
 import {Center, Group, Text, Title} from "@mantine/core";
 import {useRouter} from "next/router";
@@ -30,13 +30,15 @@ export function ProfileContextProvider({children}: Props) {
 
     const router = useRouter()
 
-    const {id} = router.query
+    const {key} = router.query
 
     useEffect(() => {
-        if (id) {
-            fetch(`/api/${id}`).then(response => {
-                response.json().then(element => {
-                    if (response.status === 200) {
+        if (key) {
+            fetch(`/api/profile/${key}`).then(response => {
+                if (response.status === 200) {
+                    response.json().then(element => {
+                        console.log("response.json()")
+                        console.log(element)
                         setProfile(element as ModProfile)
                         const newModStates = new Map<Mod, boolean>()
                         for (let mod of (element as ModProfile).mods) {
@@ -44,11 +46,11 @@ export function ProfileContextProvider({children}: Props) {
                         }
                         setModStates(newModStates)
                         setProfileState(ProfileState.FOUND)
-                    } else {
-                        setProfile(undefined)
-                        setProfileState(ProfileState.NOT_FOUND)
-                    }
-                })
+                    })
+                } else {
+                    setProfile(undefined)
+                    setProfileState(ProfileState.NOT_FOUND)
+                }
             })
         } else {
             setProfile(undefined)
@@ -58,7 +60,7 @@ export function ProfileContextProvider({children}: Props) {
                 setProfileState(ProfileState.LOADING)
             }
         }
-    }, [id])
+    }, [key])
 
     if (profile && profileState === ProfileState.FOUND) {
         return (

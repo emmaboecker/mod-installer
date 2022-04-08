@@ -1,7 +1,7 @@
 import {ScrollArea} from "@mantine/core";
 import React from "react";
 import {ModSelectingElements} from "./elements/ModSelectingElements";
-import {Mod} from "../../../lib/type/modProfile";
+import {Mod} from "../../../types/modProfile";
 
 type ModSelectionContainerProps = {
     mods: Mod[]

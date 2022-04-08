@@ -1,4 +1,4 @@
-import {Mod} from "../../type/modProfile";
+import {Mod} from "../../../types/modProfile";
 import {ProfileContextProps} from "../../../context/ProfileContextProvider";
 import {InstallStateContextProps} from "../../../components/pages/installing/InstallingModsPage";
 import {Dispatch, SetStateAction} from "react";

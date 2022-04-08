@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {cloneMap} from "../../../lib/cloneMap";
 import {useModInstallStateContext} from "../../pages/installing/InstallingModsPage";
-import {Mod} from "../../../lib/type/modProfile";
+import {Mod} from "../../../types/modProfile";
 import {useDragMinecraftFolderContext} from "../../../context/MinecraftFolderStateContextProvider";
 import {useProfileContext} from "../../../context/ProfileContextProvider";
 import {Stepper, Text} from "@mantine/core";

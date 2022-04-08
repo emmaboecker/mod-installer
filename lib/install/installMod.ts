@@ -1,5 +1,5 @@
 import {Dispatch, SetStateAction} from "react";
-import {Mod, ModProfile} from "../type/modProfile";
+import {Mod, ModProfile} from "../../types/modProfile";
 import {ModInstallState} from "./ModInstallState";
 
 export async function installMod(dir: FileSystemDirectoryHandle, profile: ModProfile, mod: Mod, setError: Dispatch<SetStateAction<string | undefined>>): Promise<ModInstallState> {

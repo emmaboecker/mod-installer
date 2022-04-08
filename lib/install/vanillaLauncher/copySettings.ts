@@ -1,4 +1,4 @@
-import {ModProfile} from "../../type/modProfile";
+import {ModProfile} from "../../../types/modProfile";
 import {getDat} from "../serverDat";
 
 export async function copySettings(dir: FileSystemDirectoryHandle, profile: ModProfile) {

@@ -4,7 +4,7 @@ import {createVersion} from "./createVersion";
 import {ModInstallState} from "../ModInstallState";
 import {cloneMap} from "../../cloneMap";
 import {ProfileContextProps} from "../../../context/ProfileContextProvider";
-import {Mod} from "../../type/modProfile";
+import {Mod} from "../../../types/modProfile";
 import {InstallStateContextProps} from "../../../components/pages/installing/InstallingModsPage";
 import {Dispatch, SetStateAction} from "react";
 

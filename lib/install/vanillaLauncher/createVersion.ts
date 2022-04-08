@@ -1,4 +1,4 @@
-import {ModProfile} from "../../type/modProfile";
+import {ModProfile} from "../../../types/modProfile";
 import {getFabricLibraries} from "../../fabricLibraries";
 
 export async function createVersion(dir: FileSystemDirectoryHandle, profile: ModProfile) {

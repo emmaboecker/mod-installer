@@ -1,7 +1,7 @@
 import {cloneMap} from "../../../../lib/cloneMap";
 import {Button, Tooltip} from "@mantine/core";
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
-import {Mod} from "../../../../lib/type/modProfile";
+import {Mod} from "../../../../types/modProfile";
 
 type Props = {
     mod: Mod

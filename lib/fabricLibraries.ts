@@ -1,4 +1,4 @@
-import {ModProfile} from "./type/modProfile";
+import {ModProfile} from "../types/modProfile";
 
 export async function getFabricLibraries(profile: ModProfile): Promise<Library[]> {
     const libraries: Library[] = [];

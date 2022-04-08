@@ -1,7 +1,7 @@
 import {Text} from "@mantine/core";
 import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
 import {useProfileContext} from "../../../context/ProfileContextProvider";
-import {Mod} from "../../../lib/type/modProfile";
+import {Mod} from "../../../types/modProfile";
 import {ModInstallingElements} from "../../mods/ModInstallingContainer/ModInstallingElements";
 import {useAppState} from "../../../pages/_app";
 import {ModInstallState} from "../../../lib/install/ModInstallState";
