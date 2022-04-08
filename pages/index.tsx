@@ -1,18 +1,22 @@
-import {signIn, signOut, useSession} from "next-auth/react";
-import {Role} from "../types/role";
+import {signIn, useSession} from "next-auth/react";
+import {Button, Center} from "@mantine/core";
+import {ProfileManager} from "../components/user/ProfileManager";
 
 export default function Home() {
-    const { data: session } = useSession()
+    const {data: session} = useSession()
 
-    if(session) {
+    if (session) {
         console.log(session.user.role)
-        return <>
-            Signed in as {session.user.id} {session.user.role === Role.VERIFIED ? "Verified" : "Not Verified"}<br/>
-            <button onClick={() => signOut()}>Sign out</button>
-        </>
+        return (
+            <ProfileManager />
+        )
     }
-    return <>
-        Not signed in <br/>
-        <button onClick={() => signIn("discord")}>Sign in</button>
-    </>
+
+    return (
+        <Center>
+            <Button color="violet" onClick={() => signIn("discord")}>
+                Login to manage your Mod-Lists
+            </Button>
+        </Center>
+    )
 }
