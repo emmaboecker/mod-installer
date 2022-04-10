@@ -6,7 +6,7 @@ import {Role} from "../../../types/role";
 import {ObjectId} from "bson";
 
 export default NextAuth({
-    adapter: MongoDBAdapter(clientPromise),
+    adapter: MongoDBAdapter(clientPromise()),
     providers: [
         DiscordProvider({
             clientId: process.env.DISCORD_CLIENT_ID,
@@ -15,7 +15,7 @@ export default NextAuth({
     ],
     callbacks: {
         async session({session, user}) {
-            const client = await clientPromise
+            const client = await clientPromise()
             const userCollection = client.db().collection("users")
             const accountCollection = client.db().collection("accounts")
             const userDoc = await userCollection.findOne({_id: new ObjectId(user.id)}) ?? {role: Role.DEFAULT}
@@ -29,7 +29,7 @@ export default NextAuth({
     },
     events: {
         async createUser({user}) {
-            const client = await clientPromise
+            const client = await clientPromise()
             const collection = client.db().collection("users")
 
             collection.updateOne(

@@ -21,7 +21,7 @@ export default async function handler(
         return
     }
 
-    const collection = (await clientPromise).db().collection("profiles")
+    const collection = (await clientPromise()).db().collection("profiles")
 
     let profile = JSON.parse(req.body) as ModProfile
     if (!(profile.name && profile.profileName && profile.mods && profile.mods.length > 0 && profile.minecraftVersion)) {

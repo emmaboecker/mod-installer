@@ -38,7 +38,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         return {props: {}}
     }
 
-    const client = await clientPromise
+    const client = await clientPromise()
     const profileCollection = client.db().collection("profiles")
 
     const profiles = profileCollection.find({creator: session.user.id})

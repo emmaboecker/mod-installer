@@ -6,7 +6,7 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<User>
 ) {
-    const client = await clientPromise
+    const client = await clientPromise()
     const accountsCollection = client.db().collection("accounts")
     const { id } = req.query
 
