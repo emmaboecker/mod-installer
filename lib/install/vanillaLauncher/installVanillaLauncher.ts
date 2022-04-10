@@ -9,9 +9,9 @@ import {InstallStateContextProps} from "../../../components/pages/installing/Ins
 import {Dispatch, SetStateAction} from "react";
 
 export function installVanillaLauncher(mods: Mod[], minecraftDir: FileSystemDirectoryHandle, profileContext: ProfileContextProps, modInstallStatesContext: InstallStateContextProps, setStartedInstallCircle: Dispatch<SetStateAction<boolean>>) {
-    copySettings(minecraftDir as FileSystemDirectoryHandle, profileContext.profile!!).then(() => {
-        createLauncherProfile(minecraftDir as FileSystemDirectoryHandle, profileContext.profile!!).then(() => {
-            createVersion(minecraftDir as FileSystemDirectoryHandle, profileContext.profile!!).then(() => {
+    copySettings(minecraftDir as FileSystemDirectoryHandle, profileContext.modProfile!!).then(() => {
+        createLauncherProfile(minecraftDir as FileSystemDirectoryHandle, profileContext.modProfile!!).then(() => {
+            createVersion(minecraftDir as FileSystemDirectoryHandle, profileContext.modProfile!!).then(() => {
                 for (let mod of mods) {
                     const modState = modInstallStatesContext.modInstallStates.get(mod)
                     if (modState === ModInstallState.PENDING) {

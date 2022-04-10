@@ -3,20 +3,20 @@ import {getDat} from "../serverDat";
 import {ModProfile} from "../../../types/modProfile";
 
 export async function createInstanceWithFabric(multimcDir: FileSystemDirectoryHandle, profileContext: ProfileContextProps) {
-    const instance = await (await multimcDir.getDirectoryHandle("instances", {create: true})).getDirectoryHandle(profileContext.profile!!.id, {create: true});
+    const instance = await (await multimcDir.getDirectoryHandle("instances", {create: true})).getDirectoryHandle(profileContext.modProfile!!.id, {create: true});
     // @ts-ignore
     const mmcPack = await (await instance.getFileHandle("mmc-pack.json", {create: true})).createWritable();
-    await mmcPack.write(JSON.stringify(await mmcPackData(profileContext.profile!!)))
+    await mmcPack.write(JSON.stringify(await mmcPackData(profileContext.modProfile!!)))
     await mmcPack.close();
     // @ts-ignore
     const instanceCfg = await (await instance.getFileHandle("instance.cfg", {create: true})).createWritable();
-    await instanceCfg.write(instanceCfgText(profileContext.profile!!.profileName));
+    await instanceCfg.write(instanceCfgText(profileContext.modProfile!!.profileName));
     await instanceCfg.close()
-    if (profileContext.profile!!.servers && profileContext.profile!!.servers.length > 0) {
+    if (profileContext.modProfile!!.servers && profileContext.modProfile!!.servers.length > 0) {
         const instanceMcDir = await instance.getDirectoryHandle(".minecraft", {create: true});
         // @ts-ignore
         const serverDat = await (await instanceMcDir.getFileHandle("servers.dat", {create: true})).createWritable();
-        await serverDat.write(getDat(profileContext.profile!!.servers));
+        await serverDat.write(getDat(profileContext.modProfile!!.servers));
         await serverDat.close();
     }
 }

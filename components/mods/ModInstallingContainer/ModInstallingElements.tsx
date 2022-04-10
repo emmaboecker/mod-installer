@@ -69,16 +69,16 @@ export function ModInstallingElements({installAutomatically}: Props) {
             const mod = mods[activeMod]
             if (installAutomatically) {
                 if (appStateContext.installType === InstallType.MINECRAFT_LAUNCHER) {
-                    (minecraftDir.minecraftDir as FileSystemDirectoryHandle).getDirectoryHandle(profileContext.profile!!.id, {create: true}).then(dir => {
-                        installMod(dir, profileContext.profile!!, mod, errorContext.setError)
+                    (minecraftDir.minecraftDir as FileSystemDirectoryHandle).getDirectoryHandle(profileContext.modProfile!!.id, {create: true}).then(dir => {
+                        installMod(dir, profileContext.modProfile!!, mod, errorContext.setError)
                             .then(newState => setNewState(mod, newState))
                     })
                 } else if (appStateContext.installType === InstallType.MULTIMC) {
                     (minecraftDir.minecraftDir as FileSystemDirectoryHandle).getDirectoryHandle("instances").then(dir => {
-                        dir.getDirectoryHandle(profileContext.profile!!.id, {create: true})
+                        dir.getDirectoryHandle(profileContext.modProfile!!.id, {create: true})
                             .then(instanceDir => {
                                 instanceDir.getDirectoryHandle(".minecraft", {create: true}).then(minecraftDir => {
-                                    installMod(minecraftDir, profileContext.profile!!, mod, errorContext.setError)
+                                    installMod(minecraftDir, profileContext.modProfile!!, mod, errorContext.setError)
                                         .then(newState => setNewState(mod, newState))
                                 })
                             })
@@ -114,7 +114,7 @@ export function ModInstallingElements({installAutomatically}: Props) {
                     const link = document.createElement('a');
                     const url = URL.createObjectURL(blob)
                     link.href = url;
-                    link.download = encodeURIComponent(profileContext.profile!!.name) + ".zip";
+                    link.download = encodeURIComponent(profileContext.modProfile!!.name) + ".zip";
                     link.click();
                     URL.revokeObjectURL(url);
                     link.remove();

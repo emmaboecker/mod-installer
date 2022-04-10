@@ -24,7 +24,7 @@ export function InstallationDonePage() {
             <Center>
                 {!appState.useAutomaticInstaller ? <Explanation/> :
                     <Text size="lg">You may now close this page and
-                        launch <b>{profileContext.profile?.profileName}</b> from your {
+                        launch <b>{profileContext.modProfile?.profileName}</b> from your {
                             appState.installType === InstallType.MINECRAFT_LAUNCHER ? "Minecraft Launcher" : "MultiMC Launcher"
                         }!
                     </Text>
@@ -50,7 +50,7 @@ function Explanation() {
 
     const getServerCopyButtons = () => {
         const buttons: JSX.Element[] = []
-        profileContext.profile?.servers.forEach(server => {
+        profileContext.modProfile?.servers.forEach(server => {
             buttons.push(
                 <Button
                     key={server.name}
@@ -77,7 +77,7 @@ function Explanation() {
                                                          rel="noreferrer">here</a>
             </Text>
             <Text size="xl">
-                3. Run the Installer and Install Fabric for <b>Minecraft {profileContext.profile?.minecraftVersion}</b>
+                3. Run the Installer and Install Fabric for <b>Minecraft {profileContext.modProfile?.minecraftVersion}</b>
             </Text>
             <Text size="xl">
                 4. Navigate to <b>{minecraftFolder}</b> in your File Explorer and create a new folder named <b>mods</b>.
@@ -90,10 +90,10 @@ function Explanation() {
                 6. Open your Minecraft Launcher and launch the newly created profile
             </Text>
             {
-                (profileContext.profile?.servers && profileContext.profile.servers.length > 0) &&
+                (profileContext.modProfile?.servers && profileContext.modProfile.servers.length > 0) &&
                 <>
                     <Text size="xl">
-                        7. Add the server address{profileContext.profile.servers.length > 1 && "es"} below to your
+                        7. Add the server address{profileContext.modProfile.servers.length > 1 && "es"} below to your
                         server list
                     </Text>
                     <Space h="xs"/>

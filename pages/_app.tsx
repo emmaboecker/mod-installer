@@ -6,10 +6,7 @@ import {Footer} from "../components/Footer/Footer";
 import {MinecraftFolderStateContextProvider} from "../context/MinecraftFolderStateContextProvider";
 import {ErrorContextProvider} from "../context/ErrorContextProvider";
 import Head from "next/head";
-import {LoadingPage} from "../components/pages/loading/LoadingPage";
 import {NotificationsProvider} from '@mantine/notifications';
-import {ProfileContextProvider} from "../context/ProfileContextProvider";
-import {useRouter} from "next/router";
 import {SessionProvider} from "next-auth/react"
 
 export function reportWebVitals(metric: NextWebVitalsMetric) {
@@ -49,10 +46,6 @@ export default function MyApp({Component, pageProps: {session, ...pageProps}}: A
     const [useAutomaticInstaller, setUseAutomaticInstaller] = useState(typeof FileSystemHandle !== "undefined")
     const [installType, setInstallType] = useState(InstallType.MINECRAFT_LAUNCHER)
 
-    const router = useRouter()
-
-    const {key} = router.query
-
     return (
         <>
             <Head>
@@ -71,13 +64,7 @@ export default function MyApp({Component, pageProps: {session, ...pageProps}}: A
                         }}>
                             <ErrorContextProvider>
                                 <MinecraftFolderStateContextProvider>
-                                    {
-                                        router.isReady && !router.route.toLowerCase().startsWith("/install/") ? <Component {...pageProps} /> :
-                                            router.isReady && key ?
-                                                <ProfileContextProvider><Component {...pageProps} /></ProfileContextProvider> :
-                                                router.isReady && !key ? <Component {...pageProps} /> :
-                                                    <LoadingPage/>
-                                    }
+                                    <Component {...pageProps} />
                                 </MinecraftFolderStateContextProvider>
                             </ErrorContextProvider>
                         </AppStateContext.Provider>

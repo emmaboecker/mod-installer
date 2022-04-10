@@ -30,7 +30,8 @@ export function ModSelectingElements({mods}: Props) {
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center"
-                }}>
+                }}
+                >
                     <Text color={theme.white} style={{fontWeight: "bold"}}>{value.name}</Text>
                     <SelectButton mod={value} modStates={modStates} setModStates={setModStates} active={active!!}
                                   required={value.required}/>
