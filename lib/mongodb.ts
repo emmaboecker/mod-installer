@@ -6,7 +6,7 @@ let client: MongoClient
 let clientPromise: Promise<MongoClient>
 
 if (!process.env.MONGODB_URI) {
-    throw new Error("Please add your Mongo URI to your env variables")
+    console.log("Please add your Mongo URI to your env variables")
 }
 
 client = new MongoClient(uri!!, {
