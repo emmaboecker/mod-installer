@@ -58,7 +58,7 @@ export default async function handler(
         id = id + session.user.username.toLowerCase().replaceAll(/[^\w]/g,"-")
     }
     profile.id = id
-    profile.creator = session.user.id
+    profile.creator = document?.creator ?? session.user.id
     if (session.user.role === Role.DEFAULT) {
         profile.verified = false
     } else if (profile.verified === undefined) {
