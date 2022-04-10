@@ -10,6 +10,7 @@ export async function handleDrop(event: DragEvent, setHoveringWithFile: Dispatch
     console.log(event.dataTransfer.files)
     const item = event.dataTransfer.items[0]
     if (item.kind === "file") {
+        // @ts-ignore
         const handle = (await item.getAsFileSystemHandle())!!
         if (handle.kind === "directory") {
             if (handle.name === ".minecraft") {
@@ -50,6 +51,8 @@ async function verifyPermission(fileHandle: FileSystemHandle, withWrite: boolean
     const opts = {};
     // @ts-ignore
     if (withWrite) opts.mode = 'readwrite'
+    // @ts-ignore
     if (await fileHandle.queryPermission(opts) === 'granted') return true
+    // @ts-ignore
     return await fileHandle.requestPermission(opts) === 'granted';
 }

@@ -4,6 +4,7 @@ import {cloneMap} from "../../cloneMap";
 
 export async function createLauncherProfile(dir: FileSystemDirectoryHandle, profile: ModProfile) {
     const launcherProfilesHandle = await dir.getFileHandle("launcher_profiles.json", {create: true})
+    // @ts-ignore
     const profileWritable = await launcherProfilesHandle.createWritable()
     const launcherProfiles = await launcherProfilesHandle.getFile()
     const text = await launcherProfiles.text()

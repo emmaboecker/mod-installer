@@ -1,6 +1,6 @@
 import {cloneMap} from "../../../../lib/cloneMap";
 import {Button, Tooltip} from "@mantine/core";
-import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
+import React, {Dispatch, ReactElement, SetStateAction, useEffect, useState} from "react";
 import {Mod} from "../../../../types/modProfile";
 
 type Props = {
@@ -46,7 +46,7 @@ export function SelectButton({mod, active, required, modStates, setModStates}: P
         setRequiredBy(newRequirements)
     }, [active, mod, modStates, setModStates])
 
-    function getToolTip(children: React.ReactNode) {
+    function getToolTip(children: ReactElement) {
         if (incompatibleWith.length > 0 || requiredBy.length > 0) {
             return (
                 <Tooltip

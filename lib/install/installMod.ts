@@ -9,6 +9,7 @@ export async function installMod(dir: FileSystemDirectoryHandle, profile: ModPro
 
     if (response.status === 200) {
         const handle = await modsDir.getFileHandle(mod.path, {create: true})
+        // @ts-ignore
         const writableStream = await handle.createWritable()
         await response.body!!.pipeTo(writableStream)
         return ModInstallState.DONE
