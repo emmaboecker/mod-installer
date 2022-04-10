@@ -1,7 +1,7 @@
-import {handleDragLeave, handleDragOver, handleDrop} from "../components/pages/drop/handleFuntions";
+import {handleDragLeave, handleDragOver, handleDrop} from "../components/pages/drop/handleFunctions";
 import React, {Dispatch, SetStateAction, useContext, useState} from "react";
-import {useAppState} from "../pages/_app";
 import {useError} from "./ErrorContextProvider";
+import {useAppState} from "../pages/_app";
 
 export type DragMinecraftFolderStateContextProps = {
     hoveringWithFile: boolean

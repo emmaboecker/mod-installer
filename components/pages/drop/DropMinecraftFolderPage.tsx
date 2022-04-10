@@ -14,7 +14,6 @@ export function DropMinecraftFolderPage() {
 
     useEffect(() => {
         if (!context.listenersRegistered && appState) {
-            console.log("register")
             document.addEventListener('dragover', context.dragOver, false)
             document.addEventListener('dragleave', context.dragLeave, false)
             document.addEventListener('drop', context.dragDrop, false)

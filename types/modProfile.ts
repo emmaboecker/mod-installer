@@ -1,5 +1,6 @@
 export type ModProfile = {
     _id: string
+    verified: boolean
     creator: string
     id: string
     name: string

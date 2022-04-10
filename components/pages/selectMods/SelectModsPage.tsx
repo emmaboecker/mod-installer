@@ -57,6 +57,17 @@ export function SelectModsPage() {
 function NextStepButton() {
     const appState = useAppState()
 
+    const profileContext = useProfileContext()
+
+    function disabled() {
+        for (const [,value] of profileContext.modStates.entries()) {
+            if (value) {
+                return false
+            }
+        }
+        return true
+    }
+
     return (
         <Button
             color="green"
@@ -65,6 +76,7 @@ function NextStepButton() {
                 appState.setAppState(AppState.DRAG_DOT_MINECRAFT)
             }}
             style={{height: "56px"}}
+            disabled={disabled()}
             fullWidth
         >
             Next Step

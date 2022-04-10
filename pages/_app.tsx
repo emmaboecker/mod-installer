@@ -1,8 +1,7 @@
 import '../styles/globals.css'
 import type {AppProps} from 'next/app'
 import {MantineProvider, MantineThemeOverride} from "@mantine/core";
-import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
-import {SizeNotSupportedPage} from "../components/pages/sizeNotSupported/SizeNotSupportedPage";
+import React, {Dispatch, SetStateAction, useContext, useState} from "react";
 import {Footer} from "../components/Footer/Footer";
 import {MinecraftFolderStateContextProvider} from "../context/MinecraftFolderStateContextProvider";
 import {ErrorContextProvider} from "../context/ErrorContextProvider";
@@ -47,87 +46,44 @@ export default function MyApp({Component, pageProps: {session, ...pageProps}}: A
     const [useAutomaticInstaller, setUseAutomaticInstaller] = useState(typeof FileSystemHandle !== "undefined")
     const [installType, setInstallType] = useState(InstallType.MINECRAFT_LAUNCHER)
 
-    const {width, height} = useWindowDimensions();
-
     const router = useRouter()
 
-    const { key } = router.query
+    const {key} = router.query
 
-    if (width && height) {
-        if (width > 786 && height > 524) {
-            return (
-                <>
-                    <Head>
-                        <title>Online Installer</title>
-                    </Head>
-                    <SessionProvider session={session}>
-                        <MantineProvider theme={themeOverride} withGlobalStyles>
-                            <NotificationsProvider position="bottom-center">
-                                <AppStateContext.Provider value={{
-                                    appState,
-                                    setAppState,
-                                    useAutomaticInstaller,
-                                    setUseAutomaticInstaller,
-                                    installType,
-                                    setInstallType
-                                }}>
-                                    <ErrorContextProvider>
-                                        <MinecraftFolderStateContextProvider>
-                                            {
-                                                router.isReady && key ?
-                                                    <ProfileContextProvider><Component {...pageProps} /></ProfileContextProvider> :
-                                                    router.isReady && !key ? <Component {...pageProps} /> :
-                                                        <LoadingPage/>
-                                            }
-                                        </MinecraftFolderStateContextProvider>
-                                    </ErrorContextProvider>
-                                </AppStateContext.Provider>
-                            </NotificationsProvider>
-                            <Footer/>
-                        </MantineProvider>
-                    </SessionProvider>
-                </>
-            )
-        } else {
-            return (
-                <>
-                    <MantineProvider theme={themeOverride} withGlobalStyles>
-                        <SizeNotSupportedPage/>
-                        <Footer/>
-                    </MantineProvider>
-                </>
-            )
-        }
-    }
-    return <LoadingPage/>
-}
-
-export function useWindowDimensions() {
-    const hasWindow = typeof window !== 'undefined';
-
-    const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
-
-    function getWindowDimensions() {
-        const width = hasWindow ? window.innerWidth : null;
-        const height = hasWindow ? window.innerHeight : null;
-        return {
-            width,
-            height,
-        };
-    }
-
-    function handleResize() {
-        setWindowDimensions(getWindowDimensions());
-    }
-
-    useEffect(() => {
-        if (hasWindow) {
-            window.addEventListener('resize', handleResize);
-            return () => window.removeEventListener('resize', handleResize);
-        }
-    }, [hasWindow]);
-
-    return windowDimensions;
+    return (
+        <>
+            <Head>
+                <title>Online Installer</title>
+            </Head>
+            <SessionProvider session={session}>
+                <MantineProvider theme={themeOverride} withGlobalStyles>
+                    <NotificationsProvider position="bottom-center">
+                        <AppStateContext.Provider value={{
+                            appState,
+                            setAppState,
+                            useAutomaticInstaller,
+                            setUseAutomaticInstaller,
+                            installType,
+                            setInstallType
+                        }}>
+                            <ErrorContextProvider>
+                                <MinecraftFolderStateContextProvider>
+                                    {
+                                        router.isReady && !router.route.toLowerCase().startsWith("/install/") ? <Component {...pageProps} /> :
+                                            router.isReady && key ?
+                                                <ProfileContextProvider><Component {...pageProps} /></ProfileContextProvider> :
+                                                router.isReady && !key ? <Component {...pageProps} /> :
+                                                    <LoadingPage/>
+                                    }
+                                </MinecraftFolderStateContextProvider>
+                            </ErrorContextProvider>
+                        </AppStateContext.Provider>
+                    </NotificationsProvider>
+                    <Footer/>
+                </MantineProvider>
+            </SessionProvider>
+        </>
+    )
 }
 
 export function useAppState() {

@@ -18,7 +18,7 @@ export default NextAuth({
             const client = await clientPromise
             const userCollection = client.db().collection("users")
             const accountCollection = client.db().collection("accounts")
-            const userDoc = await userCollection.findOne({_id: new ObjectId(user.id)}) ?? {role: Role.DEFAUL}
+            const userDoc = await userCollection.findOne({_id: new ObjectId(user.id)}) ?? {role: Role.DEFAULT}
             const accountDoc = await accountCollection.findOne({userId: new ObjectId(user.id)})
             session.user.id = accountDoc?.providerAccountId
             session.user.username = user.name as string
@@ -36,7 +36,7 @@ export default NextAuth({
                 {_id: new ObjectId(user.id)},
                 {
                     $set: {
-                        role: Role.DEFAUL
+                        role: Role.DEFAULT
                     }
                 }
             ).then(async (r) => {
