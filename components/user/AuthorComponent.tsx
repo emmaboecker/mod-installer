@@ -44,7 +44,7 @@ export function AuthorComponent({userId}: Props) {
                             target={
                                 <CircleCheck
                                     size={20}
-                                    color={(user.role === Role.ADMIN ? theme.colors.blue[3] : theme.colors.green[3])}
+                                    color={(user.role === Role.ADMIN ? theme.colors.violet[4] : theme.colors.teal[4])}
                                     style={{cursor: "pointer"}}
                                     onClick={() => setPopOverOpened((o) => !o)}
                                 />

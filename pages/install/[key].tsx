@@ -62,11 +62,11 @@ export default function AutomaticPage({modProfile}: Props) {
                 </Center>
             </ProfileContextProvider>
         )
-    } else {
-        return (
-            <Title>Checking compatibility...</Title>
-        )
     }
+
+    return (
+        <Title>Checking compatibility...</Title>
+    )
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
