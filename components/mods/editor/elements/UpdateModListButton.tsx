@@ -17,7 +17,7 @@ export function UpdateModListButton() {
         setUpdating(true)
         fetch("/api/profile/set", {method: "POST", body: JSON.stringify(modStateContext.modProfile)}).then(response => {
             if (response.status === 200) {
-                if (modStateContext.modProfile._id !== modStateContext.modProfile.oldkey) {
+                if (modStateContext.modProfile._id !== modStateContext.modProfile.oldkey || router.route.startsWith("/new")) {
                     response.json().then(value => {
                         router.replace(`/edit/${value._id}`).then(() => {
                             modStateContext.setModProfile(value)

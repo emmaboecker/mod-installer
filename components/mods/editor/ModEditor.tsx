@@ -11,6 +11,7 @@ import {ModListIconEditor} from "./elements/ModListIconEditor";
 import {ModListMinecraftVersionEditor} from "./elements/ModListMinecraftVersionEditor";
 import {ModListVerifiedEditor} from "./elements/ModListVerifiedEditor";
 import {ModListLauncherNameEditor} from "./elements/ModListLauncherNameEditor";
+import {GoHomeButton} from "../../navigation/GoHomeButton";
 
 type Props = {
     modProfile: ModProfile
@@ -25,6 +26,9 @@ export function ModEditor({modProfile, setModProfile}: Props) {
     if (session) {
         return (
             <ModEditorContext.Provider value={{modProfile, setModProfile}}>
+                <div style={{position: "fixed", left: "3%", top: "3%"}}>
+                    <GoHomeButton />
+                </div>
                 <Grid style={{width: "80%", margin: "auto"}}>
                     <Grid.Col span={8}>
                         <SimpleGrid cols={1} style={{marginLeft: "10%"}}>

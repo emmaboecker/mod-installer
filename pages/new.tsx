@@ -18,7 +18,8 @@ export default function NewModList() {
         creator: session?.user.id,
         minecraftVersion: "1.18.2",
         profileName: "Untitled Profile",
-        servers: []
+        servers: [],
+        oldkey: ""
     } as ModProfile)
 
     return <ModEditor modProfile={modProfile} setModProfile={setModProfile}/>
