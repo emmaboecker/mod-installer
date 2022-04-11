@@ -54,8 +54,8 @@ export default async function handler(
     }
 
     let id = profile.name.toLowerCase().replaceAll(/[^\w]/g,"-")
-    if (!(await collection.findOne({id: id}))) {
-        id = id + session.user.username.toLowerCase().replaceAll(/[^\w]/g,"-")
+    if (await collection.findOne({id: id})) {
+        id = id + "-" + session.user.username.toLowerCase().replaceAll(/[^\w]/g,"-")
     }
     profile.id = id
     profile.creator = document?.creator ?? session.user.id
