@@ -15,6 +15,7 @@ export function UpdateModListButton() {
 
     function updateModList() {
         setUpdating(true)
+        modStateContext.modProfile.id = modStateContext.modProfile.name.toLowerCase().replaceAll(/[^\w]/g, "-")
         fetch("/api/profile/set", {method: "POST", body: JSON.stringify(modStateContext.modProfile)}).then(response => {
             if (response.status === 200) {
                 if (modStateContext.modProfile._id !== modStateContext.modProfile.oldkey || router.route.startsWith("/new")) {

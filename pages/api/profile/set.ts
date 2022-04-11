@@ -37,7 +37,6 @@ export default async function handler(
     }
 
     if (!document) {
-        profile.id = (profile.id + session.user.id)
         if (session.user.role !== Role.ADMIN) {
             profile._id = makeid(24)
         }
@@ -53,11 +52,13 @@ export default async function handler(
         }
     }
 
-    let id = profile.name.toLowerCase().replaceAll(/[^\w]/g,"-")
-    if (await collection.findOne({id: id})) {
-        id = id + "-" + session.user.username.toLowerCase().replaceAll(/[^\w]/g,"-")
+    if (!profile.id || profile.id !== document?.id) {
+        let id = profile.name.toLowerCase().replaceAll(/[^\w]/g, "-")
+        if (await collection.findOne({id: id})) {
+            id = id + "-" + session.user.username.toLowerCase().replaceAll(/[^\w]/g, "-")
+        }
+        profile.id = id
     }
-    profile.id = id
     profile.creator = document?.creator ?? session.user.id
     if (session.user.role === Role.DEFAULT) {
         profile.verified = false
