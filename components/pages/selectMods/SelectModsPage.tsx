@@ -1,5 +1,5 @@
 import {AppState, useAppState} from "../../../pages/_app";
-import {Badge, Button, Center, Group, Popover, Space, Text, Title, useMantineTheme} from "@mantine/core";
+import {Anchor, Badge, Button, Center, Group, Popover, Space, Text, Title, useMantineTheme} from "@mantine/core";
 import {useProfileContext} from "../../../context/ProfileContextProvider";
 import {ModSelectionContainer} from "../../mods/ModSelectionContainer/ModSelectionContainer";
 import Head from "next/head";
@@ -95,7 +95,7 @@ export function SelectModsPage() {
                                 <Text color={theme.colors.red[5]} size="xl" style={{width: "50vmin"}}>
                                     Your Browser doesn&apos;t support the automated installer. Use a modern
                                     chromium-based
-                                    browser like Google Chrome to use it.
+                                    browser like <Anchor href="https://google.com/chrome" target="_blank">Google Chrome</Anchor> to use it.
                                 </Text>
                             </>
                         }
