@@ -1,4 +1,4 @@
-import React, {ReactNode} from "react";
+import React, {Dispatch, ReactNode, SetStateAction, useState} from "react";
 import {ModProfile} from "../../../types/modProfile";
 import {
     Badge,
@@ -15,14 +15,20 @@ import {
 } from "@mantine/core";
 import {Edit, Plus, TrashX} from "tabler-icons-react";
 import Link from "next/link"
+import {useNotifications} from "@mantine/notifications";
+import {NotificationsContextProps} from "@mantine/notifications/lib/types";
 
 type Props = {
-    modProfiles?: ModProfile[]
+    fetchedModProfiles?: ModProfile[]
 }
 
-export function ModListContainer({modProfiles}: Props) {
+export function ModListContainer({fetchedModProfiles}: Props) {
 
     const theme = useMantineTheme()
+
+    const notifications = useNotifications()
+
+    const [modProfiles, setModProfiles] = useState(fetchedModProfiles)
 
     if (modProfiles) {
         return (
@@ -31,7 +37,7 @@ export function ModListContainer({modProfiles}: Props) {
                     <Title>Your Mod-Lists</Title>
                 </Center>
                 <Space h="xl"/>
-                <ContainerGrid>{getModContainers(modProfiles, theme)}</ContainerGrid>
+                <ContainerGrid>{getModContainers(modProfiles, theme, notifications, setModProfiles)}</ContainerGrid>
             </>
         )
     }
@@ -49,8 +55,9 @@ export function ModListContainer({modProfiles}: Props) {
     )
 }
 
-function getModContainers(modProfiles: ModProfile[], theme: MantineTheme) {
+function getModContainers(modProfiles: ModProfile[], theme: MantineTheme, notifications: NotificationsContextProps, setModProfiles: Dispatch<SetStateAction<ModProfile[] | undefined>>) {
     const elements = [] as ReactNode[]
+
     modProfiles.forEach(value => {
         elements.push(
             <div>
@@ -85,7 +92,36 @@ function getModContainers(modProfiles: ModProfile[], theme: MantineTheme) {
                             </Link>
                         </div>
                         <div style={{display: "flex", marginLeft: "auto"}}>
-                            <Button variant="light" color="red" title={"Delete Mod-List"}>
+                            <Button
+                                variant="light"
+                                color="red"
+                                title={"Delete Mod-List"}
+                                onClick={() => {
+                                    let shouldDelete = confirm(`Are you sure you want to permanently delete ${value.name}?`);
+                                    if (shouldDelete) {
+                                        fetch(`/api/profile/delete/${value._id}`, {method: "DELETE"}).then(response => {
+                                            if (response.status === 200) {
+                                                const newModProfiles: ModProfile[] = []
+                                                modProfiles.map(profile => {
+                                                    if (profile !== value) {
+                                                        newModProfiles.push(profile)
+                                                    }
+                                                })
+                                                setModProfiles(newModProfiles)
+                                                notifications.showNotification({
+                                                    color: "green",
+                                                    message: `Your Mod-List ${value.name} was deleted!`
+                                                })
+                                            } else {
+                                                notifications.showNotification({
+                                                    color: "red",
+                                                    message: `There was an error deleting this Mod-List. Got ${response.status}`
+                                                })
+                                            }
+                                        })
+                                    }
+                                }}
+                            >
                                 <TrashX/>
                             </Button>
                         </div>

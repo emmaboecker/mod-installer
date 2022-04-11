@@ -16,7 +16,7 @@ export default function Home({fetchedModProfiles}: Props) {
     if (session) {
         return (
             <>
-                <ModListContainer modProfiles={fetchedModProfiles}/>
+                <ModListContainer fetchedModProfiles={fetchedModProfiles}/>
                 <ProfileManager/>
             </>
         )
