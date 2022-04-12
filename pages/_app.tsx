@@ -69,7 +69,9 @@ export default function MyApp({Component, pageProps: {session, ...pageProps}}: A
                             </ErrorContextProvider>
                         </AppStateContext.Provider>
                     </NotificationsProvider>
-                    <Footer/>
+                    <footer>
+                        <Footer/>
+                    </footer>
                 </MantineProvider>
             </SessionProvider>
         </>
