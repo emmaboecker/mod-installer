@@ -52,7 +52,7 @@ export default function MyApp({Component, pageProps: {session, ...pageProps}}: A
                 <title>Online Installer</title>
             </Head>
             <SessionProvider session={session}>
-                <MantineProvider theme={themeOverride} withGlobalStyles>
+                <MantineProvider theme={themeOverride} withGlobalStyles withNormalizeCSS>
                     <NotificationsProvider position="bottom-center">
                         <AppStateContext.Provider value={{
                             appState,

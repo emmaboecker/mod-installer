@@ -64,6 +64,6 @@ export function AuthorComponent({userId}: Props) {
     }
 
     return (
-        <Skeleton height={10} width={200}/>
+        <Skeleton height={15} width={250}/>
     )
 }
