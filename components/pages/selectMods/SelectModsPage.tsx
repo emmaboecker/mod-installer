@@ -15,7 +15,7 @@ export function SelectModsPage() {
 
     const [popOverOpened, setPopOverOpened] = useState(false)
 
-    const [ready, setReady] = useState(false)
+    const [ready, setReady] = useState(undefined as boolean | undefined)
 
     useEffect(() => {
         setReady(true)
@@ -90,7 +90,7 @@ export function SelectModsPage() {
                         This installer will create a new Minecraft Launcher Profile and install all needed mods for
                         you and the mods you select on the right
                     </Text>
-                    {!supported &&
+                    {ready && !supported &&
                         <>
                             <Space h="xl"/>
                             <Text color={theme.colors.red[5]} size="xl" style={{width: "50vmin"}}>
@@ -101,11 +101,21 @@ export function SelectModsPage() {
                             </Text>
                         </>
                     }
-                    {ready ?
+                    {ready !== undefined && ready ?
                         <Center style={{width: "80%", margin: "auto"}}>
                             <NextStepButton/>
                         </Center>
-                        : <Title style={{width: "80%", margin: "auto", marginTop: "15%"}} order={2}>Getting ready...</Title>
+                        : <Center style={{width: "80%", margin: "auto"}}>
+                            <Button
+                                color="green"
+                                variant="light"
+                                style={{height: "56px", marginTop: "15%"}}
+                                disabled={true}
+                                fullWidth
+                            >
+                                Getting ready..
+                            </Button>
+                        </Center>
                     }
                 </div>
                 <>
