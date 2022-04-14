@@ -4,6 +4,7 @@ export type ModProfile = {
     creator: string
     id: string
     name: string
+    description?: string
     icon: string
     minecraftVersion: string
     profileName: string

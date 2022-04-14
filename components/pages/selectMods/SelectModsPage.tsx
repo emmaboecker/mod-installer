@@ -32,6 +32,7 @@ export function SelectModsPage() {
                         <Title>
                             {modProfileContext.modProfile!!.name}
                         </Title>
+
                         <Space w="md"/>
                         <div style={{alignSelf: "center"}}>
                             {modProfileContext.modProfile?.verified ?
@@ -83,21 +84,29 @@ export function SelectModsPage() {
                             }
                         </div>
                     </div>
+
                     <Space h="md"/>
                     <AuthorComponent userId={modProfileContext.modProfile!!.creator}/>
-                    <Space h="md"/>
-                    <Text color="gray" style={{width: "50vmin"}}>
-                        This installer will create a new Minecraft Launcher Profile and install all needed mods for
-                        you and the mods you select on the right
-                    </Text>
-                    {ready && !supported &&
+                    {modProfileContext.modProfile?.description && <>
+                        <Space h="md"/>
+                        <Text style={{fontWeight: "normal", width: "50vmin"}}>
+                            {modProfileContext.modProfile!!.description}
+                        </Text>
+                    </>}
+                    {ready && !supported ?
                         <>
                             <Space h="xl"/>
-                            <Text color={theme.colors.red[5]} size="xl" style={{width: "50vmin"}}>
+                            <Text color={theme.colors.red[5]} size="lg" style={{width: "50vmin"}}>
                                 Your Browser doesn&apos;t support the automated installer. Use a modern
                                 chromium-based
-                                browser like <Anchor size="xl" href="https://google.com/chrome" target="_blank">Google
+                                browser like <Anchor size="lg" href="https://google.com/chrome" target="_blank">Google
                                 Chrome</Anchor> to use it.
+                            </Text>
+                        </> : ready && <>
+                            <Space h="md"/>
+                            <Text color="gray" style={{width: "50vmin"}}>
+                                This installer will create a new Minecraft Launcher Profile and install all needed mods for
+                                you and the mods you select on the right
                             </Text>
                         </>
                     }

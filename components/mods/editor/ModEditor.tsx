@@ -13,6 +13,7 @@ import {ModListVerifiedEditor} from "./elements/ModListVerifiedEditor";
 import {ModListLauncherNameEditor} from "./elements/ModListLauncherNameEditor";
 import {GoHomeButton} from "../../navigation/GoHomeButton";
 import {ServerListDetailsEditor} from "./elements/ServerListDetailsEditor";
+import {ModListDescriptionEditor} from "./elements/ModListDescriptionEditor";
 
 type Props = {
     modProfile: ModProfile
@@ -40,6 +41,7 @@ export function ModEditor({modProfile, setModProfile}: Props) {
                                 session.user.role === Role.ADMIN && <ModListKeyEditor/>
                             }
                             <ModListNameEditor/>
+                            <ModListDescriptionEditor/>
                             <ModListLauncherNameEditor/>
                             <ModListIconEditor/>
                             <ModListMinecraftVersionEditor/>
