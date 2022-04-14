@@ -21,9 +21,15 @@ export default async function handler(
         return
     }
 
+    if ((process.env.ALLOW_USER_MOD_LISTS ?? "true") !== "true" && session.user.role !== Role.ADMIN) {
+        res.status(403).end()
+        return
+    }
+
     const collection = (await clientPromise()).db().collection("profiles")
 
-    let profile = JSON.parse(req.body) as ModProfile
+
+    let profile = typeof req.body !== "object" ? JSON.parse(req.body) as ModProfile : req.body as ModProfile
     if (!(profile.name && profile.profileName && profile.mods && profile.mods.length > 0 && profile.minecraftVersion)) {
         res.status(406).end()
         return

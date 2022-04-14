@@ -12,9 +12,10 @@ import clientPromise from "../../lib/mongodb";
 
 type Props = {
     modProfile: ModProfile | undefined
+    allowUserModLists: boolean
 }
 
-export default function AutomaticPage({modProfile}: Props) {
+export default function AutomaticPage({modProfile, allowUserModLists}: Props) {
     const appState = useAppState()
 
     const current = appState.appState;
@@ -32,7 +33,7 @@ export default function AutomaticPage({modProfile}: Props) {
                 >
                     <Stepper.Step label="Select Mods" allowStepSelect={current > 0}>
                         <Center style={{height: "100%"}}>
-                            <SelectModsPage/>
+                            <SelectModsPage showVerify={allowUserModLists}/>
                         </Center>
                     </Stepper.Step>
                     {supported &&
@@ -56,7 +57,6 @@ export default function AutomaticPage({modProfile}: Props) {
             </Center>
         </ProfileContextProvider>
     )
-
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -66,7 +66,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const content = await collection.findOne({_id: key})
     return {
-        props: {modProfile: content}
+        props: {
+            modProfile: content,
+            allowUserModLists: (process.env.ALLOW_USER_MOD_LISTS ?? "true") === "true"
+        }
     }
 
 }

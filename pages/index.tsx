@@ -1,25 +1,35 @@
 import {getSession, signIn, useSession} from "next-auth/react";
-import {Button, Center} from "@mantine/core";
+import {Button, Center, Title} from "@mantine/core";
 import {ProfileManager} from "../components/user/ProfileManager";
 import {ModListContainer} from "../components/user/modlist/ModListContainer";
 import {GetServerSideProps} from "next";
 import {ModProfile} from "../types/modProfile";
 import clientPromise from "../lib/mongodb";
+import {Role} from "../types/role";
 
 type Props = {
     fetchedModProfiles?: ModProfile[]
+    allowUserModLists: boolean
 }
 
-export default function Home({fetchedModProfiles}: Props) {
+export default function Home({fetchedModProfiles, allowUserModLists}: Props) {
     const {data: session} = useSession()
 
     if (session) {
-        return (
-            <>
-                <ModListContainer fetchedModProfiles={fetchedModProfiles}/>
-                <ProfileManager/>
-            </>
-        )
+        if (allowUserModLists || session.user.role === Role.ADMIN) {
+            return (
+                <>
+                    <ModListContainer fetchedModProfiles={fetchedModProfiles}/>
+                    <ProfileManager/>
+                </>
+            )
+        } else {
+            return (
+                <Center>
+                    <Title order={2}>You are not allowed to create or edit Mod-Lists</Title>
+                </Center>
+            )
+        }
     }
 
     return (
@@ -41,7 +51,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const client = await clientPromise()
     const profileCollection = client.db().collection("profiles")
 
-    const profiles = profileCollection.find({creator: session.user.id})
+    const allowUserModLists = (process.env.ALLOW_USER_MOD_LISTS ?? "true") === "true"
+
+    const profiles = allowUserModLists ? profileCollection.find({creator: session.user.id}) : profileCollection.find()
 
     const list = [] as ModProfile[]
 
@@ -51,6 +63,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     })
 
     return {
-        props: {fetchedModProfiles: list}
+        props: {
+            fetchedModProfiles: list,
+            allowUserModLists
+        }
     }
 }

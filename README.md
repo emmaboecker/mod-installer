@@ -16,6 +16,6 @@ This Project was highly inspired by the Innit.gg Installer made by [Cubxity](htt
 - [x] Configure and show when a mod requires another mod
 - [x] ~~Admin Panel~~ (*Replaced by user owner mod-lists*)
 - [x] User owned mod-lists (Thank you for the idea [Marie](https://github.com/NyCodeGHG))
-- [ ] Disable User-Owned Mod-list (with an env variable or sth) 
+- [x] Disable User-Owned Mod-list (by setting `ALLOW_USER_MOD_LISTS` in your env variables to `false`) 
 
-I'm welcome to add stuff to this list (DM me on discord or create an issue)
+Feel free to let me know if you have any ideas for new features (DM me on discord or create an issue)

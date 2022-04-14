@@ -6,7 +6,11 @@ import Head from "next/head";
 import {AuthorComponent} from "../../user/AuthorComponent";
 import React, {useEffect, useState} from "react";
 
-export function SelectModsPage() {
+type Props = {
+    showVerify: boolean;
+}
+
+export function SelectModsPage({showVerify}: Props) {
     const modProfileContext = useProfileContext()
 
     const supported = typeof FileSystemHandle !== "undefined"
@@ -34,59 +38,64 @@ export function SelectModsPage() {
                         </Title>
 
                         <Space w="md"/>
-                        <div style={{alignSelf: "center"}}>
-                            {modProfileContext.modProfile?.verified ?
-                                <Popover
-                                    opened={popOverOpened}
-                                    onClose={() => setPopOverOpened(false)}
-                                    target={
-                                        <Badge
-                                            component="button"
-                                            color="blue"
-                                            style={{cursor: "pointer"}}
-                                            onClick={() => setPopOverOpened((o) => !o)}
-                                        >
-                                            Verified
-                                        </Badge>
-                                    }
-                                    width={260}
-                                    position="bottom"
-                                    withArrow
-                                >
-                                    <Text>
-                                        This is a verified Mod-List trusted by the Admins
-                                    </Text>
-                                </Popover> :
-                                <Popover
-                                    opened={popOverOpened}
-                                    onClose={() => setPopOverOpened(false)}
-                                    target={
-                                        <Badge
-                                            component="button"
-                                            color="red"
-                                            style={{cursor: "pointer"}}
-                                            onClick={() => setPopOverOpened((o) => !o)}
-                                        >
-                                            Not Verified
-                                        </Badge>
-                                    }
-                                    position="bottom"
-                                    radius="md"
-                                    width={260}
-                                    withArrow
-                                >
-                                    <Text>
-                                        This Mod-List was created by a user and not verified by an Admin, it can
-                                        include harmful mods
-                                    </Text>
-                                </Popover>
+                        {showVerify &&
+                            <div style={{alignSelf: "center"}}>
+                                {modProfileContext.modProfile?.verified ?
+                                    <Popover
+                                        opened={popOverOpened}
+                                        onClose={() => setPopOverOpened(false)}
+                                        target={
+                                            <Badge
+                                                component="button"
+                                                color="blue"
+                                                style={{cursor: "pointer"}}
+                                                onClick={() => setPopOverOpened((o) => !o)}
+                                            >
+                                                Verified
+                                            </Badge>
+                                        }
+                                        width={260}
+                                        position="bottom"
+                                        withArrow
+                                    >
+                                        <Text>
+                                            This is a verified Mod-List trusted by the Admins
+                                        </Text>
+                                    </Popover> :
+                                    <Popover
+                                        opened={popOverOpened}
+                                        onClose={() => setPopOverOpened(false)}
+                                        target={
+                                            <Badge
+                                                component="button"
+                                                color="red"
+                                                style={{cursor: "pointer"}}
+                                                onClick={() => setPopOverOpened((o) => !o)}
+                                            >
+                                                Not Verified
+                                            </Badge>
+                                        }
+                                        position="bottom"
+                                        radius="md"
+                                        width={260}
+                                        withArrow
+                                    >
+                                        <Text>
+                                            This Mod-List was created by a user and not verified by an Admin, it can
+                                            include harmful mods
+                                        </Text>
+                                    </Popover>
 
-                            }
-                        </div>
+                                }
+                            </div>
+                        }
                     </div>
-
-                    <Space h="md"/>
-                    <AuthorComponent userId={modProfileContext.modProfile!!.creator}/>
+                    {showVerify &&
+                        <>
+                            <Space h="md"/>
+                            <AuthorComponent userId={modProfileContext.modProfile!!.creator}/>
+                        </>
+                    }
                     {modProfileContext.modProfile?.description && <>
                         <Space h="md"/>
                         <Text style={{fontWeight: "normal", width: "50vmin"}}>
@@ -103,12 +112,12 @@ export function SelectModsPage() {
                                 Chrome</Anchor> to use it.
                             </Text>
                         </> : ready && <>
-                            <Space h="md"/>
-                            <Text color="gray" style={{width: "50vmin"}}>
-                                This installer will create a new Minecraft Launcher Profile and install all needed mods for
-                                you and the mods you select on the right
-                            </Text>
-                        </>
+                        <Space h="md"/>
+                        <Text color="gray" style={{width: "50vmin"}}>
+                            This installer will create a new Minecraft Launcher Profile and install all needed mods for
+                            you and the mods you select on the right
+                        </Text>
+                    </>
                     }
                     {ready ?
                         <Center style={{width: "80%", margin: "auto"}}>
