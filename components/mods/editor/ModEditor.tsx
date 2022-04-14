@@ -12,6 +12,7 @@ import {ModListMinecraftVersionEditor} from "./elements/ModListMinecraftVersionE
 import {ModListVerifiedEditor} from "./elements/ModListVerifiedEditor";
 import {ModListLauncherNameEditor} from "./elements/ModListLauncherNameEditor";
 import {GoHomeButton} from "../../navigation/GoHomeButton";
+import {ServerListDetailsEditor} from "./elements/ServerListDetailsEditor";
 
 type Props = {
     modProfile: ModProfile
@@ -48,6 +49,7 @@ export function ModEditor({modProfile, setModProfile}: Props) {
                     <Grid.Col span={3}>
                         <SimpleGrid cols={1}>
                             <ModListDetailsEditor/>
+                            <ServerListDetailsEditor/>
                         </SimpleGrid>
                     </Grid.Col>
                 </Grid>

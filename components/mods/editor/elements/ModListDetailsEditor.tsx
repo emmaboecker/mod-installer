@@ -66,25 +66,28 @@ function getEditors(mods: Mod[], newMod: Mod | undefined, setMods: Dispatch<SetS
     })
 
     elements.push(
-        <Center>
-            <Button
-                variant="light"
-                onClick={() => {
-                    const newMod = {
-                        name: "Untitled Mod",
-                        type: "untitled",
-                        required: false,
-                        defaultActivated: false
-                    } as Mod
-                    const newMods = cloneList(mods)
-                    newMods.push(newMod)
-                    setMods(newMods)
-                    setNewMod(newMod)
-                }}
-            >
-                <Plus/>
-            </Button>
-        </Center>
+        <>
+            <Center>
+                <Button
+                    variant="light"
+                    onClick={() => {
+                        const newMod = {
+                            name: "Untitled Mod",
+                            type: "untitled",
+                            required: false,
+                            defaultActivated: false
+                        } as Mod
+                        const newMods = cloneList(mods)
+                        newMods.push(newMod)
+                        setMods(newMods)
+                        setNewMod(newMod)
+                    }}
+                >
+                    <Plus/>
+                </Button>
+            </Center>
+            <Space h="md"/>
+        </>
     )
 
 

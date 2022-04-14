@@ -101,7 +101,7 @@ export function SelectModsPage() {
                             </Text>
                         </>
                     }
-                    {ready !== undefined && ready ?
+                    {ready ?
                         <Center style={{width: "80%", margin: "auto"}}>
                             <NextStepButton/>
                         </Center>
