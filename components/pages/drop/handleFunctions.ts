@@ -1,7 +1,7 @@
 import {Dispatch, SetStateAction} from "react";
 import {AppState, AppStateContextProps, InstallType} from "../../../pages/_app";
 
-export async function handleDrop(event: DragEvent, setHoveringWithFile: Dispatch<SetStateAction<boolean>>, setShouldUnregister: Dispatch<SetStateAction<boolean>>, setError: Dispatch<SetStateAction<string | undefined>>, appState: AppStateContextProps, setMiecraftDir: Dispatch<SetStateAction<FileSystemHandle | undefined>>) {
+export async function handleDrop(event: DragEvent, setHoveringWithFile: Dispatch<SetStateAction<boolean>>, setShouldUnregister: Dispatch<SetStateAction<boolean>>, setError: Dispatch<SetStateAction<string | undefined>>, appState: AppStateContextProps, setMiecraftDir: Dispatch<SetStateAction<FileSystemDirectoryHandle | undefined>>) {
     event.stopPropagation()
     event.preventDefault()
     event.stopImmediatePropagation()
@@ -28,7 +28,7 @@ export async function handleDrop(event: DragEvent, setHoveringWithFile: Dispatch
     async function initializeInstalling(installType: InstallType, handle: FileSystemHandle) {
         if (await verifyPermission(handle, true)) {
             setShouldUnregister(true)
-            setMiecraftDir(handle!!)
+            setMiecraftDir(handle!! as FileSystemDirectoryHandle)
             appState.setInstallType(installType)
             appState.setAppState(AppState.INSTALLING)
         } else {

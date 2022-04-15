@@ -10,8 +10,8 @@ export type DragMinecraftFolderStateContextProps = {
     setListenersRegistered: Dispatch<SetStateAction<boolean>>
     shouldUnregister: boolean
     setShouldUnregister: Dispatch<SetStateAction<boolean>>
-    minecraftDir: FileSystemHandle | undefined,
-    setMinecraftDir: Dispatch<SetStateAction<FileSystemHandle | undefined>>
+    minecraftDir: FileSystemDirectoryHandle | undefined,
+    setMinecraftDir: Dispatch<SetStateAction<FileSystemDirectoryHandle | undefined>>
     dragOver(event: DragEvent): void
     dragLeave(event: DragEvent): void
     dragDrop(event: DragEvent): void
@@ -33,7 +33,7 @@ export function MinecraftFolderStateContextProvider({children}: Props) {
     const [listenersRegistered, setListenersRegistered] = useState(false)
     const [shouldUnregister, setShouldUnregister] = useState(false)
 
-    const [minecraftDir, setMinecraftDir] = useState(undefined as (FileSystemHandle | undefined))
+    const [minecraftDir, setMinecraftDir] = useState(undefined as (FileSystemDirectoryHandle | undefined))
 
     return (
         <DragMinecraftFolderStateContext.Provider value={{
