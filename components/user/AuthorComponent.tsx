@@ -32,7 +32,7 @@ export function AuthorComponent({userId}: Props) {
             <div style={{display: "flex", alignItems: "center"}}>
                 <Text>Made by </Text>
                 <Space w={5}/>
-                <Avatar src={user.image} radius="lg" size="sm"/>
+                <Avatar src={user.image} alt="Creator's Profile Picture" radius="lg" size="sm"/>
                 <Space w={5}/>
                 <Text style={{fontWeight: "bold"}}>{user.name}</Text>
                 <Space w={3}/>
