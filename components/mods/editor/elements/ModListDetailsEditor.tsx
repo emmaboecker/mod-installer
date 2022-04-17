@@ -4,7 +4,8 @@ import {useModEditorContext} from "../ModEditor";
 import {ModDetailsEditor} from "./ModDetailsEditor";
 import {Box, Button, Center, Space, Title, useMantineTheme} from "@mantine/core";
 import {Plus} from "tabler-icons-react";
-import {cloneList} from "../../../../lib/cloneList";
+import {useListState} from "@mantine/hooks";
+import {UseListStateHandler} from "@mantine/hooks/lib/use-list-state/use-list-state";
 
 type ContextProps = {
     mods: Mod[]
@@ -15,25 +16,22 @@ const ModDetailsContext = React.createContext({} as ContextProps)
 
 export function ModListDetailsEditor() {
     const modEditorContext = useModEditorContext()
-    const [mods, setMods] = useState(modEditorContext.modProfile.mods)
+    const [mods, modsHandlers] = useListState(modEditorContext.modProfile.mods)
 
     const [newMod, setNewMod] = useState(undefined as undefined | Mod)
 
     const theme = useMantineTheme()
 
     function updateMod(mod: Mod, newMod?: Mod) {
-        const newMods: Mod[] = []
-        mods.forEach(value => {
-            if (value !== mod) {
-                newMods.push(value)
-            } else {
-                if (newMod) {
-                    newMods.push(newMod)
+        if (newMod) {
+            modsHandlers.applyWhere( (m) => m === mod, () => newMod)
+        } else {
+            mods.forEach((value, index) => {
+                if (value === mod) {
+                    modsHandlers.remove(index)
                 }
-            }
-        })
-        modEditorContext.modProfile.mods = newMods
-        setMods(newMods)
+            })
+        }
     }
 
     return (
@@ -43,7 +41,7 @@ export function ModListDetailsEditor() {
                     <Title order={3}>Mods</Title>
                 </Center>
                 <Space h="md"/>
-                {getEditors(mods, newMod, setMods, setNewMod)}
+                {getEditors(mods, newMod, modsHandlers, setNewMod)}
             </Box>
         </ModDetailsContext.Provider>
     )
@@ -53,7 +51,7 @@ export function useModDetailsContext() {
     return useContext(ModDetailsContext)
 }
 
-function getEditors(mods: Mod[], newMod: Mod | undefined, setMods: Dispatch<SetStateAction<Mod[]>>, setNewMod: Dispatch<SetStateAction<Mod | undefined>>) {
+function getEditors(mods: Mod[], newMod: Mod | undefined, modsHandlers: UseListStateHandler<Mod>, setNewMod: Dispatch<SetStateAction<Mod | undefined>>) {
     const elements: React.ReactNode[] = []
 
     mods.forEach(value => {
@@ -77,9 +75,7 @@ function getEditors(mods: Mod[], newMod: Mod | undefined, setMods: Dispatch<SetS
                             required: false,
                             defaultActivated: false
                         } as Mod
-                        const newMods = cloneList(mods)
-                        newMods.push(newMod)
-                        setMods(newMods)
+                        modsHandlers.append(newMod)
                         setNewMod(newMod)
                     }}
                 >

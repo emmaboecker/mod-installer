@@ -47,6 +47,9 @@ export function ModDetailsEditor({mod, openPopUp}: Props) {
             <Modal
                 opened={opened}
                 onClose={() => setOpened(false)}
+                withCloseButton={false}
+                closeOnClickOutside={false}
+                closeOnEscape={false}
                 title={name}
             >
                 <TextInput
@@ -139,7 +142,7 @@ export function ModDetailsEditor({mod, openPopUp}: Props) {
                 />
                 <Space h="md"/>
                 <Button
-                    variant="outline"
+                    variant="light"
                     onClick={() => {
                         const newMod = mod
                         context.mods.forEach(current => {
@@ -190,6 +193,23 @@ export function ModDetailsEditor({mod, openPopUp}: Props) {
                 >
                     Update Mod
                 </Button>
+                <Button
+                    style={{float: "right"}}
+                    variant="light"
+                    color="gray"
+                    onClick={() => {
+                        setName(mod.name)
+                        setDownloadLink(mod.downloadLink)
+                        setType(mod.type)
+                        setRequires(mod.requires)
+                        setIncompatible(mod.incompatible)
+                        setRequired(mod.required)
+                        setDefaultActivated(mod.defaultActivated)
+                        setOpened(false)
+                    }}
+                >
+                    Discard
+                </Button>
             </Modal>
             <div style={{display: "flex", width: "80%", margin: "auto"}}>
                 <Text style={{margin: "auto", overflowWrap: "anywhere"}}>{name}</Text>
@@ -201,7 +221,7 @@ export function ModDetailsEditor({mod, openPopUp}: Props) {
                         }}
                         variant="light"
                     >
-                        <Edit />
+                        <Edit/>
                     </Button>
                     <Space w="xs"/>
                     <Button
@@ -211,7 +231,7 @@ export function ModDetailsEditor({mod, openPopUp}: Props) {
                         variant="light"
                         color="red"
                     >
-                        <TrashX />
+                        <TrashX/>
                     </Button>
                 </div>
             </div>
