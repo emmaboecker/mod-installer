@@ -22,9 +22,6 @@ export class Installer {
     appStateContext: AppStateContextProps
     zip: JSZip
 
-    installingDir?: FileSystemDirectoryHandle
-    installAutomatically?: boolean
-
     constructor(
         mods: Mod[],
         modInstallStatesContext: InstallStateContextProps,
@@ -56,7 +53,6 @@ export class Installer {
     async prepareInstallation(installType: InstallType) {
         switch (installType) {
             case InstallType.MINECRAFT_LAUNCHER:
-                this.installingDir = await this.minecraftDir.getDirectoryHandle(this.profileContext.modProfile!!.id, {create: true})
                 await installVanillaLauncher(
                     this.mods,
                     this.minecraftDir,
@@ -64,20 +60,22 @@ export class Installer {
                 )
                 break
             case InstallType.MULTIMC:
-                const dir = await this.minecraftDir.getDirectoryHandle("instances")
-                const instanceDir = await dir.getDirectoryHandle(this.profileContext.modProfile!!.id, {create: true})
-                this.installingDir = await instanceDir.getDirectoryHandle(".minecraft", {create: true})
                 await createInstanceWithFabric(this.minecraftDir, this.profileContext)
                 break
         }
     }
 
     async installInMultiMc(mod: Mod): Promise<ModInstallState> {
-        return installMod(this.installingDir ?? this.minecraftDir, this.profileContext.modProfile!!, mod, this.errorContext.setError)
+        const dir = await this.minecraftDir.getDirectoryHandle("instances")
+        const instanceDir = await dir.getDirectoryHandle(this.profileContext.modProfile!!.id, {create: true})
+        const installingDir = await instanceDir.getDirectoryHandle(".minecraft", {create: true})
+
+        return installMod(installingDir, this.profileContext.modProfile!!, mod, this.errorContext.setError)
     }
 
     async installInMinecraftLauncher(mod: Mod): Promise<ModInstallState> {
-        return installMod(this.installingDir ?? this.minecraftDir, this.profileContext.modProfile!!, mod, this.errorContext.setError)
+        const installingDir = await this.minecraftDir.getDirectoryHandle(this.profileContext.modProfile!!.id, {create: true})
+        return installMod(installingDir, this.profileContext.modProfile!!, mod, this.errorContext.setError)
     }
 
     isDone(newMap: Map<Mod, ModInstallState>): boolean {
@@ -103,7 +101,7 @@ export class Installer {
             }
         }
         if (this.isDone(newMap)) {
-            if (!this.installAutomatically) {
+            if (!this.appStateContext.useAutomaticInstaller) {
                 this.zip.generateAsync({type: "blob"}).then(blob => {
                     const link = document.createElement('a');
                     const url = URL.createObjectURL(blob)
