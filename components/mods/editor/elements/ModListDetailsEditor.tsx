@@ -32,6 +32,7 @@ export function ModListDetailsEditor() {
                 }
             })
         }
+        modEditorContext.modProfile.mods = mods
     }
 
     return (
