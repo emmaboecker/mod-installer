@@ -1,5 +1,5 @@
 import {ScrollArea, Text, useMantineTheme} from "@mantine/core";
-import React, {Dispatch, SetStateAction} from "react";
+import React from "react";
 import {Mod} from "../../../types/modProfile";
 import {useProfileContext} from "../../../context/ProfileContextProvider";
 import {sortMods} from "../../../lib/install/sortMods";
@@ -18,35 +18,30 @@ export function ModSelectionContainer({mods}: ModSelectionContainerProps) {
     const modsSorted = sortMods(mods)
     const elements: React.ReactNode[] = []
 
-    function getElementsForMods(mods: Mod[], modStates: Map<Mod, boolean>, setModStates: Dispatch<SetStateAction<Map<Mod, boolean>>>) {
-        const modElements: React.ReactNode[] = []
-
-        mods.forEach(value => {
-            let active = modStates.get(value)
-            modElements.push((
-                <div style={{
-                    width: "90%",
-                    margin: "1.2vmin",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center"
-                }}
-                >
-                    <Text color={theme.white} style={{fontWeight: "bold"}}>{value.name}</Text>
-                    <SelectButton mod={value} modStates={modStates} setModStates={setModStates} active={active!!}
-                                  required={value.required}/>
-                </div>
-            ))
-        })
-
-        return modElements
-    }
-
     modsSorted.forEach((value, key) => {
         elements.push((
             <>
                 <ModTypeContainer type={key}/>
-                {getElementsForMods(value, profileContext.modStates, profileContext.setModStates)}
+                {
+                    value.map((mod, index) =>
+                        <div
+                            style={{
+                                width: "90%",
+                                margin: "1.2vmin",
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center"
+                            }}
+                            key={index}
+                        >
+                            <Text color={theme.white} style={{fontWeight: "bold"}}>{mod.name}</Text>
+                            <SelectButton mod={mod} modStates={profileContext.modStates}
+                                          setModStates={profileContext.setModStates}
+                                          active={profileContext.modStates.get(mod)!!}
+                                          required={mod.required}/>
+                        </div>
+                    )
+                }
             </>
         ))
     })

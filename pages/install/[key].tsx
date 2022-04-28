@@ -4,7 +4,7 @@ import {SelectModsPage} from "../../components/pages/selectMods/SelectModsPage";
 import {DropMinecraftFolderPage} from "../../components/pages/drop/DropMinecraftFolderPage";
 import {InstallingModsPage} from "../../components/pages/installing/InstallingModsPage";
 import {InstallationDonePage} from "../../components/pages/done/InstallationDonePage";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {ProfileContextProvider} from "../../context/ProfileContextProvider";
 import {ModProfile} from "../../types/modProfile";
 import {GetServerSideProps} from "next";
@@ -21,48 +21,56 @@ export default function InstallPage({modProfile, allowUserModLists}: Props) {
 
     const current = appState.appState;
 
-    const supported = typeof FileSystemHandle !== "undefined"
+    const [supported, setSupported] = useState<boolean>()
+
+    useEffect(() => {
+        setSupported(typeof FileSystemHandle !== "undefined")
+    }, [])
+
     return (
         <>
             <Head>
                 <title>{modProfile?.name}</title>
-                <meta name="description" content={`Automatic Installer for Fabric Mods: ${modProfile?.description}`} />
-                <meta property="og:title" content={`${modProfile?.name}: Online Installer`} />
-                <meta name="og:description" content={`Automatic Installer for Fabric Mods: ${modProfile?.description}`} />
+                <meta name="description" content={`Automatic Installer for Fabric Mods: ${modProfile?.description}`}/>
+                <meta property="og:title" content={`${modProfile?.name}: Online Installer`}/>
+                <meta name="og:description"
+                      content={`Automatic Installer for Fabric Mods: ${modProfile?.description}`}/>
             </Head>
             <ProfileContextProvider modProfile={modProfile}>
-                <Center style={{height: "100%"}}>
-                    <Stepper
-                        active={current}
-                        onStepClick={idx => appState.setAppState(idx)}
-                        style={{marginTop: "2vmin", width: "70%"}}
-                        breakpoint="sm"
-                        color="violet"
-                    >
-                        <Stepper.Step label="Select Mods" allowStepSelect={current > 0}>
-                            <Center style={{height: "100%"}}>
-                                <SelectModsPage showVerify={allowUserModLists}/>
-                            </Center>
-                        </Stepper.Step>
-                        {supported &&
-                            <Stepper.Step
-                                label="Find Minecraft" allowStepSelect={current > 1}>
+                {supported !== undefined &&
+                    <Center style={{height: "100%"}}>
+                        <Stepper
+                            active={current}
+                            onStepClick={idx => appState.setAppState(idx)}
+                            style={{marginTop: "2vmin", width: "70%"}}
+                            breakpoint="sm"
+                            color="violet"
+                        >
+                            <Stepper.Step label="Select Mods" allowStepSelect={current > 0}>
                                 <Center style={{height: "100%"}}>
-                                    <DropMinecraftFolderPage/>
+                                    <SelectModsPage showVerify={allowUserModLists}/>
                                 </Center>
                             </Stepper.Step>
-                        }
-                        <Stepper.Step label={appState.useAutomaticInstaller ? "Install" : "Download ZIP"}
-                                      allowStepSelect={current > 2}>
-                            <Center style={{height: "100%"}}>
-                                <InstallingModsPage/>
-                            </Center>
-                        </Stepper.Step>
-                        <Stepper.Completed>
-                            <InstallationDonePage/>
-                        </Stepper.Completed>
-                    </Stepper>
-                </Center>
+                            {supported &&
+                                <Stepper.Step
+                                    label="Find Minecraft" allowStepSelect={current > 1}>
+                                    <Center style={{height: "100%"}}>
+                                        <DropMinecraftFolderPage/>
+                                    </Center>
+                                </Stepper.Step>
+                            }
+                            <Stepper.Step label={appState.useAutomaticInstaller ? "Install" : "Download ZIP"}
+                                          allowStepSelect={current > 2}>
+                                <Center style={{height: "100%"}}>
+                                    <InstallingModsPage/>
+                                </Center>
+                            </Stepper.Step>
+                            <Stepper.Completed>
+                                <InstallationDonePage/>
+                            </Stepper.Completed>
+                        </Stepper>
+                    </Center>
+                }
             </ProfileContextProvider>
         </>
     )
