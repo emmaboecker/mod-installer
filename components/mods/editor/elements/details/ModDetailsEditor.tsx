@@ -1,6 +1,6 @@
 import {useModDetailsContext} from "./ModListDetailsEditor";
 import {Button, Center, Modal, MultiSelect, Space, Switch, Text, TextInput} from "@mantine/core";
-import {Mod} from "../../../../types/modProfile";
+import {Mod} from "../../../../../types/modProfile";
 import {useEffect, useState} from "react";
 import {Edit, TrashX} from "tabler-icons-react";
 

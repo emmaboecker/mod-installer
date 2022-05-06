@@ -1,5 +1,5 @@
 import {Button, Modal, Space, Text, TextInput} from "@mantine/core";
-import {Server} from "../../../../types/modProfile";
+import {Server} from "../../../../../types/modProfile";
 import {useEffect, useState} from "react";
 import {Edit, TrashX} from "tabler-icons-react";
 import {useServerDetailsContext} from "./ServerListDetailsEditor";
@@ -27,6 +27,9 @@ export function ServerDetailsEditor({server, openPopUp}: Props) {
             <Modal
                 opened={opened}
                 onClose={() => setOpened(false)}
+                withCloseButton={false}
+                closeOnClickOutside={false}
+                closeOnEscape={false}
                 title={name}
             >
                 <TextInput
@@ -64,6 +67,18 @@ export function ServerDetailsEditor({server, openPopUp}: Props) {
                     }}
                 >
                     Update Server
+                </Button>
+                <Button
+                    style={{float: "right"}}
+                    variant="light"
+                    color="gray"
+                    onClick={() => {
+                        setName(server.name)
+                        setIp(server.ip)
+                        setOpened(false)
+                    }}
+                >
+                    Discard
                 </Button>
             </Modal>
             <div style={{display: "flex", width: "80%", margin: "auto"}}>

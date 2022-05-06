@@ -1,10 +1,12 @@
-import React, {Dispatch, SetStateAction, useContext, useState} from "react";
-import {Server} from "../../../../types/modProfile";
-import {useModEditorContext} from "../ModEditor";
+import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
+import {Mod, Server} from "../../../../../types/modProfile";
+import {useModEditorContext} from "../../ModEditor";
 import {Box, Button, Center, Space, Text, Title, useMantineTheme} from "@mantine/core";
 import {Plus} from "tabler-icons-react";
-import {cloneList} from "../../../../lib/cloneList";
+import {cloneList} from "../../../../../lib/cloneList";
 import {ServerDetailsEditor} from "./ServerDetailsEditor";
+import {useListState} from "@mantine/hooks";
+import {UseListStateHandler} from "@mantine/hooks/lib/use-list-state/use-list-state";
 
 type ContextProps = {
     servers: Server[]
@@ -15,26 +17,23 @@ const ServerDetailsContext = React.createContext({} as ContextProps)
 
 export function ServerListDetailsEditor() {
     const modEditorContext = useModEditorContext()
-    const [servers, setServers] = useState(modEditorContext.modProfile.servers ?? [])
+    const [servers, serversHandlers] = useListState(modEditorContext.modProfile.servers)
 
-    const [newServer, setNewServer] = useState(undefined as undefined | Server)
+    const [newServer, setNewServer] = useState<Server>()
 
     const theme = useMantineTheme()
 
     function updateServer(server: Server, newServer?: Server) {
-        const newServers: Server[] = []
-        servers.forEach(value => {
-            if (value !== server) {
-                newServers.push(value)
-            } else {
-                if (newServer) {
-                    newServers.push(newServer)
-                }
-            }
-        })
-        modEditorContext.modProfile.servers = newServers
-        setServers(newServers)
+        if (newServer) {
+            serversHandlers.applyWhere( (s) => s === server, () => newServer)
+        } else {
+            serversHandlers.remove(servers.indexOf(server))
+        }
     }
+
+    useEffect(() => {
+        modEditorContext.modProfile.servers = servers
+    }, [modEditorContext.modProfile, servers])
 
     return (
         <ServerDetailsContext.Provider value={{servers, updateServer}}>
@@ -53,7 +52,7 @@ export function ServerListDetailsEditor() {
                     </Text>
                 </Center>
                 <Space h="md"/>
-                {getEditors(servers, newServer, setServers, setNewServer)}
+                {getEditors(servers, newServer, serversHandlers, setNewServer)}
             </Box>
         </ServerDetailsContext.Provider>
     )
@@ -63,7 +62,7 @@ export function useServerDetailsContext() {
     return useContext(ServerDetailsContext)
 }
 
-function getEditors(servers: Server[], newServer: Server | undefined, setServers: Dispatch<SetStateAction<Server[]>>, setNewServer: Dispatch<SetStateAction<Server | undefined>>) {
+function getEditors(servers: Server[], newServer: Server | undefined, serversHandlers: UseListStateHandler<Server>, setNewServer: Dispatch<SetStateAction<Server | undefined>>) {
     const elements: React.ReactNode[] = []
 
     servers.forEach(value => {
@@ -85,9 +84,7 @@ function getEditors(servers: Server[], newServer: Server | undefined, setServers
                             name: "New Server",
                             ip: "stckoverflw.net"
                         } as Server
-                        const newServers = cloneList(servers)
-                        newServers.push(newServer)
-                        setServers(newServers)
+                        serversHandlers.append(newServer)
                         setNewServer(newServer)
                     }}
                 >

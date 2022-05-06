@@ -6,13 +6,13 @@ import {Role} from "../../../types/role";
 import {Grid, SimpleGrid, Space} from "@mantine/core";
 import {UpdateModListButton} from "./elements/UpdateModListButton";
 import {ModListNameEditor} from "./elements/ModListNameEditor";
-import {ModListDetailsEditor} from "./elements/ModListDetailsEditor";
+import {ModListDetailsEditor} from "./elements/details/ModListDetailsEditor";
 import {ModListIconEditor} from "./elements/ModListIconEditor";
 import {ModListMinecraftVersionEditor} from "./elements/ModListMinecraftVersionEditor";
 import {ModListVerifiedEditor} from "./elements/ModListVerifiedEditor";
 import {ModListLauncherNameEditor} from "./elements/ModListLauncherNameEditor";
 import {GoHomeButton} from "../../navigation/GoHomeButton";
-import {ServerListDetailsEditor} from "./elements/ServerListDetailsEditor";
+import {ServerListDetailsEditor} from "./elements/details/ServerListDetailsEditor";
 import {ModListDescriptionEditor} from "./elements/ModListDescriptionEditor";
 
 type Props = {

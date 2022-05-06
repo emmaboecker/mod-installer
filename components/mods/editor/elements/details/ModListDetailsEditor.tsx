@@ -1,6 +1,6 @@
-import React, {Dispatch, SetStateAction, useContext, useState} from "react";
-import {Mod} from "../../../../types/modProfile";
-import {useModEditorContext} from "../ModEditor";
+import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
+import {Mod} from "../../../../../types/modProfile";
+import {useModEditorContext} from "../../ModEditor";
 import {ModDetailsEditor} from "./ModDetailsEditor";
 import {Box, Button, Center, Space, Title, useMantineTheme} from "@mantine/core";
 import {Plus} from "tabler-icons-react";
@@ -18,22 +18,21 @@ export function ModListDetailsEditor() {
     const modEditorContext = useModEditorContext()
     const [mods, modsHandlers] = useListState(modEditorContext.modProfile.mods)
 
-    const [newMod, setNewMod] = useState(undefined as undefined | Mod)
+    const [newMod, setNewMod] = useState<Mod>()
 
     const theme = useMantineTheme()
 
     function updateMod(mod: Mod, newMod?: Mod) {
         if (newMod) {
-            modsHandlers.applyWhere( (m) => m === mod, () => newMod)
+            modsHandlers.applyWhere((m) => m === mod, () => newMod)
         } else {
-            mods.forEach((value, index) => {
-                if (value === mod) {
-                    modsHandlers.remove(index)
-                }
-            })
+            modsHandlers.remove(mods.indexOf(mod))
         }
-        modEditorContext.modProfile.mods = mods
     }
+
+    useEffect(() => {
+        modEditorContext.modProfile.mods = mods
+    }, [modEditorContext.modProfile, mods])
 
     return (
         <ModDetailsContext.Provider value={{mods, updateMod}}>
@@ -55,7 +54,9 @@ export function useModDetailsContext() {
 function getEditors(mods: Mod[], newMod: Mod | undefined, modsHandlers: UseListStateHandler<Mod>, setNewMod: Dispatch<SetStateAction<Mod | undefined>>) {
     const elements: React.ReactNode[] = []
 
+
     mods.forEach(value => {
+        console.log(value)
         elements.push(
             <>
                 <ModDetailsEditor mod={value} openPopUp={value === newMod}/>
@@ -63,6 +64,7 @@ function getEditors(mods: Mod[], newMod: Mod | undefined, modsHandlers: UseListS
             </>
         )
     })
+
 
     elements.push(
         <>
