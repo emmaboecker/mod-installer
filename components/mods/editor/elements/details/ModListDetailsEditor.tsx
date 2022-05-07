@@ -54,20 +54,18 @@ export function useModDetailsContext() {
 function getEditors(mods: Mod[], newMod: Mod | undefined, modsHandlers: UseListStateHandler<Mod>, setNewMod: Dispatch<SetStateAction<Mod | undefined>>) {
     const elements: React.ReactNode[] = []
 
-
-    mods.forEach(value => {
-        console.log(value)
-        elements.push(
-            <>
-                <ModDetailsEditor mod={value} openPopUp={value === newMod}/>
+    elements.push(
+        mods.map((value, index) =>
+            <div key={index}>
+                <ModDetailsEditor mod={value} openPopUp={value === newMod} key={index}/>
                 <Space h="md"/>
-            </>
+            </div>
         )
-    })
+    )
 
 
     elements.push(
-        <>
+        <div key={elements.length}>
             <Center>
                 <Button
                     variant="light"
@@ -86,7 +84,7 @@ function getEditors(mods: Mod[], newMod: Mod | undefined, modsHandlers: UseListS
                 </Button>
             </Center>
             <Space h="md"/>
-        </>
+        </div>
     )
 
 

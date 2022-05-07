@@ -1,9 +1,8 @@
 import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
-import {Mod, Server} from "../../../../../types/modProfile";
+import {Server} from "../../../../../types/modProfile";
 import {useModEditorContext} from "../../ModEditor";
 import {Box, Button, Center, Space, Text, Title, useMantineTheme} from "@mantine/core";
 import {Plus} from "tabler-icons-react";
-import {cloneList} from "../../../../../lib/cloneList";
 import {ServerDetailsEditor} from "./ServerDetailsEditor";
 import {useListState} from "@mantine/hooks";
 import {UseListStateHandler} from "@mantine/hooks/lib/use-list-state/use-list-state";
@@ -25,7 +24,7 @@ export function ServerListDetailsEditor() {
 
     function updateServer(server: Server, newServer?: Server) {
         if (newServer) {
-            serversHandlers.applyWhere( (s) => s === server, () => newServer)
+            serversHandlers.applyWhere((s) => s === server, () => newServer)
         } else {
             serversHandlers.remove(servers.indexOf(server))
         }
@@ -65,17 +64,18 @@ export function useServerDetailsContext() {
 function getEditors(servers: Server[], newServer: Server | undefined, serversHandlers: UseListStateHandler<Server>, setNewServer: Dispatch<SetStateAction<Server | undefined>>) {
     const elements: React.ReactNode[] = []
 
-    servers.forEach(value => {
-        elements.push(
-            <>
+    elements.push(
+        servers.map((value, index) =>
+            <div key={index}>
                 <ServerDetailsEditor server={value} openPopUp={value === newServer}/>
                 <Space h="md"/>
-            </>
+            </div>
         )
-    })
+    )
+
 
     elements.push(
-        <>
+        <div key={elements.length}>
             <Center>
                 <Button
                     variant="light"
@@ -92,7 +92,7 @@ function getEditors(servers: Server[], newServer: Server | undefined, serversHan
                 </Button>
             </Center>
             <Space h="md"/>
-        </>
+        </div>
     )
 
 
