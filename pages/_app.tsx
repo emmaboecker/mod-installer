@@ -1,5 +1,5 @@
 import '../styles/globals.css'
-import type {AppProps, NextWebVitalsMetric} from 'next/app'
+import type {AppProps} from 'next/app'
 import {MantineProvider, MantineThemeOverride} from "@mantine/core";
 import React, {Dispatch, SetStateAction, useContext, useState} from "react";
 import {Footer} from "../components/Footer/Footer";
@@ -8,10 +8,6 @@ import {ErrorContextProvider} from "../context/ErrorContextProvider";
 import Head from "next/head";
 import {NotificationsProvider} from '@mantine/notifications';
 import {SessionProvider} from "next-auth/react"
-
-export function reportWebVitals(metric: NextWebVitalsMetric) {
-    console.log(metric)
-}
 
 const themeOverride: MantineThemeOverride = {
     colorScheme: "dark",
