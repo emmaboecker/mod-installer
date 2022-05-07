@@ -6,6 +6,7 @@ import {Plus} from "tabler-icons-react";
 import {ServerDetailsEditor} from "./ServerDetailsEditor";
 import {useListState} from "@mantine/hooks";
 import {UseListStateHandler} from "@mantine/hooks/lib/use-list-state/use-list-state";
+import {makeId} from "../../../../../lib/makeId";
 
 type ContextProps = {
     servers: Server[]
@@ -65,8 +66,8 @@ function getEditors(servers: Server[], newServer: Server | undefined, serversHan
     const elements: React.ReactNode[] = []
 
     elements.push(
-        servers.map((value, index) =>
-            <div key={index}>
+        servers.map((value ) =>
+            <div key={makeId(12)}>
                 <ServerDetailsEditor server={value} openPopUp={value === newServer}/>
                 <Space h="md"/>
             </div>
@@ -75,7 +76,7 @@ function getEditors(servers: Server[], newServer: Server | undefined, serversHan
 
 
     elements.push(
-        <div key={elements.length}>
+        <div key={"add server"}>
             <Center>
                 <Button
                     variant="light"

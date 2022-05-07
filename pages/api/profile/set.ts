@@ -3,7 +3,7 @@ import clientPromise from "../../../lib/mongodb";
 import {getSession} from "next-auth/react";
 import {ModProfile} from "../../../types/modProfile";
 import {Role} from "../../../types/role";
-import {makeid} from "../../../lib/makeid";
+import {makeId} from "../../../lib/makeId";
 
 export default async function handler(
     req: NextApiRequest,
@@ -44,7 +44,7 @@ export default async function handler(
 
     if (!document) {
         if (session.user.role !== Role.ADMIN) {
-            profile._id = makeid(24)
+            profile._id = makeId(24)
         }
     } else {
         if (document.creator != session.user.id && session.user.role !== Role.ADMIN) {

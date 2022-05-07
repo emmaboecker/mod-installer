@@ -6,6 +6,7 @@ import {Box, Button, Center, Space, Title, useMantineTheme} from "@mantine/core"
 import {Plus} from "tabler-icons-react";
 import {useListState} from "@mantine/hooks";
 import {UseListStateHandler} from "@mantine/hooks/lib/use-list-state/use-list-state";
+import {makeId} from "../../../../../lib/makeId";
 
 type ContextProps = {
     mods: Mod[]
@@ -56,7 +57,7 @@ function getEditors(mods: Mod[], newMod: Mod | undefined, modsHandlers: UseListS
 
     elements.push(
         mods.map((value, index) =>
-            <div key={index}>
+            <div key={makeId(12)}>
                 <ModDetailsEditor mod={value} openPopUp={value === newMod} key={index}/>
                 <Space h="md"/>
             </div>
@@ -65,7 +66,7 @@ function getEditors(mods: Mod[], newMod: Mod | undefined, modsHandlers: UseListS
 
 
     elements.push(
-        <div key={elements.length}>
+        <div key={"add mod"}>
             <Center>
                 <Button
                     variant="light"
