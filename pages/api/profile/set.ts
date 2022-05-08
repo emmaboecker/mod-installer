@@ -74,6 +74,7 @@ export default async function handler(
     // @ts-ignore
     await collection.insertOne({
         _id: profile._id,
+        id: profile.id,
         name: profile.name,
         profileName: profile.profileName,
         creator: profile.creator,
