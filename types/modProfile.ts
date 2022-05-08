@@ -10,8 +10,14 @@ export type ModProfile = {
     profileName: string
     mods: Mod[]
     servers: Server[]
+    loader?: Loader,
     // Used for changing key in the database
     oldkey?: string
+}
+
+export enum Loader {
+    FABRIC,
+    QUILT
 }
 
 export type Mod = {

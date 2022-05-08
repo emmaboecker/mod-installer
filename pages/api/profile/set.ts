@@ -1,7 +1,7 @@
 import type {NextApiRequest, NextApiResponse} from 'next'
 import clientPromise from "../../../lib/mongodb";
 import {getSession} from "next-auth/react";
-import {Mod, ModProfile, Server} from "../../../types/modProfile";
+import {Loader, Mod, ModProfile, Server} from "../../../types/modProfile";
 import {Role} from "../../../types/role";
 import {makeId} from "../../../lib/makeId";
 
@@ -81,6 +81,7 @@ export default async function handler(
         icon: profile.icon,
         minecraftVersion: profile.minecraftVersion,
         verified: profile.verified,
+        loader: profile.loader ?? Loader.FABRIC,
         servers: profile.servers.map(value => ({
             name: value.name,
             ip: value.ip

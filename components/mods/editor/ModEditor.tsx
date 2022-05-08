@@ -14,6 +14,7 @@ import {ModListLauncherNameEditor} from "./elements/ModListLauncherNameEditor";
 import {GoHomeButton} from "../../navigation/GoHomeButton";
 import {ServerListDetailsEditor} from "./elements/details/ServerListDetailsEditor";
 import {ModListDescriptionEditor} from "./elements/ModListDescriptionEditor";
+import {ModListLoaderEditor} from "./elements/ModListLoaderEditor";
 
 type Props = {
     modProfile: ModProfile
@@ -29,7 +30,7 @@ export function ModEditor({modProfile, setModProfile}: Props) {
         return (
             <ModEditorContext.Provider value={{modProfile, setModProfile}}>
                 <div style={{position: "fixed", left: "3%", top: "3%"}}>
-                    <GoHomeButton />
+                    <GoHomeButton/>
                 </div>
                 <Grid style={{width: "80%", margin: "auto"}}>
                     <Grid.Col span={8}>
@@ -45,6 +46,7 @@ export function ModEditor({modProfile, setModProfile}: Props) {
                             <ModListLauncherNameEditor/>
                             <ModListIconEditor/>
                             <ModListMinecraftVersionEditor/>
+                            <ModListLoaderEditor/>
                         </SimpleGrid>
                     </Grid.Col>
                     <Space w="xl"/>

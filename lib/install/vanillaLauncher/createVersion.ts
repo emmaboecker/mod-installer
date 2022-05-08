@@ -1,5 +1,5 @@
-import {ModProfile} from "../../../types/modProfile";
-import {getFabricLibraries} from "../../fabricLibraries";
+import {Loader, ModProfile} from "../../../types/modProfile";
+import {getFabricLibraries, getQuiltLibraries} from "../../fetchLibraries";
 
 export async function createVersion(dir: FileSystemDirectoryHandle, profile: ModProfile) {
     const versionDir = await (await dir.getDirectoryHandle(`versions`, {create: true})).getDirectoryHandle(profile.id, {create: true})
@@ -20,7 +20,7 @@ export async function createVersion(dir: FileSystemDirectoryHandle, profile: Mod
                 "-DFabricMcEmu= net.minecraft.client.main.Main"
             ]
         },
-        libraries: (await getFabricLibraries(profile))
+        libraries: (profile.loader === Loader.QUILT ? await getQuiltLibraries(profile) : await getFabricLibraries(profile))
     })))
     await writeable.close()
 }

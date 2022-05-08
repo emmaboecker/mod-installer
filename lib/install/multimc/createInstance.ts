@@ -1,6 +1,6 @@
 import {ProfileContextProps} from "../../../context/ProfileContextProvider";
 import {getDat} from "../serverDat";
-import {ModProfile} from "../../../types/modProfile";
+import {Loader, ModProfile} from "../../../types/modProfile";
 
 export async function createInstanceWithFabric(multimcDir: FileSystemDirectoryHandle, profileContext: ProfileContextProps) {
     const instance = await (await multimcDir.getDirectoryHandle("instances", {create: true})).getDirectoryHandle(profileContext.modProfile!!.id, {create: true});
@@ -22,7 +22,12 @@ export async function createInstanceWithFabric(multimcDir: FileSystemDirectoryHa
 }
 
 async function mmcPackData(profile: ModProfile) {
-    const response = await fetch(`https://meta.fabricmc.net/v2/versions/loader/${profile.minecraftVersion}`).then(value => value.json());
+    const response = profile.loader === Loader.QUILT ?
+        await fetch(`https://meta.quiltmc.org/v3/versions/loader/${profile.minecraftVersion}`).then(value => value.json())
+        : await fetch(`https://meta.fabricmc.net/v2/versions/loader/${profile.minecraftVersion}`).then(value => value.json())
+
+    const meta = profile.loader === Loader.QUILT ? response[0] : response.find((value: { loader: { stable: boolean; }; }) => value.loader.stable)
+
     return {
         components: [
             {
@@ -62,15 +67,15 @@ async function mmcPackData(profile: ModProfile) {
                 version: profile.minecraftVersion
             },
             {
-                cachedName: "Fabric Loader",
+                cachedName: profile.loader === Loader.QUILT ? "Quilt Loader" : "Fabric Loader",
                 cachedRequires: [
                     {
                         uid: "net.fabricmc.intermediary"
                     }
                 ],
                 cachedVersion: response[0].loader.version,
-                uid: "net.fabricmc.fabric-loader",
-                version: response[0].loader.version
+                uid: profile.loader === Loader.QUILT ? "org.quiltmc.quilt-loader" : "net.fabricmc.fabric-loader",
+                version: meta.loader.version
             }
         ],
         formatVersion: 1
