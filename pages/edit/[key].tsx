@@ -1,10 +1,11 @@
 import {Dispatch, SetStateAction, useState} from "react";
-import {ModProfile} from "../../types/modProfile";
+import {Mod, ModProfile, Server} from "../../types/modProfile";
 import {GetServerSideProps} from "next";
 import {getSession} from "next-auth/react";
 import {Role} from "../../types/role";
 import Custom404 from "../404";
 import {ModEditor} from "../../components/mods/editor/ModEditor";
+import {makeId} from "../../lib/makeId";
 
 type Props = {
     fetchedProfile?: ModProfile
@@ -27,6 +28,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const session = await getSession(context)
     if (response.status === 200) {
         const profile = (await response.json()) as ModProfile
+
+        profile.mods = profile.mods.map(value => ({
+            id: makeId(12),
+            ...value
+        } as Mod))
+        profile.servers = profile.servers.map(value => ({
+            id: makeId(12),
+            ...value
+        } as Server))
 
         if (session && (session.user.id === profile.creator || session.user.role === Role.ADMIN)) {
             return {props: {fetchedProfile: profile}}

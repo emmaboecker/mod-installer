@@ -15,6 +15,7 @@ export type ModProfile = {
 }
 
 export type Mod = {
+    id?: string
     name: string
     downloadLink: string
     requires?: string[]
@@ -26,6 +27,7 @@ export type Mod = {
 }
 
 export type Server = {
+    id?: string
     name: string
     ip: string
 }

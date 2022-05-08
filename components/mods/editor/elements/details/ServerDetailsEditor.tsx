@@ -1,93 +1,29 @@
-import {Button, Modal, Space, Text, TextInput} from "@mantine/core";
+import {Button, Space, Text} from "@mantine/core";
 import {Server} from "../../../../../types/modProfile";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {Edit, TrashX} from "tabler-icons-react";
 import {useServerDetailsContext} from "./ServerListDetailsEditor";
+import {ServerDetailsModal} from "./ServerDetailsModal";
 
 type Props = {
-    server: Server,
-    openPopUp: boolean
+    server: Server
 }
 
-export function ServerDetailsEditor({server, openPopUp}: Props) {
+export function ServerDetailsEditor({server}: Props) {
     const context = useServerDetailsContext()
 
-    const [opened, setOpened] = useState(openPopUp);
-
-    const [name, setName] = useState(server.name)
-    const [ip, setIp] = useState(server.ip)
-
-    useEffect(() => {
-        setName(server.name)
-        setIp(server.ip)
-    }, [context.servers, server.ip, server.name])
+    const [modalOpen, setModalOpen] = useState(false);
 
     return (
         <>
-            <Modal
-                opened={opened}
-                onClose={() => setOpened(false)}
-                withCloseButton={false}
-                closeOnClickOutside={false}
-                closeOnEscape={false}
-                title={name}
-            >
-                <TextInput
-                    placeholder="Name"
-                    size="md"
-                    description="The Name of this Server"
-                    value={name}
-                    onChange={(event) => {
-                        setName(event.currentTarget.value)
-                    }}
-                    required
-                    autoComplete="off"
-                />
-                <Space h="sm"/>
-                <TextInput
-                    placeholder="Server IP"
-                    size="md"
-                    description="The IP of this Server"
-                    value={ip}
-                    onChange={(event) => {
-                        setIp(event.currentTarget.value)
-                    }}
-                    required
-                    autoComplete="off"
-                />
-                <Space h="md"/>
-                <Button
-                    variant="outline"
-                    onClick={() => {
-                        context.updateServer(server, {
-                            name: name,
-                            ip: ip
-                        })
-                        setOpened(false)
-                    }}
-                >
-                    Update Server
-                </Button>
-                <Button
-                    style={{float: "right"}}
-                    variant="light"
-                    color="gray"
-                    onClick={() => {
-                        setName(server.name)
-                        setIp(server.ip)
-                        setOpened(false)
-                    }}
-                >
-                    Discard
-                </Button>
-            </Modal>
+            <ServerDetailsModal server={server} open={modalOpen} setOpen={setModalOpen} saveButtonText={"Update Server"} />
             <div style={{display: "flex", width: "80%", margin: "auto"}}>
-                <Text style={{margin: "auto", overflowWrap: "anywhere"}}>{name}</Text>
+                <Text style={{margin: "auto", overflowWrap: "anywhere"}}>{server.name}</Text>
                 <Space w="xl"/>
                 <div style={{marginLeft: "auto", display: "flex"}}>
                     <Button
                         onClick={() => {
-                            setOpened(true)
+                            setModalOpen(true)
                         }}
                         variant="light"
                     >

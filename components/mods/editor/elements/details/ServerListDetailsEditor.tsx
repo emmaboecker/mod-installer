@@ -7,6 +7,7 @@ import {ServerDetailsEditor} from "./ServerDetailsEditor";
 import {useListState} from "@mantine/hooks";
 import {UseListStateHandler} from "@mantine/hooks/lib/use-list-state/use-list-state";
 import {makeId} from "../../../../../lib/makeId";
+import {ServerDetailsModal} from "./ServerDetailsModal";
 
 type ContextProps = {
     servers: Server[]
@@ -19,13 +20,17 @@ export function ServerListDetailsEditor() {
     const modEditorContext = useModEditorContext()
     const [servers, serversHandlers] = useListState(modEditorContext.modProfile.servers)
 
-    const [newServer, setNewServer] = useState<Server>()
+    const [modalOpen, setModalOpen] = useState(false)
 
     const theme = useMantineTheme()
 
     function updateServer(server: Server, newServer?: Server) {
         if (newServer) {
-            serversHandlers.applyWhere((s) => s === server, () => newServer)
+            if (servers.includes(newServer)) {
+                serversHandlers.applyWhere((s) => s === server, () => newServer)
+            } else {
+                serversHandlers.append(newServer)
+            }
         } else {
             serversHandlers.remove(servers.indexOf(server))
         }
@@ -52,7 +57,7 @@ export function ServerListDetailsEditor() {
                     </Text>
                 </Center>
                 <Space h="md"/>
-                {getEditors(servers, newServer, serversHandlers, setNewServer)}
+                {getEditors(servers, serversHandlers, modalOpen, setModalOpen)}
             </Box>
         </ServerDetailsContext.Provider>
     )
@@ -62,40 +67,33 @@ export function useServerDetailsContext() {
     return useContext(ServerDetailsContext)
 }
 
-function getEditors(servers: Server[], newServer: Server | undefined, serversHandlers: UseListStateHandler<Server>, setNewServer: Dispatch<SetStateAction<Server | undefined>>) {
-    const elements: React.ReactNode[] = []
-
-    elements.push(
-        servers.map((value ) =>
-            <div key={makeId(12)}>
-                <ServerDetailsEditor server={value} openPopUp={value === newServer}/>
+function getEditors(servers: Server[], serversHandlers: UseListStateHandler<Server>, modalOpen: boolean, setModalOpen: Dispatch<SetStateAction<boolean>>) {
+    return (
+        <>
+            {servers.map((value) =>
+                <div key={value.id}>
+                    <ServerDetailsEditor server={value}/>
+                    <Space h="md"/>
+                </div>
+            )}
+            <ServerDetailsModal server={{
+                id: makeId(12),
+                name: "New Server",
+                ip: "stckoverflw.net"
+            } as Server} open={modalOpen} setOpen={setModalOpen} saveButtonText={"Add Server"}/>
+            <div>
+                <Center>
+                    <Button
+                        variant="light"
+                        onClick={() => {
+                            setModalOpen(true)
+                        }}
+                    >
+                        <Plus/>
+                    </Button>
+                </Center>
                 <Space h="md"/>
             </div>
-        )
+        </>
     )
-
-
-    elements.push(
-        <div key={"add server"}>
-            <Center>
-                <Button
-                    variant="light"
-                    onClick={() => {
-                        const newServer = {
-                            name: "New Server",
-                            ip: "stckoverflw.net"
-                        } as Server
-                        serversHandlers.append(newServer)
-                        setNewServer(newServer)
-                    }}
-                >
-                    <Plus/>
-                </Button>
-            </Center>
-            <Space h="md"/>
-        </div>
-    )
-
-
-    return elements
 }

@@ -7,6 +7,7 @@ import {Plus} from "tabler-icons-react";
 import {useListState} from "@mantine/hooks";
 import {UseListStateHandler} from "@mantine/hooks/lib/use-list-state/use-list-state";
 import {makeId} from "../../../../../lib/makeId";
+import {ModDetailsModal} from "./ModDetailsModal";
 
 type ContextProps = {
     mods: Mod[]
@@ -19,13 +20,17 @@ export function ModListDetailsEditor() {
     const modEditorContext = useModEditorContext()
     const [mods, modsHandlers] = useListState(modEditorContext.modProfile.mods)
 
-    const [newMod, setNewMod] = useState<Mod>()
+    const [modalOpen, setModalOpen] = useState(false)
 
     const theme = useMantineTheme()
 
     function updateMod(mod: Mod, newMod?: Mod) {
         if (newMod) {
-            modsHandlers.applyWhere((m) => m === mod, () => newMod)
+            if (mods.includes(mod)) {
+                modsHandlers.applyWhere((m) => m === mod, () => newMod)
+            } else {
+                modsHandlers.append(newMod)
+            }
         } else {
             modsHandlers.remove(mods.indexOf(mod))
         }
@@ -42,7 +47,7 @@ export function ModListDetailsEditor() {
                     <Title order={3}>Mods</Title>
                 </Center>
                 <Space h="md"/>
-                {getEditors(mods, newMod, modsHandlers, setNewMod)}
+                {getEditors(mods, modsHandlers, modalOpen, setModalOpen)}
             </Box>
         </ModDetailsContext.Provider>
     )
@@ -52,42 +57,35 @@ export function useModDetailsContext() {
     return useContext(ModDetailsContext)
 }
 
-function getEditors(mods: Mod[], newMod: Mod | undefined, modsHandlers: UseListStateHandler<Mod>, setNewMod: Dispatch<SetStateAction<Mod | undefined>>) {
-    const elements: React.ReactNode[] = []
-
-    elements.push(
-        mods.map((value, index) =>
-            <div key={makeId(12)}>
-                <ModDetailsEditor mod={value} openPopUp={value === newMod} key={index}/>
+function getEditors(mods: Mod[], modsHandlers: UseListStateHandler<Mod>, modalOpen: boolean, setModalOpen: Dispatch<SetStateAction<boolean>>) {
+    return (
+        <>
+            {mods.map((value, index) =>
+                <div key={value.id}>
+                    <ModDetailsEditor mod={value} key={index}/>
+                    <Space h="md"/>
+                </div>
+            )}
+            <ModDetailsModal mod={{
+                id: makeId(12),
+                name: "Untitled Mod",
+                type: "untitled",
+                required: false,
+                defaultActivated: false
+            } as Mod} open={modalOpen} setOpen={setModalOpen} saveButtonText={"Add Mod"}/>
+            <div>
+                <Center>
+                    <Button
+                        variant="light"
+                        onClick={() => {
+                            setModalOpen(true)
+                        }}
+                    >
+                        <Plus/>
+                    </Button>
+                </Center>
                 <Space h="md"/>
             </div>
-        )
+        </>
     )
-
-
-    elements.push(
-        <div key={"add mod"}>
-            <Center>
-                <Button
-                    variant="light"
-                    onClick={() => {
-                        const newMod = {
-                            name: "Untitled Mod",
-                            type: "untitled",
-                            required: false,
-                            defaultActivated: false
-                        } as Mod
-                        modsHandlers.append(newMod)
-                        setNewMod(newMod)
-                    }}
-                >
-                    <Plus/>
-                </Button>
-            </Center>
-            <Space h="md"/>
-        </div>
-    )
-
-
-    return elements
 }

@@ -58,9 +58,10 @@ export function ModListContainer({fetchedModProfiles}: Props) {
 function getModContainers(modProfiles: ModProfile[], theme: MantineTheme, notifications: NotificationsContextProps, setModProfiles: Dispatch<SetStateAction<ModProfile[] | undefined>>) {
     const elements = [] as ReactNode[]
 
-    modProfiles.forEach(value => {
-        elements.push(
-            <div>
+
+    elements.push(
+        modProfiles.map(value =>
+            <div key={value._id}>
                 <Box style={{
                     backgroundColor: theme.colors.dark[8],
                     borderRadius: "1vmin",
@@ -129,10 +130,10 @@ function getModContainers(modProfiles: ModProfile[], theme: MantineTheme, notifi
                 </Box>
             </div>
         )
-    })
+    )
     elements.push(
-        <div style={{display: "flex", alignItems: "center"}}>
-            <Link href={"/new"} prefetch passHref>
+        <div style={{display: "flex", alignItems: "center"}} key={"new mod-list"}>
+            <Link href={"/new"} passHref>
                 <Button
                     size="lg"
                 >

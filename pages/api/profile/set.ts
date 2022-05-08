@@ -1,7 +1,7 @@
 import type {NextApiRequest, NextApiResponse} from 'next'
 import clientPromise from "../../../lib/mongodb";
 import {getSession} from "next-auth/react";
-import {ModProfile} from "../../../types/modProfile";
+import {Mod, ModProfile, Server} from "../../../types/modProfile";
 import {Role} from "../../../types/role";
 import {makeId} from "../../../lib/makeId";
 
@@ -27,7 +27,6 @@ export default async function handler(
     }
 
     const collection = (await clientPromise()).db().collection("profiles")
-
 
     let profile = typeof req.body !== "object" ? JSON.parse(req.body) as ModProfile : req.body as ModProfile
     if (!(profile.name && profile.profileName && profile.mods && profile.mods.length > 0 && profile.minecraftVersion)) {
@@ -73,7 +72,31 @@ export default async function handler(
     }
 
     // @ts-ignore
-    await collection.insertOne(profile)
+    await collection.insertOne({
+        _id: profile._id,
+        name: profile.name,
+        profileName: profile.profileName,
+        creator: profile.creator,
+        description: profile.description,
+        icon: profile.icon,
+        minecraftVersion: profile.minecraftVersion,
+        verified: profile.verified,
+        servers: profile.servers.map(value => ({
+            name: value.name,
+            ip: value.ip
+        } as Server)),
+        mods: profile.mods.map(value => ({
+            name: value.name,
+            required: value.required,
+            defaultActivated: value.defaultActivated,
+            downloadLink: value.downloadLink,
+            type: value.type,
+            path: value.path,
+            incompatible: value.incompatible,
+            requires: value.requires
+        } as Mod)),
+        oldkey: profile.oldkey
+    } as ModProfile)
     res.status(200).json(profile)
 }
 
