@@ -4,9 +4,12 @@ import {InstallType, useAppState} from "../../../pages/_app";
 import Head from "next/head";
 import {useEffect, useState} from "react";
 import {Copy} from "tabler-icons-react";
+import {useDragMinecraftFolderContext} from "../../../context/MinecraftFolderStateContextProvider";
 
 export function InstallationDonePage() {
     const profileContext = useProfileContext()
+
+    const minecraftFolderContext = useDragMinecraftFolderContext()
 
     const appState = useAppState()
 
@@ -25,7 +28,9 @@ export function InstallationDonePage() {
                 {!appState.useAutomaticInstaller ? <Explanation/> :
                     <Text size="lg">You may now close this page and
                         launch <b>{profileContext.modProfile?.profileName}</b> from your {
-                            appState.installType === InstallType.MINECRAFT_LAUNCHER ? "Minecraft Launcher" : "MultiMC Launcher"
+                            appState.installType === InstallType.MINECRAFT_LAUNCHER ? "Minecraft Launcher" :
+                                minecraftFolderContext.minecraftDir?.name.toLocaleLowerCase().includes("polymc") ? "PolyMC Launcher" :
+                                    "MultiMC Launcher"
                         }!
                     </Text>
                 }

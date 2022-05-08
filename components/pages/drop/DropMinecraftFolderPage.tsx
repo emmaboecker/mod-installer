@@ -144,15 +144,15 @@ function MultiMCSupport() {
             styles={{body: {pointerEvents: 'none'}}}
             target={
                 <Badge color="gray" onMouseEnter={() => setOpened(true)} onMouseLeave={() => setOpened(false)}>
-                    Are you using MultiMC?
+                    Are you using MultiMC/PolyMC?
                 </Badge>
             }
         >
             <Text>
-                Feel free to find your MultiMC Folder and Drag it onto this website instead, we will create a new Instance for you.
+                Feel free to find your MultiMC/PolyMC Folder and drag it onto this website instead, we will create a new Instance for you.
             </Text>
             <Text style={{fontWeight: "bold"}}>
-                Make sure your MultiMC Launcher is closed!
+                Make sure your MultiMC/PolyMC Launcher is closed!
             </Text>
         </Popover>
     );

@@ -15,7 +15,7 @@ export async function handleDrop(event: DragEvent, setHoveringWithFile: Dispatch
         if (handle.kind === "directory") {
             if (handle.name === ".minecraft") {
                 await initializeInstalling(InstallType.MINECRAFT_LAUNCHER, handle)
-            } else if (handle.name.toLocaleLowerCase().includes("multimc")) {
+            } else if (handle.name.toLocaleLowerCase().includes("multimc") || handle.name.toLocaleLowerCase().includes("polymc")) {
                 await initializeInstalling(InstallType.MULTIMC, handle)
             } else {
                 setError("That doesn't look like a directory of an launcher we support")
