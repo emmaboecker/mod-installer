@@ -27,8 +27,8 @@ export function ModListLoaderEditor() {
 
     return (
         <Select
-            label="Minecraft Version"
-            description="The Minecraft Version of your Mod-List. All your configured Mods should be compatible with this Version. The Version should be valid."
+            label="Mod Loader"
+            description="The Mod Loader that should be installed on the user's pc"
             size="md"
             itemComponent={SelectItem}
             searchable
