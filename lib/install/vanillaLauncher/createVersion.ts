@@ -10,7 +10,7 @@ export async function createVersion(dir: FileSystemDirectoryHandle, profile: Mod
         id: profile.id,
         inheritsFrom: profile.minecraftVersion,
         type: "release",
-        mainClass: "net.fabricmc.loader.impl.launch.knot.KnotClient",
+        mainClass: profile.loader == Loader.QUILT ? "net.fabricmc.loader.launch.knot.KnotClient" : "net.fabricmc.loader.impl.launch.knot.KnotClient",
         arguments: {
             game: [
                 "--gameDir",
