@@ -8,7 +8,8 @@ export async function installMod(dir: FileSystemDirectoryHandle, profile: ModPro
     const response = await fetch(mod.downloadLink, {mode: "cors"})
 
     if (response.status === 200) {
-        const handle = await modsDir.getFileHandle(mod.path, {create: true})
+        const split = mod.downloadLink.split("/")
+        const handle = await modsDir.getFileHandle(split[split.length - 1], {create: true})
         // @ts-ignore
         const writableStream = await handle.createWritable()
         await response.body!!.pipeTo(writableStream)
