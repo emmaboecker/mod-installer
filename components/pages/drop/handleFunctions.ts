@@ -6,12 +6,11 @@ export async function handleDrop(event: DragEvent, setHoveringWithFile: Dispatch
     event.preventDefault()
     event.stopImmediatePropagation()
     setHoveringWithFile(false)
-    if (event.dataTransfer == null || event.dataTransfer.files.length == 0) return;
-    console.log(event.dataTransfer.files)
+    if (event.dataTransfer == null || event.dataTransfer.items.length == 0) return;
     const item = event.dataTransfer.items[0]
-    if (item.kind === "file") {
+    if (item.kind === "file" || item.kind === "directory") {
         // @ts-ignore
-        const handle = (await item.getAsFileSystemHandle())!!
+        const handle = item.getAsFileSystemHandle !== undefined ? (await item.getAsFileSystemHandle())!! : item as FileSystemDirectoryHandle
         if (handle.kind === "directory") {
             if (handle.name === ".minecraft") {
                 await initializeInstalling(InstallType.MINECRAFT_LAUNCHER, handle)

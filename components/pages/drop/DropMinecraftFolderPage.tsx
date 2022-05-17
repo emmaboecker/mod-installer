@@ -28,6 +28,18 @@ export function DropMinecraftFolderPage() {
         }
     }, [appState, context, context.listenersRegistered, context.shouldUnregister])
 
+    const [appData, setAppData] = useState("%appdata%")
+    const [minecraftFolder, setMinecraftFolder] = useState(".minecraft")
+
+    useEffect(() => {
+        const platform = navigator.platform.toLocaleLowerCase()
+        setAppData(
+            platform.includes("win") ? "%appdata%" : platform.includes("mac") ? "~/Library/Application Support/" : "~"
+        )
+        setMinecraftFolder(
+            platform.includes("mac") ? "minecraft" : ".minecraft"
+        )
+    }, [])
 
     return (
         <>
@@ -54,7 +66,7 @@ export function DropMinecraftFolderPage() {
                 >
                     Yes
                 </Button>
-                <Button style={{float:"right"}} onClick={() => setModalOpened(false)}>
+                <Button style={{float: "right"}} onClick={() => setModalOpened(false)}>
                     No, take me back to the automatic installer
                 </Button>
 
@@ -69,9 +81,10 @@ export function DropMinecraftFolderPage() {
                     marginBottom: "0"
                 }} p="xl">
                     <Group direction="row"><Title>Let&apos;s find Minecraft!</Title><ExplanationVideo/></Group>
-                    <Space h="xs" />
+                    <Space h="xs"/>
                     <Text color="gray">
-                        Type in <b>%appdata%</b> in your <b>File Explorer</b> and drag your <b>.minecraft</b> Folder
+                        Type in <b>{appData}</b> in your <b>File Explorer</b> and drag
+                        your <b>{minecraftFolder}</b> Folder
                         onto this
                         website
                     </Text>
@@ -83,8 +96,15 @@ export function DropMinecraftFolderPage() {
                     <Text color="gray">
                         <b>Make sure your Minecraft Launcher is closed</b>
                     </Text>
-                    <Space h="xs" />
-                    <MultiMCSupport />
+                    <Space h="xs"/>
+                    <div style={{display: "flex"}}>
+                        <div style={{alignSelf: "center"}}>
+                            <MultiMCSupport/>
+                        </div>
+                        <div style={{alignSelf: "flex-end", marginLeft: "auto"}}>
+                            <OpenFileExplorerButton/>
+                        </div>
+                    </div>
                 </Box>
                 <Button
                     onClick={() => setModalOpened(true)}
@@ -94,7 +114,8 @@ export function DropMinecraftFolderPage() {
                     }}
                     color="gray"
                     variant="outline"
-                >No thanks, give me a .zip instead.
+                >
+                    No thanks, give me a .zip instead.
                 </Button>
             </Group>
         </>
@@ -153,7 +174,8 @@ function MultiMCSupport() {
             }
         >
             <Text>
-                Feel free to find your MultiMC/PolyMC Folder and drag it onto this website instead, we will create a new Instance for you.
+                Feel free to find your MultiMC/PolyMC Folder and drag it onto this website instead, we will create a new
+                Instance for you.
             </Text>
             <Text style={{fontWeight: "bold"}}>
                 Make sure your MultiMC/PolyMC Launcher is closed!
@@ -162,3 +184,38 @@ function MultiMCSupport() {
     );
 }
 
+function OpenFileExplorerButton() {
+    const context = useDragMinecraftFolderContext()
+
+    return (
+        <>
+            <Button
+                variant="light"
+                title="Select Minecraft Folder from directory chooser"
+                onClick={async () => {
+                    try {
+                        const fileSystemDirectoryHandle = await window.showDirectoryPicker();
+
+                        context.dragDrop({
+                            dataTransfer: {
+                                // @ts-ignore
+                                items: [fileSystemDirectoryHandle]
+                            },
+                            preventDefault() {
+                            },
+                            stopPropagation() {
+                            },
+                            stopImmediatePropagation() {
+                            }
+                        })
+                    } catch (e) {
+                        return
+                    }
+                }}
+            >
+                Open Directory Picker
+            </Button>
+        </>
+    )
+
+}

@@ -21,6 +21,9 @@
         "incremental": true,
         "typeRoots": [
             "types"
+        ],
+        "types": [
+            "@types/wicg-file-system-access"
         ]
     },
     "include": [
