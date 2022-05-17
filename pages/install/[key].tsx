@@ -6,7 +6,7 @@ import {InstallingModsPage} from "../../components/pages/installing/InstallingMo
 import {InstallationDonePage} from "../../components/pages/done/InstallationDonePage";
 import React, {useEffect, useState} from "react";
 import {ProfileContextProvider} from "../../context/ProfileContextProvider";
-import {ModProfile} from "../../types/modProfile";
+import {Loader, ModProfile} from "../../types/modProfile";
 import {GetServerSideProps} from "next";
 import clientPromise from "../../lib/mongodb";
 import Head from "next/head";
@@ -31,10 +31,10 @@ export default function InstallPage({modProfile, allowUserModLists}: Props) {
         <>
             <Head>
                 <title>{modProfile?.name}</title>
-                <meta name="description" content={`Automatic Installer for Fabric Mods: ${modProfile?.description}`}/>
+                <meta name="description" content={`Automatic Installer for Minecraft Mods: ${modProfile?.description}`}/>
                 <meta property="og:title" content={`${modProfile?.name}: Online Installer`}/>
                 <meta name="og:description"
-                      content={`Automatic Installer for Fabric Mods: ${modProfile?.description}`}/>
+                      content={`Automatic Installer for ${modProfile?.loader === Loader.QUILT ? "Quilt" : "Fabric"} Mods: ${modProfile?.description ?? "No Description Provided"}`}/>
             </Head>
             <ProfileContextProvider modProfile={modProfile}>
                 {supported !== undefined &&
