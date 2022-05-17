@@ -1,14 +1,16 @@
 import {Badge, Box, Button, Group, Modal, Popover, Space, Text, Title, useMantineTheme} from "@mantine/core";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {AppState, useAppState} from "../../../pages/_app";
 import {useDragMinecraftFolderContext} from "../../../context/MinecraftFolderStateContextProvider";
 import Head from "next/head";
+import {useProfileContext} from "../../../context/ProfileContextProvider";
 
 export function DropMinecraftFolderPage() {
     const theme = useMantineTheme();
 
     const appState = useAppState()
     const context = useDragMinecraftFolderContext()
+    const modProfileContext = useProfileContext()
 
     const [modalOpened, setModalOpened] = useState(false);
 
@@ -30,7 +32,7 @@ export function DropMinecraftFolderPage() {
     return (
         <>
             <Head>
-                <title>Let&apos;s find Minecraft!</title>
+                <title>{modProfileContext.modProfile!!.name} | Finding Minecraft</title>
             </Head>
             <Modal
                 opened={modalOpened}
@@ -67,6 +69,7 @@ export function DropMinecraftFolderPage() {
                     marginBottom: "0"
                 }} p="xl">
                     <Group direction="row"><Title>Let&apos;s find Minecraft!</Title><ExplanationVideo/></Group>
+                    <Space h="xs" />
                     <Text color="gray">
                         Type in <b>%appdata%</b> in your <b>File Explorer</b> and drag your <b>.minecraft</b> Folder
                         onto this
@@ -80,6 +83,7 @@ export function DropMinecraftFolderPage() {
                     <Text color="gray">
                         <b>Make sure your Minecraft Launcher is closed</b>
                     </Text>
+                    <Space h="xs" />
                     <MultiMCSupport />
                 </Box>
                 <Button
@@ -143,8 +147,8 @@ function MultiMCSupport() {
             width={512}
             styles={{body: {pointerEvents: 'none'}}}
             target={
-                <Badge color="gray" onMouseEnter={() => setOpened(true)} onMouseLeave={() => setOpened(false)}>
-                    Are you using MultiMC/PolyMC?
+                <Badge py="sm" color="gray" onMouseEnter={() => setOpened(true)} onMouseLeave={() => setOpened(false)}>
+                    <Text size="sm">Are you using MultiMC/PolyMC?</Text>
                 </Badge>
             }
         >
@@ -157,3 +161,4 @@ function MultiMCSupport() {
         </Popover>
     );
 }
+
