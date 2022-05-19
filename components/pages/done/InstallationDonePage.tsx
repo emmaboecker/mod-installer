@@ -5,6 +5,7 @@ import Head from "next/head";
 import {useEffect, useState} from "react";
 import {Copy} from "tabler-icons-react";
 import {useDragMinecraftFolderContext} from "../../../context/MinecraftFolderStateContextProvider";
+import {Loader} from "../../../types/modProfile";
 
 export function InstallationDonePage() {
     const profileContext = useProfileContext()
@@ -57,16 +58,19 @@ function Explanation() {
         const buttons: JSX.Element[] = []
         profileContext.modProfile?.servers.forEach(server => {
             buttons.push(
-                <Button
-                    key={server.name}
-                    leftIcon={<Copy/>}
-                    variant="light"
-                    onClick={() => {
-                        navigator.clipboard.writeText(server.ip)
-                    }}
-                >
-                    {server.ip}
-                </Button>
+                <>
+                    <Button
+                        key={server.name}
+                        leftIcon={<Copy/>}
+                        variant="light"
+                        onClick={() => {
+                            navigator.clipboard.writeText(server.ip)
+                        }}
+                    >
+                        {server.ip}
+                    </Button>
+                    <Space w="md"/>
+                </>
             )
         })
         return buttons
@@ -78,11 +82,16 @@ function Explanation() {
             <Space h="xs"/>
             <Text size="xl">1. Close your Minecraft Launcher, if opened</Text>
             <Text size="xl">
-                2. Download the Fabric Installer from <a href="https://fabricmc.net/use/installer/" target="_blank"
-                                                         rel="noreferrer">here</a>
+                2. Download the {profileContext.modProfile?.loader === Loader.QUILT ? "Quilt" : "Fabric"} Installer from
+                {profileContext.modProfile?.loader === Loader.QUILT ?
+                    <a href="https://quiltmc.org/install/client" target="_blank" rel="noreferrer"> here</a> :
+                    <a href="https://fabricmc.net/use/installer/" target="_blank" rel="noreferrer"> here</a>
+                }
             </Text>
             <Text size="xl">
-                3. Run the Installer and Install Fabric for <b>Minecraft {profileContext.modProfile?.minecraftVersion}</b>
+                3. Run the Installer and
+                Install {profileContext.modProfile?.loader === Loader.QUILT ? "Quilt " : "Fabric "}
+                for <b>Minecraft {profileContext.modProfile?.minecraftVersion}</b>
             </Text>
             <Text size="xl">
                 4. Navigate to <b>{minecraftFolder}</b> in your File Explorer and create a new folder named <b>mods</b>.
@@ -102,7 +111,11 @@ function Explanation() {
                         server list
                     </Text>
                     <Space h="xs"/>
-                    {getServerCopyButtons()}
+                    <div style={{display: "inline-flex"}}>
+                        {
+                            getServerCopyButtons()
+                        }
+                    </div>
                 </>
             }
         </Box>
