@@ -1,4 +1,4 @@
-import {Badge, Box, Button, Group, Modal, Popover, Space, Text, Title, useMantineTheme} from "@mantine/core";
+import {Badge, Box, Button, Divider, Group, Modal, Popover, Space, Text, Title, useMantineTheme} from "@mantine/core";
 import React, {useEffect, useState} from "react";
 import {AppState, useAppState} from "../../../pages/_app";
 import {useDragMinecraftFolderContext} from "../../../context/MinecraftFolderStateContextProvider";
@@ -95,6 +95,12 @@ export function DropMinecraftFolderPage() {
                     </Text>
                     <Text color="gray">
                         <b>Make sure your Minecraft Launcher is closed</b>
+                    </Text>
+                    <Space h="xs" />
+                    <Divider />
+                    <Space h="xs" />
+                    <Text color="gray">
+                        <b>The Directory picker below doesn&apos;t work when using your .minecraft folder, drag it onto this website instead</b>
                     </Text>
                     <Space h="xs"/>
                     <div style={{display: "flex"}}>
