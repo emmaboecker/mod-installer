@@ -5,7 +5,7 @@ import {Box, Button, Center, Space, Text, Title, useMantineTheme} from "@mantine
 import {Plus} from "tabler-icons-react";
 import {ServerDetailsEditor} from "./ServerDetailsEditor";
 import {useListState} from "@mantine/hooks";
-import {UseListStateHandler} from "@mantine/hooks/lib/use-list-state/use-list-state";
+import {UseListStateHandlers} from "@mantine/hooks/lib/use-list-state/use-list-state";
 import {makeId} from "../../../../../lib/makeId";
 import {ServerDetailsModal} from "./ServerDetailsModal";
 
@@ -67,7 +67,7 @@ export function useServerDetailsContext() {
     return useContext(ServerDetailsContext)
 }
 
-function getEditors(servers: Server[], serversHandlers: UseListStateHandler<Server>, modalOpen: boolean, setModalOpen: Dispatch<SetStateAction<boolean>>) {
+function getEditors(servers: Server[], serversHandlers: UseListStateHandlers<Server>, modalOpen: boolean, setModalOpen: Dispatch<SetStateAction<boolean>>) {
     return (
         <>
             {servers.map((value) =>

@@ -5,7 +5,7 @@ import {ModDetailsEditor} from "./ModDetailsEditor";
 import {Box, Button, Center, Space, Title, useMantineTheme} from "@mantine/core";
 import {Plus} from "tabler-icons-react";
 import {useListState} from "@mantine/hooks";
-import {UseListStateHandler} from "@mantine/hooks/lib/use-list-state/use-list-state";
+import {UseListStateHandlers} from "@mantine/hooks/lib/use-list-state/use-list-state";
 import {makeId} from "../../../../../lib/makeId";
 import {ModDetailsModal} from "./ModDetailsModal";
 
@@ -57,7 +57,7 @@ export function useModDetailsContext() {
     return useContext(ModDetailsContext)
 }
 
-function getEditors(mods: Mod[], modsHandlers: UseListStateHandler<Mod>, modalOpen: boolean, setModalOpen: Dispatch<SetStateAction<boolean>>) {
+function getEditors(mods: Mod[], modsHandlers: UseListStateHandlers<Mod>, modalOpen: boolean, setModalOpen: Dispatch<SetStateAction<boolean>>) {
     return (
         <>
             {mods.map((value, index) =>
