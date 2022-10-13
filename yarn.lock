@@ -227,31 +227,31 @@
     react-popper "^2.2.5"
     react-textarea-autosize "^8.3.2"
 
-"@mantine/dropzone@^4.0.4":
+"@mantine/dropzone@4.2.1":
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/@mantine/dropzone/-/dropzone-4.2.1.tgz#42391f296a75b7448e28e4e09031257b1e585d08"
   integrity sha512-MT3BPfw+2MteGTIrm1EoAdKDhpQ5kE5POs87njNWhbav82grE4JHmtCCj8Na4U3+e6O6ic3uh+ofK048lY7aDg==
   dependencies:
     react-dropzone "^11.4.2"
 
-"@mantine/hooks@^4.0.7":
+"@mantine/hooks@4.2.1":
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-4.2.1.tgz#60960c24debaf6c0bd2e51f84ac28abecec534b8"
   integrity sha512-+sg8aBK1IzCLGrtL2PEUp1q2/3blUvxJPoqIE6wwcvtIc7cFYfPWRdFFRtkwJjHQ+KlH6TvCO0Yl7F6FBq7+Rw==
 
-"@mantine/modals@^4.0.4":
+"@mantine/modals@4.2.1":
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/@mantine/modals/-/modals-4.2.1.tgz#9529f10d3227cf0940dcecbc5a767531abc3230c"
   integrity sha512-YqFJcU1raFlLjO6T3PENdXQmiYqGfAqg27bYIhEYciuVIt+UR1eNSPrw0Yj2H2arCVVZ/RUF1CjiFG2lwvwTVw==
 
-"@mantine/next@^4.0.7":
+"@mantine/next@4.2.1":
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/@mantine/next/-/next-4.2.1.tgz#cb3616f26bdf786337333424c29ab4fd4774e98c"
   integrity sha512-AM7Hf9rtBlEv7zRpyVVisuQ0Dc+FuY2rW6y0m19AMZ65Jv/PYDmME35cACqhNHIjRYCzbljaepW2mAym/maapQ==
   dependencies:
     "@mantine/ssr" "4.2.1"
 
-"@mantine/notifications@^4.0.7":
+"@mantine/notifications@4.2.1":
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/@mantine/notifications/-/notifications-4.2.1.tgz#2bff96858bc6357f017439df12165b31d4f395bd"
   integrity sha512-16jqAMwdANexOpVmBFwquP6nAJQPDBWmhEcf6Fm4mFhB8wpBX5nKepUsa+In49CvfPBHMEsROrJ4YqcwoP8Eig==
@@ -296,7 +296,7 @@
     clsx "^1.1.1"
     csstype "3.0.9"
 
-"@next-auth/mongodb-adapter@^1.0.3":
+"@next-auth/mongodb-adapter@1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@next-auth/mongodb-adapter/-/mongodb-adapter-1.0.3.tgz#9ba4daaf9d789bc1eda29bad2ec6aef3330d1bd9"
   integrity sha512-oO8OYjMhYx8s5qsdWWD+yNCqszCO7ewg6UkDhvfY0KhJRbcoOAwOgYYH5Bo4ZGJDqmIw8g6JeGipP7+xLa2Ynw==
@@ -546,7 +546,7 @@
     "@types/node" "*"
     "@types/webidl-conversions" "*"
 
-"@types/wicg-file-system-access@^2020.9.5":
+"@types/wicg-file-system-access@2020.9.5":
   version "2020.9.5"
   resolved "https://registry.yarnpkg.com/@types/wicg-file-system-access/-/wicg-file-system-access-2020.9.5.tgz#4a0c8f3d1ed101525f329e86c978f7735404474f"
   integrity sha512-UYK244awtmcUYQfs7FR8710MJcefL2WvkyHMjA8yJzxd1mo0Gfn88sRZ1Bls7hiUhA2w7ne1gpJ9T5g3G0wOyA==
@@ -1759,7 +1759,7 @@ json5@^1.0.1:
     array-includes "^3.1.4"
     object.assign "^4.1.2"
 
-jszip@^3.7.1:
+jszip@3.9.1:
   version "3.9.1"
   resolved "https://registry.yarnpkg.com/jszip/-/jszip-3.9.1.tgz#784e87f328450d1e8151003a9c67733e2b901051"
   integrity sha512-H9A60xPqJ1CuC4Ka6qxzXZeU8aNmgOeP5IFqwJbQQwtu2EUYxota3LdsiZWplF7Wgd9tkAd0mdu36nceSaPuYw==
@@ -1866,7 +1866,7 @@ mongodb-connection-string-url@^2.5.2:
     "@types/whatwg-url" "^8.2.1"
     whatwg-url "^11.0.0"
 
-mongodb@^4.5.0:
+mongodb@4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-4.5.0.tgz#d74c2008567b606dccef220f62a44cd7b934eb92"
   integrity sha512-A2l8MjEpKojnhbCM0MK3+UOGUSGvTNNSv7AkP1fsT7tkambrkkqN/5F2y+PhzsV0Nbv58u04TETpkaSEdI2zKA==
@@ -1911,7 +1911,7 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
 
-next-auth@^4.10.3:
+next-auth@4.10.3:
   version "4.10.3"
   resolved "https://registry.yarnpkg.com/next-auth/-/next-auth-4.10.3.tgz#0a952dd5004fd2ac2ba414c990922cf9b33951a3"
   integrity sha512-7zc4aXYc/EEln7Pkcsn21V1IevaTZsMLJwapfbnKA4+JY0+jFzWbt5p/ljugesGIrN4VOZhpZIw50EaFZyghJQ==
@@ -2532,7 +2532,7 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
-tabler-icons-react@^1.41.0:
+tabler-icons-react@1.46.0:
   version "1.46.0"
   resolved "https://registry.yarnpkg.com/tabler-icons-react/-/tabler-icons-react-1.46.0.tgz#957215030bd5ce0ce2d2a93ed5e52b85f5ff95f7"
   integrity sha512-tQt686DPfGRXxdCMg63gEO7KP1mcmx0JvzgAq5HKkD3ts9HSL9AAaGAGpa/IJdD0tLaoviegdpv6MOp8DsAr9Q==
