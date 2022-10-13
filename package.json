@@ -9,7 +9,7 @@
         "lint": "next lint"
     },
     "dependencies": {
-        "@mantine/core": "^4.0.7",
+        "@mantine/core": "4.2.12",
         "@mantine/dropzone": "^4.0.4",
         "@mantine/hooks": "^4.0.7",
         "@mantine/modals": "^4.0.4",
