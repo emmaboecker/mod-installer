@@ -18,7 +18,7 @@
         "@next-auth/mongodb-adapter": "1.1.1",
         "jszip": "3.9.1",
         "mongodb": "4.10.0",
-        "next": "12.1.5",
+        "next": "12.3.1",
         "next-auth": "4.14.0",
         "react": "18.1.0",
         "react-dom": "18.1.0",
@@ -29,7 +29,7 @@
         "@types/react": "18.0.8",
         "@types/wicg-file-system-access": "2020.9.5",
         "eslint": "8.25.0",
-        "eslint-config-next": "12.1.5",
+        "eslint-config-next": "12.3.1",
         "typescript": "4.6.3"
     }
 }
