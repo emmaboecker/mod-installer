@@ -16,7 +16,7 @@
         "@mantine/next": "4.2.12",
         "@mantine/notifications": "4.2.12",
         "@next-auth/mongodb-adapter": "1.1.1",
-        "jszip": "3.9.1",
+        "jszip": "3.10.1",
         "mongodb": "4.10.0",
         "next": "12.3.1",
         "next-auth": "4.14.0",
