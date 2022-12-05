@@ -12,7 +12,7 @@
         "@mantine/core": "4.2.12",
         "@mantine/dropzone": "5.5.5",
         "@mantine/hooks": "4.2.12",
-        "@mantine/modals": "4.2.12",
+        "@mantine/modals": "5.9.2",
         "@mantine/next": "4.2.12",
         "@mantine/notifications": "4.2.12",
         "@next-auth/mongodb-adapter": "1.1.1",
