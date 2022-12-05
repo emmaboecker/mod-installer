@@ -185,12 +185,13 @@
   dependencies:
     "@mantine/ssr" "4.2.12"
 
-"@mantine/notifications@4.2.12":
-  version "4.2.12"
-  resolved "https://registry.yarnpkg.com/@mantine/notifications/-/notifications-4.2.12.tgz#914cf8efcae7a897c1075f09a39a730a505a02ed"
-  integrity sha512-Ip+8KxH9P1i8uZnhv2zTU+OFJjYBs3122KnVYy6vLsR83agRuY1KzbxjlOVVmP2Dq5aJX2pvefWWjA++NzhNtA==
+"@mantine/notifications@5.9.2":
+  version "5.9.2"
+  resolved "https://registry.yarnpkg.com/@mantine/notifications/-/notifications-5.9.2.tgz#793caa17616b84e80d2e8029cb3996fde305ff71"
+  integrity sha512-w/7LLH8p6oOPqSZdLIA/Tx7MvJWnVGNW9PB//fN2sc9hbPjI3o9zrYqbvLVFjCTJv7l8olCOHx+wvQKCpIcdqw==
   dependencies:
-    react-transition-group "^4.4.2"
+    "@mantine/utils" "5.9.2"
+    react-transition-group "4.4.2"
 
 "@mantine/ssr@4.2.12":
   version "4.2.12"
@@ -222,6 +223,11 @@
   version "5.5.5"
   resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-5.5.5.tgz#22b412b6e9d78f2515f9f98db3f5ed83deca91ca"
   integrity sha512-nt8+A0N1cV4cJNqlKuXazShoEwqtLohHNKFuywEdF3B6vHWdbY799PbT2WmqGTwNQ+se8y5/nBMmamBZrUN4fg==
+
+"@mantine/utils@5.9.2":
+  version "5.9.2"
+  resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-5.9.2.tgz#d8e3b980de6cd5f7059b149c12d6ce50445b11ba"
+  integrity sha512-dvqqbdrK/nw4stFCXRCn38Ru12RqdWv8uzbywP5dQVCyTw8pW/Cq+T7YCWpbkFcKFea9UhOrPhBygJcjc13FgA==
 
 "@next-auth/mongodb-adapter@1.1.1":
   version "1.1.1"
@@ -2182,7 +2188,7 @@ react-textarea-autosize@^8.3.2:
     use-composed-ref "^1.0.0"
     use-latest "^1.0.0"
 
-react-transition-group@^4.4.2:
+react-transition-group@4.4.2:
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.4.2.tgz#8b59a56f09ced7b55cbd53c36768b922890d5470"
   integrity sha512-/RNYfRAMlZwDSr6z4zNKV6xu53/e2BuaBbGhbyYIXTrmgu/bGHzmqOs7mJSJBHy9Ud+ApHx3QjrkKSp1pxvlFg==
