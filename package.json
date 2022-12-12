@@ -9,12 +9,12 @@
         "lint": "next lint"
     },
     "dependencies": {
-        "@mantine/core": "4.2.12",
+        "@mantine/core": "5.9.4",
         "@mantine/dropzone": "5.5.5",
-        "@mantine/hooks": "4.2.12",
-        "@mantine/modals": "4.2.12",
-        "@mantine/next": "4.2.12",
-        "@mantine/notifications": "4.2.12",
+        "@mantine/hooks": "5.9.4",
+        "@mantine/modals": "5.9.4",
+        "@mantine/next": "5.9.4",
+        "@mantine/notifications": "5.9.4",
         "@next-auth/mongodb-adapter": "1.1.1",
         "jszip": "3.9.1",
         "mongodb": "4.10.0",
