@@ -19,7 +19,7 @@
         "jszip": "3.9.1",
         "mongodb": "4.10.0",
         "next": "12.3.1",
-        "next-auth": "4.14.0",
+        "next-auth": "4.18.6",
         "react": "18.2.0",
         "react-dom": "18.2.0",
         "tabler-icons-react": "1.55.0"
