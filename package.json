@@ -25,7 +25,7 @@
         "tabler-icons-react": "1.55.0"
     },
     "devDependencies": {
-        "@types/node": "17.0.29",
+        "@types/node": "18.11.16",
         "@types/react": "18.0.21",
         "@types/wicg-file-system-access": "2020.9.5",
         "eslint": "8.25.0",
